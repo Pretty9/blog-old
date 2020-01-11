@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-01-11T06:11:15.584Z</updated>
+  <updated>2020-01-11T07:03:15.356Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一次自动提交脚本的经历</title>
+    <link href="https://2yo.cc/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/"/>
+    <id>https://2yo.cc/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/</id>
+    <published>2020-01-11T06:42:01.000Z</published>
+    <updated>2020-01-11T07:03:15.356Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>事情的起因是这样的，最近需要在某系统上注册一个账号，结果怎么都收不到邮件，试了有十几次，然后我去打听了一下，所有人都是这样，少则十几次才能收到，多则几十次，便萌生了写脚本自动提交的想法。</p><h2 id="分析逻辑"><a href="#分析逻辑" class="headerlink" title="分析逻辑"></a>分析逻辑</h2><p>第一步当然要分析逻辑，这也是最重要的一步，好在这个系统比较简单，没一会儿就分析好了。先看一下表单：<br><img src="./%E6%BF%80%E6%B4%BB%E4%B8%BB%E9%A1%B5.png" alt="激活主页"><br>两个输入框分别输入邮件和验证码，我们在看下源码：<br><img src="./form.png" alt="表单数据"><br>这个form没有action属性，是通过checkForm方法提交的，我们再来看下checkForm方法：<br><img src="./check.png" alt="check"><br>还有一些代码被我删减掉了，只留下最主要的代码，首先将表单数据post到后台，如果后台的返回body为空串，则跳转到第二个网址，否则提示错误信息。至此我们已经将逻辑分析好了，我们只要模拟这段js代码的逻辑向后台提交数据。</p><h2 id="验证码识别"><a href="#验证码识别" class="headerlink" title="验证码识别"></a>验证码识别</h2><p>这个系统的验证码图形并不复杂，干扰线不严重，数字整体也没有太大扭曲，所以使用Tesseract就足够了，验证码识别的准确率不需要百分之百但也不能太低，百分之六十以上就不错了。为了提高准确率，我们先要对图片做一些简单的处理。</p><h3 id="灰度化处理"><a href="#灰度化处理" class="headerlink" title="灰度化处理"></a>灰度化处理</h3><p>第一步是将验证码处理为灰度图片，下图为处理好的例子，左侧为原图像，右侧为灰度图像。<br><img src="./merge.png" alt="merge"></p><h3 id="二值化处理"><a href="#二值化处理" class="headerlink" title="二值化处理"></a>二值化处理</h3><p>第二步将处理好的灰度图像二值化，二值化的阈值选择可能比较难选择，需要多次试验选择一个较优的阈值，下面为不同阈值对应的二值化图像：<br><img src="./thresh.jpg" alt="thresh"><br>阈值130是一个比较好的选择，阈值100有些数字已经看不清了，200又没能很好的去除干扰线。</p><h3 id="Tesseract识别"><a href="#Tesseract识别" class="headerlink" title="Tesseract识别"></a>Tesseract识别</h3><p>第三步用Tesseract识别二值化图像就可以了。<br><img src="./result.png" alt="result"></p><p>5个中对了4个，就结果来说比较满意了。另外，不知您发现没有，它这个验证码每个数字的位置是固定的。。。</p><h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>代码被我删掉了，我怕铁憨憨把人家系统弄瘫痪。。。</p>]]></content>
+    
+    <summary type="html">
+    
+      某系统的邮件验证系统有问题,写了个自动提交的脚本~
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>博客迁移到hexo啦</title>
