@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>自闭少年说</title>
+  
+  <subtitle>让我们一起开始自闭吧，呐~</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://2yo.cc/"/>
+  <updated>2020-01-11T06:11:15.584Z</updated>
+  <id>https://2yo.cc/</id>
+  
+  <author>
+    <name>自闭少年</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>博客迁移到hexo啦</title>
+    <link href="https://2yo.cc/2019/12/17/%E5%85%B3%E4%BA%8E%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/"/>
+    <id>https://2yo.cc/2019/12/17/%E5%85%B3%E4%BA%8E%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/</id>
+    <published>2019-12-17T03:38:20.000Z</published>
+    <updated>2020-01-11T06:11:15.584Z</updated>
+    
+    <content type="html"><![CDATA[<p>由于.cc域名暂时不能备案又不舍得丢，只好将博客迁移到Gitpage，最近会将一些有价值的文章从原博客上迁移过来，WordPress有些过于方便导致最近的文章有些水，这次就打算好好写一些长文了。并且打算用空出的服务器开发出一些小工具来供朋友们使用，毕竟一直白嫖API也怪不好意思的，哈哈哈。</p>]]></content>
+    
+    <summary type="html">
+    
+      由于某些原因,把博客迁移到hexo啦~
+    
+    </summary>
+    
+    
+    
+      <category term="Other" scheme="https://2yo.cc/tags/Other/"/>
+    
+  </entry>
+  
+</feed>
