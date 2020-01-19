@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-01-11T07:54:25.525Z</updated>
+  <updated>2020-01-19T03:38:28.200Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>下载喜欢的UP主的所有视频</title>
+    <link href="https://2yo.cc/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/"/>
+    <id>https://2yo.cc/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/</id>
+    <published>2020-01-19T02:24:03.000Z</published>
+    <updated>2020-01-19T03:38:28.200Z</updated>
+    
+    <content type="html"><![CDATA[<p>对于喜欢的UP主，是不是有种想要把他（她）所有的投稿下载并珍藏起来的冲动呢，不过要怎么做？用APP逐个投稿缓存在转移到PC上？或者使用诸如you-get之类的第三方工具？这些都太麻烦了，需要一个一个的点进去或者输入av号，因此就写了个下载UP主所有投稿的工具，没有太多技术含量，都是一些机械工作，下面只强调几个注意点，代码开源到Github。</p><ul><li>新版播放器采用DASH，并将音频和视频分为两个流，猜测是压缩图像时保留原质量音频？</li><li>切换到旧版Flash即可找到flv接口，不过貌似有加密接口可以直接下载1080p。</li><li>视频服务器貌似有限速？带宽不能跑满，遂采用多线程分段下载。</li></ul><h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>1.将bilibili.py中UID修改为UP主的UID，运行bilibili.py即可。<br>2.ignore.json用于忽略已下载的投稿，其格式为标准的json。<br>3.文件命名规则为：av[av号]-[分P]-[分段]。如av52236157-1-1.flv。<br>4.分段是指将较大的视频分为若干段，这些段组合起来成为一个完整的视频，不过除番剧外大多数情况只分为一段。<br>5.下载进度长时间卡住时，停止并重新运行即可，这多出现在视频比较大的情况。</p><h3 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h3><p><a href="https://github.com/Pretty9/bilibiliUPDownloader" target="_blank" rel="noopener">bilibiliUPDownloader</a></p>]]></content>
+    
+    <summary type="html">
+    
+      写了个小工具,下载某一个UP主的所有视频投稿
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题</title>
