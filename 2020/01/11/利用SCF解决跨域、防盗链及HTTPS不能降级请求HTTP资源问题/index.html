@@ -1,206 +1,5 @@
-
-
-<!DOCTYPE html>
-<html lang="zh-CN,default" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-
-<head>
-    <title>利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题 - 自闭少年说</title>
-<meta charset="utf-8">
-<meta name="X-UA-Compatible" content="IE=edge">
-<meta name="author" content="自闭少年">
-<meta name="description" content="使用SCF解决跨域、Refer防盗链及HTTPS不能降级请求HTTP资源问题">
-<meta name="keywords" content="自闭|少年|生活|技术|分享">
-
-<link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml">
-
-    <meta charset="utf-8">
-    <meta name="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <meta content="telephone=no" name="format-detection">
-    <meta name="renderer" content="webkit">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" crossorigin="anonymous">
-<link rel="stylesheet" href="/css/journal.css?87745195">
-
-<script src="/js/loadCSS.js"></script>
-<script>
-    loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Material+Icons");
-    (function (d) {
-        var config = {
-                kitId: 'dwg1tuc',
-                scriptTimeout: 3000,
-                async: true
-            },
-            h = d.documentElement, t = setTimeout(function () {
-                h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
-            }, config.scriptTimeout), tk = d.createElement("script"), f = false,
-            s = d.getElementsByTagName("script")[0], a;
-        h.className += " wf-loading";
-        tk.src = 'https://use.typekit.net/' + config.kitId + '.js';
-        tk.async = true;
-        tk.onload = tk.onreadystatechange = function () {
-            a = this.readyState;
-            if (f || a && a != "complete" && a != "loaded") return;
-            f = true;
-            clearTimeout(t);
-            try {
-                Typekit.load(config)
-            } catch (e) {
-            }
-        };
-        s.parentNode.insertBefore(tk, s)
-    })(document);
-</script>
-<noscript>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Lora|Montserrat|Anonymous+Pro:400|Material+Icons"/>
-</noscript>
-</head>
-<body>
-<div id="top"></div>
-<div id="app">
-<div class="single-column-drawer-container" ref="drawer"
-     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
-    <div class="drawer-content">
-        <div class="drawer-menu">
-            <a class="a-block drawer-menu-item false" href="https://2yo.cc">
-                首页
-            </a>
-            
-            <a class="a-block drawer-menu-item false" href="/archives">
-                归档
-            </a>
-            
-
-            
-            
-            <a class="a-block drawer-menu-item false" href="/about/index.html">
-                关于我
-            </a>
-            
-            <a class="a-block drawer-menu-item false" href="/music/index.html">
-                最近听
-            </a>
-            
-            <a class="a-block drawer-menu-item false" href="/friends/index.html">
-                朋友们
-            </a>
-            
-
-            
-            <a class="a-block drawer-menu-item" href="/atom.xml">
-                RSS
-            </a>
-            
-        </div>
-    </div>
-</div>
-<transition name="fade">
-    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
-</transition>
-<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
-    <div ref="navBackground" class="nav-background"></div>
-    <div class="container container-narrow nav-content">
-        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
-            <i class="material-icons">
-                menu
-            </i>
-        </button>
-        <a ref="navTitle" class="navbar-brand" href="/">
-            自闭少年说
-        </a>
-    </div>
-</nav>
-<div class="single-column-header-container" ref="pageHead"
-     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
-    <a href="/">
-        <div class="single-column-header-title">自闭少年说</div>
-        <div class="single-column-header-subtitle"></div>
-    </a>
-</div>
-<div ref="sideContainer" class="side-container">
-    <a class="a-block nav-head false" href="/">
-        <div class="nav-title">
-            自闭少年说's <br>NoteBook
-        </div>
-        <div class="nav-subtitle">
-            让我们一起开始自闭吧, 呐~
-        </div>
-    </a>
-
-    <div class="nav-link-list">
-        
-        <a class="a-block no-tint nav-link-item false" href="/archives">
-            归档
-        </a>
-        
-
-        
-        
-        <a class="a-block nav-link-item false" href="/about/index.html">
-            关于我
-        </a>
-        
-        <a class="a-block nav-link-item false" href="/music/index.html">
-            最近听
-        </a>
-        
-        <a class="a-block nav-link-item false" href="/friends/index.html">
-            朋友们
-        </a>
-        
-
-        
-        <a class="a-block no-tint nav-link-item" href="/atom.xml">
-            RSS
-        </a>
-        
-    </div>
-
-    
-    <div class="nav-footer">
-        Proudly published with Hexo<br>
-        
-        Theme <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> by <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a><br>
-        
-        &copy; 2020 <a href="https://2yo.cc">自闭少年说</a>
-    </div>
-</div>
-<div ref="extraContainer" class="extra-container">
-    <div class="pagination">
-        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
-            <i class="material-icons pagination-action-icon">
-                keyboard_arrow_up
-            </i>
-        </a>
-
-        
-    </div>
-</div>
-
-
-
-<div ref="streamContainer" class="stream-container">
-    <div class="post-list-container post-list-container-shadow">
-        <div class="post">
-            <div class="post-head-wrapper"
-                 style="background-image: url('/2020/01/11/利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题/2233.jpg')">
-                <div class="post-title">
-                    利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题
-                    <div class="post-meta">
-                        <time datetime="2020-01-11T07:31:45.000Z" itemprop="datePublished">
-                            2020-01-11 15:31
-                        </time>&nbsp;
-                        
-    
-                        
-                    </div>
-                </div>
-            </div>
-    
-            <div class="post-body-wrapper">
-                <div class="post-body">
-                    <h2 id="问题阐述"><a href="#问题阐述" class="headerlink" title="问题阐述"></a>问题阐述</h2><p>在Web应用开发中，我们经常会遇到跨域，Refer防盗链以及HTTPS不能降级访问HTTP资源问题，一般的浏览器禁止了跨域请求且Ajax等方式不允许修改某些Header（如Refer和Orign），针对这三种情况我们一般只能通过代理访问来解决，即在自己的服务器上写一个代理小程序，再通过自己的域名访问这个小程序来解决。但是我们本就瘦小的带宽还要分出来一部分做代理着实让人不爽，这里分享一种方法，就是通过SCF来解决。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Sukida"><title>利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题 · Sukida's blog</title><meta name="description" content="问题阐述在Web应用开发中，我们经常会遇到跨域，Refer防盗链以及HTTPS不能降级访问HTTP资源问题，一般的浏览器禁止了跨域请求且Ajax等方式不允许修改某些Header（如Refer和Orign），针对这三种情况我们一般只能通过代理访问来解决，即在自己的服务器上写一个代理小程序，再通过自己的"><meta name="keywords" content="热爱|少年|生活|技术|分享"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 4.0.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">因为热爱，所以坚持</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">Sukida's blog</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li><a href="/about/index.html">About</a></li><li><a href="/friends/index.html">Friends</a></li><li><a href="/music/index.html">Music</a></li><li class="soc"><a href="https://github.com/Pretty9" target="_blank" rel="noopener noreferrer"><i class="fa fa-github">&nbsp;</i></a><a href="https://2yo.cc/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2020&nbsp;<a target="_blank" href="https://2yo.cc" rel="noopener noreferrer">Sukida</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2020-01-11</span></p><p class="post-abstract"><h2 id="问题阐述"><a href="#问题阐述" class="headerlink" title="问题阐述"></a>问题阐述</h2><p>在Web应用开发中，我们经常会遇到跨域，Refer防盗链以及HTTPS不能降级访问HTTP资源问题，一般的浏览器禁止了跨域请求且Ajax等方式不允许修改某些Header（如Refer和Orign），针对这三种情况我们一般只能通过代理访问来解决，即在自己的服务器上写一个代理小程序，再通过自己的域名访问这个小程序来解决。但是我们本就瘦小的带宽还要分出来一部分做代理着实让人不爽，这里分享一种方法，就是通过SCF来解决。</p>
 <h2 id="何为SCF？"><a href="#何为SCF？" class="headerlink" title="何为SCF？"></a>何为SCF？</h2><p>SCF（Serverless Cloud Function），即无服务器云函数，是由腾讯在无服务器架构上的一种实现（阿里和华为也有，但名称不同，如称函数工作流），无服务器（Serverless）不是表示没有服务器，而表示当在使用 Serverless 时，无需关心底层资源，也无需登录服务器和优化服务器，只需关注最核心的代码片段，即可跳过复杂的、繁琐的基本工作。核心的代码片段完全由事件或者请求触发，平台根据请求自动平行调整服务资源。Serverless 拥有近乎无限的扩容能力，空闲时，不运行任何资源。代码运行无状态，可以轻易实现快速迭代、极速部署。</p>
 <p>简而言之，就是提供了一个粘贴代码即可运行的环境，并且没有带宽约束以及“并发约束”，实现了弹性伸缩，无需担心服务器过载。</p>
 <p>SCF目前分为三种，普通的云函数，以及Serverless2.0中的HTTP函数和服务型函数，后二者目前在内测，很荣幸拿到了HTTP函数的内测名额，普通的云函数基于事件驱动且配置麻烦限制也多，只能返回Json，如果要返回图片等媒体资源只能Base64编码后返回，大大降低了效率。而HTTP函数则不存在这种限制，它是完全基于HTTP Request 和HTTP Response的，但这并不意味着对返回是没有限制的：</p>
@@ -233,75 +32,49 @@
 <p>函数创建好之后就会为我们分配好一个公网域名，我们访问一下试试看：</p>
 <p><img src="./scf4.png" alt="scf4"></p>
 <p>基本的流程完毕了，剩下的就是写代码了，P站的防盗链机制是检查Refer，那么只要伪造Header就可以了，我已经写好一个了，代码如下（不是专业搞前端的，JS写的很烂，大佬轻喷:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">const fetch &#x3D; require(&#39;node-fetch&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">const app &#x3D; require(&#39;express&#39;)();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">app.get(&#39;&#x2F;&#39;, (req, res) &#x3D;&gt; &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    pic &#x3D; req.query.url</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    if (pic &#x3D;&#x3D;&#x3D; undefined || pic.length &#x3D;&#x3D; 0) &#123; &#x2F;&#x2F; 必须要有图片url，否则我们返回400</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        res.status(400).json(&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            &#39;code&#39;: -1,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">            &#39;msg&#39;: &#39;URL is a necessary parameter.&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        &#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    &#125; else &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">        fetch(pic, &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">            headers: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">                &#39;Referer&#39;: &#39;https:&#x2F;&#x2F;pixiv.net&#39;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        &#125;).then(function(response) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">            if (!response.ok) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">                res.set(&#39;Content-Type&#39;, &#39;application&#x2F;json&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">                res.status(500).json(&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">                    &#39;code&#39;: -1,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">                    &#39;status&#39;: &#39;error&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">                &#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">            &#125; else &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">                res.set(&#39;Content-Type&#39;, &#39;image&#x2F;jpeg&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">            returnresponse</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">        &#125;).then(response &#x3D;&gt; response.buffer()).then(response &#x3D;&gt; res.status(200).send(response)).then().</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">        catch(e &#x3D;&gt; console.log(&#39;Msg&#39; + e));</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">exports.main_handler &#x3D; app</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;app.listen(8080)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;app.listen(8080)</span></pre></td></tr></table></figure>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">const</span> fetch <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'node-fetch'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    pic <span class="token operator">=</span> req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>url
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pic <span class="token operator">===</span> undefined <span class="token operator">||</span> pic<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 必须要有图片url，否则我们返回400</span>
+        res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            <span class="token string">'code'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token string">'msg'</span><span class="token punctuation">:</span> <span class="token string">'URL is a necessary parameter.'</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">fetch</span><span class="token punctuation">(</span>pic<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                <span class="token string">'Referer'</span><span class="token punctuation">:</span> <span class="token string">'https://pixiv.net'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                res<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'application/json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                    <span class="token string">'code'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+                    <span class="token string">'status'</span><span class="token punctuation">:</span> <span class="token string">'error'</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                res<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'image/jpeg'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            returnresponse
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>response <span class="token operator">=</span><span class="token operator">></span> response<span class="token punctuation">.</span><span class="token function">buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>response <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+        <span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Msg'</span> <span class="token operator">+</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+exports<span class="token punctuation">.</span>main_handler <span class="token operator">=</span> app
+<span class="token comment" spellcheck="true">//app.listen(8080)</span>
+<span class="token comment" spellcheck="true">//app.listen(8080)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>SCF已经支持其他环境</p>
 <h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p>腾讯SCF官方手册</p>
-
-                </div>
-            </div>
-    
-            <nav class="post-pagination">
-    
-    <a class="newer-posts" href="/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/">
-        上一篇<br>下载喜欢的UP主的所有视频
-    </a>
-    
-    <span class="page-number"></span>
-    
-    <a class="older-posts" href="/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/">
-        下一篇<br>一次自动提交脚本的经历
-    </a>
-    
-</nav>
-
-    
-            
-
-<div id="lv-container" data-id="city" data-uid="MTAyMC80NjA5My8yMjYwNA==">
-</div>
-
-
-        </div>
-    </div>
-    <div class="single-column-footer">
-    Proudly published with Hexo<br>
-    
-    Theme <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> by <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a><br>
-    
-    &copy; 2020 <a href="https://2yo.cc">自闭少年说</a>
-</div>
-</div>
-
-</div>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"
-        integrity="sha256-EGs9T1xMHdvM1geM8jPpoo8EZ1V1VRsmcJz8OByENLA=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha256-VsEqElsCHSGmnmHXGQzvoWjWwoznFSZc6hs7ARLRacQ=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.min.js"
-        integrity="sha256-FtWfRI+thWlNz2sB3SJbwKx5PgMyKIVgwHCTwa3biXc=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/smooth-scroll@14.2.1/dist/smooth-scroll.polyfills.min.js"
-        integrity="sha256-CI4Gq5E0io1Pv0xM3qPM+NUIOhbIBvC3GiN1Y4KhXpw=" crossorigin="anonymous"></script>
-<script src="/js/journal.js?92616738"></script>
-
-
-<script type="text/javascript">
-    (function (d, s) {
-        var j, e = d.getElementsByTagName(s)[0];
-
-        if (typeof LivereTower === 'function') {
-            return;
-        }
-
-        j = d.createElement(s);
-        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-        j.async = true;
-
-        e.parentNode.insertBefore(j, e);
-    })(document, 'script');
-</script>
-
-
-</body>
-</html>
+</p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f=' target="_blank" rel="noopener"http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://2yo.cc/2020/01/11/利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题/%20Sukida' target="_blank" rel="noopener"s blog%20利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/" title="下载喜欢的UP主的所有视频"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: 下载喜欢的UP主的所有视频</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/" title="一次自动提交脚本的经历">Next post: 一次自动提交脚本的经历&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><div id="lv-container" data-id="city" data-uid="MTAyMC80NjA5My8yMjYwNA=="><script type="text/javascript">(function (d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') {
+        return;
+    }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script><noscript> Please activate JavaScript for write a comment in LiveRe</noscript></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2020&nbsp;<a target="_blank" href="https://2yo.cc" rel="noopener noreferrer">Sukida</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
