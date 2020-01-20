@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-01-20T02:57:50.471Z</updated>
+  <updated>2020-01-20T03:14:12.094Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>修改Hosts文件加速Github访问</title>
+    <link href="https://2yo.cc/2020/01/20/%E4%BF%AE%E6%94%B9Hosts%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9FGithub%E8%AE%BF%E9%97%AE/"/>
+    <id>https://2yo.cc/2020/01/20/%E4%BF%AE%E6%94%B9Hosts%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9FGithub%E8%AE%BF%E9%97%AE/</id>
+    <published>2020-01-20T03:05:05.000Z</published>
+    <updated>2020-01-20T03:14:12.094Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;前几天访问Github还好好的，昨天夜里就怎么也上不去了，早上爬起来Ping了几个ip丢到hosts就好了。&lt;/p&gt;
+&lt;p&gt;如果使用Windows系统，hosts文件一般在&lt;code&gt;C:\Windows\System32\drivers\etc&lt;/code&gt;路径下，打开之
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Github" scheme="https://2yo.cc/tags/Github/"/>
+    
+      <category term="Hosts" scheme="https://2yo.cc/tags/Hosts/"/>
+    
+  </entry>
   
   <entry>
     <title>下载喜欢的UP主的所有视频</title>
