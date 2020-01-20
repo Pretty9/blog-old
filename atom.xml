@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-01-20T15:16:27.907Z</updated>
+  <updated>2020-01-20T15:18:59.547Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://2yo.cc/2020/01/20/cloudflare%E4%B8%AD%E4%BD%BF%E7%94%A8301%E9%87%8D%E5%AE%9A%E5%90%91/"/>
     <id>https://2yo.cc/2020/01/20/cloudflare%E4%B8%AD%E4%BD%BF%E7%94%A8301%E9%87%8D%E5%AE%9A%E5%90%91/</id>
     <published>2020-01-20T12:45:36.000Z</published>
-    <updated>2020-01-20T15:16:27.907Z</updated>
+    <updated>2020-01-20T15:18:59.547Z</updated>
     
     <summary type="html">
     
@@ -84,9 +84,9 @@
     
     
     
-      <category term="tools" scheme="https://2yo.cc/tags/tools/"/>
-    
       <category term="bilibili" scheme="https://2yo.cc/tags/bilibili/"/>
+    
+      <category term="tools" scheme="https://2yo.cc/tags/tools/"/>
     
   </entry>
   
