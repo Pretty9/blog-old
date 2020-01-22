@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-01-22T04:25:18.433Z</updated>
+  <updated>2020-01-22T04:27:06.497Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://2yo.cc/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
     <id>https://2yo.cc/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</id>
     <published>2020-01-22T03:55:09.000Z</published>
-    <updated>2020-01-22T04:25:18.433Z</updated>
+    <updated>2020-01-22T04:27:06.497Z</updated>
     
     <summary type="html">
     
@@ -37,7 +37,7 @@
     
     
     
-      <category term="-Kali" scheme="https://2yo.cc/tags/Kali/"/>
+      <category term="Kali" scheme="https://2yo.cc/tags/Kali/"/>
     
   </entry>
   
@@ -109,9 +109,9 @@
     
     
     
-      <category term="bilibili" scheme="https://2yo.cc/tags/bilibili/"/>
-    
       <category term="tools" scheme="https://2yo.cc/tags/tools/"/>
+    
+      <category term="bilibili" scheme="https://2yo.cc/tags/bilibili/"/>
     
   </entry>
   
