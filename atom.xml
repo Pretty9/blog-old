@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-01-20T15:18:59.547Z</updated>
+  <updated>2020-01-22T04:25:18.433Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Kali踩坑记：中文乱码</title>
+    <link href="https://2yo.cc/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/"/>
+    <id>https://2yo.cc/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/</id>
+    <published>2020-01-22T03:55:09.000Z</published>
+    <updated>2020-01-22T04:25:18.433Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h4 id=&quot;起因&quot;&gt;&lt;a href=&quot;#起因&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="-Kali" scheme="https://2yo.cc/tags/Kali/"/>
+    
+  </entry>
   
   <entry>
     <title>Cloudflare中使用301重定向</title>
