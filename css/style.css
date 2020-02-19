@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600");
+/*https://cdn.jsdelivr.net/gh/Pretty9/pretty9.github.io@v1.0/fonts/wuyu.otf */
 @font-face {
     font-family: 'total-font';
-    src: url('/fonts/wuyu.otf');
+    src: url('https://cdn.jsdelivr.net/gh/Pretty9/pretty9.github.io@v1.0/fonts/wuyu.otf');
     font-style: normal;
     font-weight: normal;
 }
