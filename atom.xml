@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Haato&#39;s blog</title>
+  <title>2YO&#39;s BLOG</title>
   
   <subtitle>因为热爱，所以坚持</subtitle>
   <link href="/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://2yo.cc/</id>
   
   <author>
-    <name>Haato</name>
+    <name>2YO</name>
     
   </author>
   
@@ -332,9 +332,9 @@
     
     
     
-      <category term="bilibili" scheme="https://2yo.cc/tags/bilibili/"/>
-    
       <category term="tools" scheme="https://2yo.cc/tags/tools/"/>
+    
+      <category term="bilibili" scheme="https://2yo.cc/tags/bilibili/"/>
     
   </entry>
   

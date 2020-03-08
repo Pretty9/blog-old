@@ -1,128 +1,254 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Haato"><title>利用CNN完成二次元图像和三次元图像的分类 · Haato's blog</title><meta name="description" content="起因刚刚在Danbooru上抓了近百万张图，结果里面竟然混有不少的三次元图，如果人工一张一张的挑选就太麻烦了，就想写程序来解决。一开始想的是用Sequential跑个三层模型出来，又想到是不是有更简单的方法，就去网上查了查，但是没有找到相关的文章。之后去群里问了问，纸片协会的一喵大佬给出了两个方法，"><meta name="keywords" content="热爱,生活,技术,分享,Haato"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/bootstrap.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="/css/style.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 4.0.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head><body><div id="stage" class="container"><div class="row"><div id="side-bar" class="col-sm-3 col-xs-12 side-container invisible"><div class="vertical-text site-title"><h3 tabindex="-1" class="site-title-small"><a href="/" class="a-title">因为热爱，所以坚持</a></h3><h1 tabindex="-1" class="site-title-large"><a href="/" class="a-title">Haato's blog</a></h1><!--h6(onclick="triggerSiteNav()") Trigger--></div><br class="visible-lg visible-md visible-sm"><div id="site-nav" class="site-title-links"><ul><li><a href="/">Home</a></li><li><a href="/archives">Archive</a></li><li><a href="/tags">Tags</a></li><li><a href="/Cnblogs/index.html">Cnblogs</a></li><li><a href="/about/index.html">About</a></li><li><a href="/friends/index.html">Friends</a></li><li><a href="/music/index.html">Music</a></li><li class="soc"><a href="https://github.com/Pretty9" target="_blank" rel="noopener noreferrer"><i class="fa fa-github">&nbsp;</i></a><a href="https://2yo.cc/atom.xml" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss">&nbsp;</i></a></li></ul><div class="visible-lg visible-md visible-sm site-nav-footer"><br class="site-nav-footer-br"><footer><p>&copy;&nbsp;2020&nbsp;<a target="_blank" href="https://2yo.cc" rel="noopener noreferrer">Haato</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div><div id="main-container" class="col-sm-9 col-xs-12 main-container invisible"><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post-container"><p class="post-title"><a>利用CNN完成二次元图像和三次元图像的分类</a></p><p class="post-meta"><span class="date meta-item">Posted at&nbsp;2020-02-19</span><span class="meta-item"><i class="fa fa-tag"></i><span>&nbsp;</span><a href="/tags/Machine-Learning/" title="Machine Learning" class="a-tag">Machine Learning</a><span>&nbsp;</span></span></p><p class="post-abstract"><h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>刚刚在Danbooru上抓了近百万张图，结果里面竟然混有不少的三次元图，如果人工一张一张的挑选就太麻烦了，就想写程序来解决。一开始想的是用Sequential跑个三层模型出来，又想到是不是有更简单的方法，就去网上查了查，但是没有找到相关的文章。之后去群里问了问，纸片协会的一喵大佬给出了两个方法，又甩出一个12页的全英文论文，无奈能力不足，搞了许久也没能搞懂，只能绕回到神经网络了。</p>
+
+<!DOCTYPE html>
+<html lang="en,default" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>利用CNN完成二次元图像和三次元图像的分类 - 2YO&#39;s BLOG</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="description" content="起因刚刚在Danbooru上抓了近百万张图，结果里面竟然混有不少的三次元图，如果人工一张一张的挑选就太麻烦了，就想写程序来解决。一开始想的是用Sequential跑个三层模型出来，又想到是不是有更简,"> 
+    <meta name="author" content="2YO"> 
+    <link rel="alternative" href="atom.xml" title="2YO&#39;s BLOG" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
+    <link rel="stylesheet" href="/css/obsidian.css">
+    <link rel="stylesheet" href="/css/ball-atom.min.css">
+<link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body class="loading">
+    <div class="loader">
+        <div class="la-ball-atom la-2x">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <span id="config-title" style="display:none">2YO&#39;s BLOG</span>
+    <div id="loader"></div>
+    <div id="single">
+    <div class="scrollbar gradient-bg-rev"></div>
+<div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <div class="navigation animated fadeIn fast delay-1s">
+        <img id="home-icon" class="icon-home" src="/img/favicon.png" alt="" data-url="https://2yo.cc">
+        <div id="play-icon" title="Play/Pause" class="iconfont icon-play"></div>
+        <h3 class="subtitle">利用CNN完成二次元图像和三次元图像的分类</h3>
+        <div class="social">
+            <!--        <div class="like-icon">-->
+            <!--            <a href="javascript:;" target="_blank" rel="noopener" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+            <!--        </div>-->
+            <div>
+                <div class="share">
+                    
+                        <a href="javascript:;" target="_blank" rel="noopener" class="iconfont icon-share1"></a>
+                        <div class="share-component-cc" data-disabled="facebook,douban,linkedin,diandian,tencent,google"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="section">
+        <div class=article-header-wrapper>
+    <div class="article-header">
+        <div class="article-cover animated fadeIn" style="
+            animation-delay: 600ms;
+            animation-duration: 1.2s;
+            background-image: 
+                radial-gradient(ellipse closest-side, rgba(0, 0, 0, 0.65), #100e17),
+                url(/img/cover.jpg) ">
+        </div>
+        <div class="else">
+            <p class="animated fadeInDown">
+                
+                <a href="javascript:;" target="_blank" rel="noopener"><b>「 </b>Article<b> 」</b></a>
+                
+                February 19, 2020
+            </p>
+            <h3 class="post-title animated fadeInDown"><a href="/2020/02/19/%E5%88%A9%E7%94%A8CNN%E5%AE%8C%E6%88%90%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BE%E5%83%8F%E5%92%8C%E4%B8%89%E6%AC%A1%E5%85%83%E5%9B%BE%E5%83%8F%E7%9A%84%E5%88%86%E7%B1%BB/" title="利用CNN完成二次元图像和三次元图像的分类" class="">利用CNN完成二次元图像和三次元图像的分类</a>
+            </h3>
+            
+            <p class="post-count animated fadeInDown">
+                
+                <span>
+                    <b class="iconfont icon-text2"></b> <i>Words count</i>
+                    11k
+                </span>
+                
+                
+                <span>
+                    <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
+                    10 mins.
+                </span>
+                
+                
+                
+                <span id="busuanzi_container_page_pv">
+                    <b class="iconfont icon-read"></b> <i>Read count</i>
+                    <span id="busuanzi_value_page_pv">0</span>
+                </span>
+                
+            </p>
+            
+            
+            <ul class="animated fadeInDown post-tags-list" itemprop="keywords"><li class="animated fadeInDown post-tags-list-item"><a class="animated fadeInDown post-tags-list-link" href="/tags/Machine-Learning/" rel="tag">Machine Learning</a></li></ul>
+            
+        </div>
+    </div>
+</div>
+
+<div class="screen-gradient-after">
+    <div class="screen-gradient-content">
+        <div class="screen-gradient-content-inside">
+            <div class="bold-underline-links screen-gradient-sponsor">
+                <p>
+                    <span class="animated fadeIn delay-1s"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="article">
+    <div class='main'>
+        <div class="content markdown animated fadeIn">
+            <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>刚刚在Danbooru上抓了近百万张图，结果里面竟然混有不少的三次元图，如果人工一张一张的挑选就太麻烦了，就想写程序来解决。一开始想的是用Sequential跑个三层模型出来，又想到是不是有更简单的方法，就去网上查了查，但是没有找到相关的文章。之后去群里问了问，纸片协会的一喵大佬给出了两个方法，又甩出一个12页的全英文论文，无奈能力不足，搞了许久也没能搞懂，只能绕回到神经网络了。</p>
 <p>先是写了三层神经网络模型，发现效果不是特别的理想，又重新写了卷积神经网络，这就避免了将图像展开丢失了很多重要的信息这一弊端。</p>
 <h3 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h3><p>既然是二次元图像和三次元图像的分类，自然要准备二次元和三次元两类图像，各准备了1600张左右，这里有一个注意点，数据集尽量要覆盖全面，例如三次元数据集要包括人物、动物以及自然景物等，越全面分类越精确，将数据集放到acgn和real文件夹中。</p>
-<h3 id="编写程序"><a href="#编写程序" class="headerlink" title="编写程序"></a>编写程序</h3><h4 id="导入必要的包文件"><a href="#导入必要的包文件" class="headerlink" title="导入必要的包文件"></a>导入必要的包文件</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">from</span> model_name<span class="token punctuation">.</span>simple_vggnet <span class="token keyword">import</span> SimpleVGGNet
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>preprocessing <span class="token keyword">import</span> LabelBinarizer
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>model_selection <span class="token keyword">import</span> train_test_split
-<span class="token keyword">from</span> sklearn<span class="token punctuation">.</span>metrics <span class="token keyword">import</span> classification_report
-<span class="token keyword">from</span> keras<span class="token punctuation">.</span>optimizers <span class="token keyword">import</span> SGD
-<span class="token keyword">from</span> keras<span class="token punctuation">.</span>preprocessing<span class="token punctuation">.</span>image <span class="token keyword">import</span> ImageDataGenerator
-<span class="token keyword">from</span> my_utils <span class="token keyword">import</span> utils_paths
-<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
-<span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">import</span> argparse
-<span class="token keyword">import</span> random
-<span class="token keyword">import</span> pickle
-<span class="token keyword">import</span> cv2
-<span class="token keyword">import</span> os<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="编写程序"><a href="#编写程序" class="headerlink" title="编写程序"></a>编写程序</h3><h4 id="导入必要的包文件"><a href="#导入必要的包文件" class="headerlink" title="导入必要的包文件"></a>导入必要的包文件</h4><pre><code class="python">from model_name.simple_vggnet import SimpleVGGNet
+from sklearn.preprocessing import LabelBinarizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+from keras.optimizers import SGD
+from keras.preprocessing.image import ImageDataGenerator
+from my_utils import utils_paths
+import matplotlib.pyplot as plt
+import numpy as np
+import argparse
+import random
+import pickle
+import cv2
+import os</code></pre>
 <h4 id="编写参数解析"><a href="#编写参数解析" class="headerlink" title="编写参数解析"></a>编写参数解析</h4><p>其中dataset指明数据集的路径，model指明模型输出的文件名，label_bin指明标签文件名，plot为数据可视化的图片名。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 输入参数</span>
-ap <span class="token operator">=</span> argparse<span class="token punctuation">.</span>ArgumentParser<span class="token punctuation">(</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-d"</span><span class="token punctuation">,</span> <span class="token string">"--dataset"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to input dataset of images"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-m"</span><span class="token punctuation">,</span> <span class="token string">"--model"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to output trained model"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-l"</span><span class="token punctuation">,</span> <span class="token string">"--label-bin"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to output label binarizer"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-p"</span><span class="token punctuation">,</span> <span class="token string">"--plot"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to output accuracy/loss plot"</span><span class="token punctuation">)</span>
-args <span class="token operator">=</span> vars<span class="token punctuation">(</span>ap<span class="token punctuation">.</span>parse_args<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="读取图像数据"><a href="#读取图像数据" class="headerlink" title="读取图像数据"></a>读取图像数据</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 读取数据和标签</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[INFO] loading images..."</span><span class="token punctuation">)</span>
-data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-labels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<pre><code class="python"># 输入参数
+ap = argparse.ArgumentParser()
+ap.add_argument(&quot;-d&quot;, &quot;--dataset&quot;, required=True, help=&quot;path to input dataset of images&quot;)
+ap.add_argument(&quot;-m&quot;, &quot;--model&quot;, required=True, help=&quot;path to output trained model&quot;)
+ap.add_argument(&quot;-l&quot;, &quot;--label-bin&quot;, required=True, help=&quot;path to output label binarizer&quot;)
+ap.add_argument(&quot;-p&quot;, &quot;--plot&quot;, required=True, help=&quot;path to output accuracy/loss plot&quot;)
+args = vars(ap.parse_args())</code></pre>
+<h4 id="读取图像数据"><a href="#读取图像数据" class="headerlink" title="读取图像数据"></a>读取图像数据</h4><pre><code class="python"># 读取数据和标签
+print(&quot;[INFO] loading images...&quot;)
+data = []
+labels = []
 
-<span class="token comment" spellcheck="true"># 拿到路径</span>
-imagePaths <span class="token operator">=</span> sorted<span class="token punctuation">(</span>list<span class="token punctuation">(</span>utils_paths<span class="token punctuation">.</span>list_images<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"dataset"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-random<span class="token punctuation">.</span>seed<span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span>
-random<span class="token punctuation">.</span>shuffle<span class="token punctuation">(</span>imagePaths<span class="token punctuation">)</span>
+# 拿到路径
+imagePaths = sorted(list(utils_paths.list_images(args[&quot;dataset&quot;])))
+random.seed(42)
+random.shuffle(imagePaths)
 
-<span class="token comment" spellcheck="true"># 读取数据</span>
-<span class="token keyword">for</span> imagePath <span class="token keyword">in</span> imagePaths<span class="token punctuation">:</span>
-    image <span class="token operator">=</span> cv2<span class="token punctuation">.</span>imread<span class="token punctuation">(</span>imagePath<span class="token punctuation">)</span>
-    <span class="token keyword">try</span><span class="token punctuation">:</span>
-        image <span class="token operator">=</span> cv2<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">64</span><span class="token punctuation">,</span> <span class="token number">64</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        data<span class="token punctuation">.</span>append<span class="token punctuation">(</span>image<span class="token punctuation">)</span>
-        label <span class="token operator">=</span> imagePath<span class="token punctuation">.</span>split<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>sep<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">]</span>
-        labels<span class="token punctuation">.</span>append<span class="token punctuation">(</span>label<span class="token punctuation">)</span>
-    <span class="token keyword">except</span><span class="token punctuation">:</span>
-        <span class="token keyword">pass</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+# 读取数据
+for imagePath in imagePaths:
+    image = cv2.imread(imagePath)
+    try:
+        image = cv2.resize(image, (64, 64))
+        data.append(image)
+        label = imagePath.split(os.path.sep)[-2]
+        labels.append(label)
+    except:
+        pass</code></pre>
 <p>这里有三个注意点，分别是：</p>
 <ul>
 <li>要打乱数据集中图像的顺序，且训练过程中应保持数据集中图像顺序不变，这样可以避免偶然性和利于对比，<code>random.seed()</code>和<code>random.shuffle()</code>完成了这项工作。</li>
 <li>数据集过大，无法保证每张图都是有效的，因此数据集比1600 + 1600大出很多，在resize时捕获了异常，无效图片直接丢掉。</li>
 <li><code>label = imagePath.split(os.path.sep)[-2]</code>这是很巧妙的一行代码，因为我们将数据集分类丢到acgn和real文件夹，那么图像的路径为<code>xxx/acgn/xxx.jpg</code>或者 <code>xxx/real/xxx.jpg</code>，将路径按os.path.sep分割开来，自然倒数第二个元素就是图像的标签。</li>
 </ul>
-<h4 id="图像归一化处理"><a href="#图像归一化处理" class="headerlink" title="图像归一化处理"></a>图像归一化处理</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 预处理</span>
-data <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>data<span class="token punctuation">,</span> dtype<span class="token operator">=</span><span class="token string">"float"</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">255.0</span>
-labels <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>labels<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="图像归一化处理"><a href="#图像归一化处理" class="headerlink" title="图像归一化处理"></a>图像归一化处理</h4><pre><code class="python"># 预处理
+data = np.array(data, dtype=&quot;float&quot;) / 255.0
+labels = np.array(labels)</code></pre>
 <h4 id="数据集切分"><a href="#数据集切分" class="headerlink" title="数据集切分"></a>数据集切分</h4><p>将数据集分割成训练集和测试集</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 数据集切分</span>
-<span class="token punctuation">(</span>trainX<span class="token punctuation">,</span> testX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> testY<span class="token punctuation">)</span> <span class="token operator">=</span> train_test_split<span class="token punctuation">(</span>data<span class="token punctuation">,</span> labels<span class="token punctuation">,</span> test_size<span class="token operator">=</span><span class="token number">0.25</span><span class="token punctuation">,</span> random_state<span class="token operator">=</span><span class="token number">42</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre><code class="python"># 数据集切分
+(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.25, random_state=42)
+</code></pre>
 <h4 id="标签转换"><a href="#标签转换" class="headerlink" title="标签转换"></a>标签转换</h4><p>将标签转换为one-hot形式</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 标签转换</span>
-lb <span class="token operator">=</span> LabelBinarizer<span class="token punctuation">(</span><span class="token punctuation">)</span>
-trainY <span class="token operator">=</span> lb<span class="token punctuation">.</span>fit_transform<span class="token punctuation">(</span>trainY<span class="token punctuation">)</span>
-testY <span class="token operator">=</span> lb<span class="token punctuation">.</span>transform<span class="token punctuation">(</span>testY<span class="token punctuation">)</span>
+<pre><code class="python"># 标签转换
+lb = LabelBinarizer()
+trainY = lb.fit_transform(trainY)
+testY = lb.transform(testY)
 
-tY <span class="token operator">=</span> testY<span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>tY<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> tY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-        tY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        tY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-testY <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>tY<span class="token punctuation">)</span>
+tY = testY.tolist()
+for i in range(0, len(tY)):
+    if tY[i][0] == 1:
+        tY[i].insert(0, 0)
+    else:
+        tY[i].insert(0, 1)
+testY = np.array(tY)
 
-aY <span class="token operator">=</span> trainY<span class="token punctuation">.</span>tolist<span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token keyword">for</span> i <span class="token keyword">in</span> range<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> len<span class="token punctuation">(</span>aY<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">if</span> aY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
-        aY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-    <span class="token keyword">else</span><span class="token punctuation">:</span>
-        aY<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>insert<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-trainY <span class="token operator">=</span> np<span class="token punctuation">.</span>array<span class="token punctuation">(</span>aY<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 数据增强</span>
-aug <span class="token operator">=</span> ImageDataGenerator<span class="token punctuation">(</span>rotation_range<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span> width_shift_range<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span>
-                         height_shift_range<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">,</span> shear_range<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">,</span> zoom_range<span class="token operator">=</span><span class="token number">0.2</span><span class="token punctuation">,</span>
-                         horizontal_flip<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> fill_mode<span class="token operator">=</span><span class="token string">"nearest"</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="建立卷积神经网络"><a href="#建立卷积神经网络" class="headerlink" title="建立卷积神经网络"></a>建立卷积神经网络</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 建立卷积神经网络</span>
-model <span class="token operator">=</span> SimpleVGGNet<span class="token punctuation">.</span>build<span class="token punctuation">(</span>width<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span> height<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span> depth<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span> classes<span class="token operator">=</span>len<span class="token punctuation">(</span>lb<span class="token punctuation">.</span>classes_<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<h4 id="初始化参数"><a href="#初始化参数" class="headerlink" title="初始化参数"></a>初始化参数</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 初始化参数</span>
-INIT_LR <span class="token operator">=</span> <span class="token number">0.01</span>
-EPOCHS <span class="token operator">=</span> <span class="token number">50</span>
-BS <span class="token operator">=</span> <span class="token number">32</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="训练神经网络"><a href="#训练神经网络" class="headerlink" title="训练神经网络"></a>训练神经网络</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 损失函数</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[INFO] 训练网络..."</span><span class="token punctuation">)</span>
-opt <span class="token operator">=</span> SGD<span class="token punctuation">(</span>lr<span class="token operator">=</span>INIT_LR<span class="token punctuation">,</span> decay<span class="token operator">=</span>INIT_LR <span class="token operator">/</span> EPOCHS<span class="token punctuation">)</span>
-model<span class="token punctuation">.</span>compile<span class="token punctuation">(</span>loss<span class="token operator">=</span><span class="token string">"categorical_crossentropy"</span><span class="token punctuation">,</span> optimizer<span class="token operator">=</span>opt<span class="token punctuation">,</span> metrics<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"accuracy"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+aY = trainY.tolist()
+for i in range(0, len(aY)):
+    if aY[i][0] == 1:
+        aY[i].insert(0, 0)
+    else:
+        aY[i].insert(0, 1)
+trainY = np.array(aY)</code></pre>
+<h4 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h4><pre><code class="python"># 数据增强
+aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
+                         height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
+                         horizontal_flip=True, fill_mode=&quot;nearest&quot;)
+</code></pre>
+<h4 id="建立卷积神经网络"><a href="#建立卷积神经网络" class="headerlink" title="建立卷积神经网络"></a>建立卷积神经网络</h4><pre><code class="python"># 建立卷积神经网络
+model = SimpleVGGNet.build(width=64, height=64, depth=3, classes=len(lb.classes_))
+</code></pre>
+<h4 id="初始化参数"><a href="#初始化参数" class="headerlink" title="初始化参数"></a>初始化参数</h4><pre><code class="python"># 初始化参数
+INIT_LR = 0.01
+EPOCHS = 50
+BS = 32</code></pre>
+<h4 id="训练神经网络"><a href="#训练神经网络" class="headerlink" title="训练神经网络"></a>训练神经网络</h4><pre><code class="python"># 损失函数
+print(&quot;[INFO] 训练网络...&quot;)
+opt = SGD(lr=INIT_LR, decay=INIT_LR / EPOCHS)
+model.compile(loss=&quot;categorical_crossentropy&quot;, optimizer=opt, metrics=[&quot;accuracy&quot;])
 
-<span class="token comment" spellcheck="true"># 训练网络</span>
-H <span class="token operator">=</span> model<span class="token punctuation">.</span>fit_generator<span class="token punctuation">(</span>aug<span class="token punctuation">.</span>flow<span class="token punctuation">(</span>trainX<span class="token punctuation">,</span> trainY<span class="token punctuation">,</span> batch_size<span class="token operator">=</span>BS<span class="token punctuation">)</span><span class="token punctuation">,</span>
-                        validation_data<span class="token operator">=</span><span class="token punctuation">(</span>testX<span class="token punctuation">,</span> testY<span class="token punctuation">)</span><span class="token punctuation">,</span> steps_per_epoch<span class="token operator">=</span>len<span class="token punctuation">(</span>trainX<span class="token punctuation">)</span> <span class="token operator">//</span> BS<span class="token punctuation">,</span> epochs<span class="token operator">=</span>EPOCHS<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="测试模型"><a href="#测试模型" class="headerlink" title="测试模型"></a>测试模型</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 测试</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[INFO] 测试网络..."</span><span class="token punctuation">)</span>
-predictions <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>testX<span class="token punctuation">,</span> batch_size<span class="token operator">=</span><span class="token number">32</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>classification_report<span class="token punctuation">(</span>testY<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> predictions<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> target_names<span class="token operator">=</span>lb<span class="token punctuation">.</span>classes_<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 展示结果</span>
-N <span class="token operator">=</span> np<span class="token punctuation">.</span>arange<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> EPOCHS<span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>style<span class="token punctuation">.</span>use<span class="token punctuation">(</span><span class="token string">"ggplot"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>N<span class="token punctuation">,</span> H<span class="token punctuation">.</span>history<span class="token punctuation">[</span><span class="token string">"loss"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"train_loss"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>N<span class="token punctuation">,</span> H<span class="token punctuation">.</span>history<span class="token punctuation">[</span><span class="token string">"val_loss"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"val_loss"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>N<span class="token punctuation">,</span> H<span class="token punctuation">.</span>history<span class="token punctuation">[</span><span class="token string">"accuracy"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"train_acc"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>N<span class="token punctuation">,</span> H<span class="token punctuation">.</span>history<span class="token punctuation">[</span><span class="token string">"val_accuracy"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> label<span class="token operator">=</span><span class="token string">"val_acc"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>title<span class="token punctuation">(</span><span class="token string">"Training Loss and Accuracy (SmallVGGNet)"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">"Epoch #"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">"Loss/Accuracy"</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>legend<span class="token punctuation">(</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>savefig<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"plot"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="保存图像和标签"><a href="#保存图像和标签" class="headerlink" title="保存图像和标签"></a>保存图像和标签</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 保存模型</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[INFO] 保存模型..."</span><span class="token punctuation">)</span>
-model<span class="token punctuation">.</span>save<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"model"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-f <span class="token operator">=</span> open<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"label_bin"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"wb"</span><span class="token punctuation">)</span>
-f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>lb<span class="token punctuation">)</span><span class="token punctuation">)</span>
-f<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+# 训练网络
+H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
+                        validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS, epochs=EPOCHS)
+</code></pre>
+<h4 id="测试模型"><a href="#测试模型" class="headerlink" title="测试模型"></a>测试模型</h4><pre><code class="python"># 测试
+print(&quot;[INFO] 测试网络...&quot;)
+predictions = model.predict(testX, batch_size=32)
+print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=lb.classes_))
+</code></pre>
+<h4 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h4><pre><code class="python"># 展示结果
+N = np.arange(0, EPOCHS)
+plt.style.use(&quot;ggplot&quot;)
+plt.figure()
+plt.plot(N, H.history[&quot;loss&quot;], label=&quot;train_loss&quot;)
+plt.plot(N, H.history[&quot;val_loss&quot;], label=&quot;val_loss&quot;)
+plt.plot(N, H.history[&quot;accuracy&quot;], label=&quot;train_acc&quot;)
+plt.plot(N, H.history[&quot;val_accuracy&quot;], label=&quot;val_acc&quot;)
+plt.title(&quot;Training Loss and Accuracy (SmallVGGNet)&quot;)
+plt.xlabel(&quot;Epoch #&quot;)
+plt.ylabel(&quot;Loss/Accuracy&quot;)
+plt.legend()
+plt.savefig(args[&quot;plot&quot;])</code></pre>
+<h4 id="保存图像和标签"><a href="#保存图像和标签" class="headerlink" title="保存图像和标签"></a>保存图像和标签</h4><pre><code class="python"># 保存模型
+print(&quot;[INFO] 保存模型...&quot;)
+model.save(args[&quot;model&quot;])
+f = open(args[&quot;label_bin&quot;], &quot;wb&quot;)
+f.write(pickle.dumps(lb))
+f.close()</code></pre>
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>模型训练完之后当然要测试了，找几张没有出现在数据集中的图片用训练好的模型测试一下，注意，一定要用没有出现在数据集中的图片。</p>
 <h4 id="二次元图像测试"><a href="#二次元图像测试" class="headerlink" title="二次元图像测试"></a>二次元图像测试</h4><p><img src="./acgn.jpg" alt="acgn.jpg"></p>
 <p>貌似效果还不错？甚至出现了可信度100%的情况，分对了5张，奇怪的是第三张被分为三次元且可信度为92.37%？让我们仔细观察一下为什么会出现这种情况。<br>我们可以明显看出第三幅图与其他五张的风格明显不同，说是风格不同，不如说是作画工具不同，第三幅图可能是用水彩或者彩铅绘制的，查一下来源果然如此，是一副水彩画。</p>
@@ -132,101 +258,375 @@ f<span class="token punctuation">.</span>close<span class="token punctuation">(<
 <p>同样被识别为三次元图像，但是可信度仅为64.93%，要解决这个问题其实也简单，准备一些水彩画丢进数据集就可以了，这里就是因为缺少水彩画的数据才导致了误判。</p>
 <h4 id="三次元图像测试"><a href="#三次元图像测试" class="headerlink" title="三次元图像测试"></a>三次元图像测试</h4><p><img src="./real.jpg" alt="real.jpg"></p>
 <p>效果还不错？</p>
-<h3 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h3><h4 id="测试用代码"><a href="#测试用代码" class="headerlink" title="测试用代码"></a>测试用代码</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># 导入所需工具包</span>
-<span class="token keyword">from</span> keras<span class="token punctuation">.</span>models <span class="token keyword">import</span> load_model
-<span class="token keyword">import</span> argparse
-<span class="token keyword">import</span> pickle
-<span class="token keyword">import</span> cv2
+<h3 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h3><h4 id="测试用代码"><a href="#测试用代码" class="headerlink" title="测试用代码"></a>测试用代码</h4><pre><code class="python"># 导入所需工具包
+from keras.models import load_model
+import argparse
+import pickle
+import cv2
 
-<span class="token comment" spellcheck="true"># 设置输入参数</span>
-ap <span class="token operator">=</span> argparse<span class="token punctuation">.</span>ArgumentParser<span class="token punctuation">(</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-i"</span><span class="token punctuation">,</span> <span class="token string">"--image"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to input image we are going to classify"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-m"</span><span class="token punctuation">,</span> <span class="token string">"--model"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to trained Keras model"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-l"</span><span class="token punctuation">,</span> <span class="token string">"--label-bin"</span><span class="token punctuation">,</span> required<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"path to label binarizer"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-w"</span><span class="token punctuation">,</span> <span class="token string">"--width"</span><span class="token punctuation">,</span> type<span class="token operator">=</span>int<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"target spatial dimension width"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-e"</span><span class="token punctuation">,</span> <span class="token string">"--height"</span><span class="token punctuation">,</span> type<span class="token operator">=</span>int<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">64</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"target spatial dimension height"</span><span class="token punctuation">)</span>
-ap<span class="token punctuation">.</span>add_argument<span class="token punctuation">(</span><span class="token string">"-f"</span><span class="token punctuation">,</span> <span class="token string">"--flatten"</span><span class="token punctuation">,</span> type<span class="token operator">=</span>int<span class="token punctuation">,</span> default<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">,</span> help<span class="token operator">=</span><span class="token string">"whether or not we should flatten the image"</span><span class="token punctuation">)</span>
-args <span class="token operator">=</span> vars<span class="token punctuation">(</span>ap<span class="token punctuation">.</span>parse_args<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+# 设置输入参数
+ap = argparse.ArgumentParser()
+ap.add_argument(&quot;-i&quot;, &quot;--image&quot;, required=True, help=&quot;path to input image we are going to classify&quot;)
+ap.add_argument(&quot;-m&quot;, &quot;--model&quot;, required=True, help=&quot;path to trained Keras model&quot;)
+ap.add_argument(&quot;-l&quot;, &quot;--label-bin&quot;, required=True, help=&quot;path to label binarizer&quot;)
+ap.add_argument(&quot;-w&quot;, &quot;--width&quot;, type=int, default=64, help=&quot;target spatial dimension width&quot;)
+ap.add_argument(&quot;-e&quot;, &quot;--height&quot;, type=int, default=64, help=&quot;target spatial dimension height&quot;)
+ap.add_argument(&quot;-f&quot;, &quot;--flatten&quot;, type=int, default=0, help=&quot;whether or not we should flatten the image&quot;)
+args = vars(ap.parse_args())
 
-<span class="token comment" spellcheck="true"># 加载测试数据并进行相同预处理操作</span>
-image <span class="token operator">=</span> cv2<span class="token punctuation">.</span>imread<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"image"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-output <span class="token operator">=</span> image<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span>
-image <span class="token operator">=</span> cv2<span class="token punctuation">.</span>resize<span class="token punctuation">(</span>image<span class="token punctuation">,</span> <span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"width"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> args<span class="token punctuation">[</span><span class="token string">"height"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+# 加载测试数据并进行相同预处理操作
+image = cv2.imread(args[&quot;image&quot;])
+output = image.copy()
+image = cv2.resize(image, (args[&quot;width&quot;], args[&quot;height&quot;]))
 
-<span class="token comment" spellcheck="true"># scale the pixel values to [0, 1]</span>
-image <span class="token operator">=</span> image<span class="token punctuation">.</span>astype<span class="token punctuation">(</span><span class="token string">"float"</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">255.0</span>
+# scale the pixel values to [0, 1]
+image = image.astype(&quot;float&quot;) / 255.0
 
-<span class="token comment" spellcheck="true"># 是否要对图像就行拉平操作</span>
-<span class="token keyword">if</span> args<span class="token punctuation">[</span><span class="token string">"flatten"</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">:</span>
-    image <span class="token operator">=</span> image<span class="token punctuation">.</span>flatten<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    image <span class="token operator">=</span> image<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> image<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+# 是否要对图像就行拉平操作
+if args[&quot;flatten&quot;] &gt; 0:
+    image = image.flatten()
+    image = image.reshape((1, image.shape[0]))
 
-<span class="token comment" spellcheck="true"># CNN的时候需要原始图像</span>
-<span class="token keyword">else</span><span class="token punctuation">:</span>
-    image <span class="token operator">=</span> image<span class="token punctuation">.</span>reshape<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> image<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> image<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-                           image<span class="token punctuation">.</span>shape<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+# CNN的时候需要原始图像
+else:
+    image = image.reshape((1, image.shape[0], image.shape[1],
+                           image.shape[2]))
 
-<span class="token comment" spellcheck="true"># 读取模型和标签</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[INFO] loading network and label binarizer..."</span><span class="token punctuation">)</span>
-model <span class="token operator">=</span> load_model<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"model"</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-lb <span class="token operator">=</span> pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>open<span class="token punctuation">(</span>args<span class="token punctuation">[</span><span class="token string">"label_bin"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">"rb"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+# 读取模型和标签
+print(&quot;[INFO] loading network and label binarizer...&quot;)
+model = load_model(args[&quot;model&quot;])
+lb = pickle.loads(open(args[&quot;label_bin&quot;], &quot;rb&quot;).read())
 
-<span class="token comment" spellcheck="true"># 预测</span>
-preds <span class="token operator">=</span> model<span class="token punctuation">.</span>predict<span class="token punctuation">(</span>image<span class="token punctuation">)</span>
-
-
-<span class="token keyword">print</span><span class="token punctuation">(</span>preds<span class="token punctuation">)</span>
+# 预测
+preds = model.predict(image)
 
 
-<span class="token comment" spellcheck="true"># 得到预测结果以及其对应的标签</span>
-i <span class="token operator">=</span> preds<span class="token punctuation">.</span>argmax<span class="token punctuation">(</span>axis<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-label <span class="token operator">=</span> lb<span class="token punctuation">.</span>classes_<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
-
-<span class="token comment" spellcheck="true"># 在图像中把结果画出来</span>
-text <span class="token operator">=</span> <span class="token string">"{}: {:.2f}%"</span><span class="token punctuation">.</span>format<span class="token punctuation">(</span>label<span class="token punctuation">,</span> preds<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span>
-cv2<span class="token punctuation">.</span>putText<span class="token punctuation">(</span>output<span class="token punctuation">,</span> text<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span> cv2<span class="token punctuation">.</span>FONT_HERSHEY_SIMPLEX<span class="token punctuation">,</span> <span class="token number">0.7</span><span class="token punctuation">,</span>
-            <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-
-<span class="token comment" spellcheck="true"># 绘图</span>
-cv2<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span><span class="token string">"Image"</span><span class="token punctuation">,</span> output<span class="token punctuation">)</span>
-cv2<span class="token punctuation">.</span>waitKey<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h4 id="utils-paths-py"><a href="#utils-paths-py" class="headerlink" title="utils_paths.py"></a>utils_paths.py</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">import</span> os
+print(preds)
 
 
-image_types <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token string">".jpg"</span><span class="token punctuation">,</span> <span class="token string">".jpeg"</span><span class="token punctuation">,</span> <span class="token string">".png"</span><span class="token punctuation">,</span> <span class="token string">".bmp"</span><span class="token punctuation">,</span> <span class="token string">".tif"</span><span class="token punctuation">,</span> <span class="token string">".tiff"</span><span class="token punctuation">)</span>
+# 得到预测结果以及其对应的标签
+i = preds.argmax(axis=1)[0]
+label = lb.classes_[i]
+
+# 在图像中把结果画出来
+text = &quot;{}: {:.2f}%&quot;.format(label, preds[0][i] * 100)
+cv2.putText(output, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
+            (0, 0, 255), 2)
+
+# 绘图
+cv2.imshow(&quot;Image&quot;, output)
+cv2.waitKey(0)</code></pre>
+<h4 id="utils-paths-py"><a href="#utils-paths-py" class="headerlink" title="utils_paths.py"></a>utils_paths.py</h4><pre><code class="python">import os
 
 
-<span class="token keyword">def</span> <span class="token function">list_images</span><span class="token punctuation">(</span>basePath<span class="token punctuation">,</span> contains<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># return the set of files that are valid</span>
-    <span class="token keyword">return</span> list_files<span class="token punctuation">(</span>basePath<span class="token punctuation">,</span> validExts<span class="token operator">=</span>image_types<span class="token punctuation">,</span> contains<span class="token operator">=</span>contains<span class="token punctuation">)</span>
+image_types = (&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;, &quot;.bmp&quot;, &quot;.tif&quot;, &quot;.tiff&quot;)
 
 
-<span class="token keyword">def</span> <span class="token function">list_files</span><span class="token punctuation">(</span>basePath<span class="token punctuation">,</span> validExts<span class="token operator">=</span>None<span class="token punctuation">,</span> contains<span class="token operator">=</span>None<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token comment" spellcheck="true"># loop over the directory structure</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>rootDir<span class="token punctuation">,</span> dirNames<span class="token punctuation">,</span> filenames<span class="token punctuation">)</span> <span class="token keyword">in</span> os<span class="token punctuation">.</span>walk<span class="token punctuation">(</span>basePath<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token comment" spellcheck="true"># loop over the filenames in the current directory</span>
-        <span class="token keyword">for</span> filename <span class="token keyword">in</span> filenames<span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true"># if the contains string is not none and the filename does not contain</span>
-            <span class="token comment" spellcheck="true"># the supplied string, then ignore the file</span>
-            <span class="token keyword">if</span> contains <span class="token keyword">is</span> <span class="token operator">not</span> None <span class="token operator">and</span> filename<span class="token punctuation">.</span>find<span class="token punctuation">(</span>contains<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">:</span>
-                <span class="token keyword">continue</span>
+def list_images(basePath, contains=None):
+    # return the set of files that are valid
+    return list_files(basePath, validExts=image_types, contains=contains)
 
-            <span class="token comment" spellcheck="true"># determine the file extension of the current file</span>
-            ext <span class="token operator">=</span> filename<span class="token punctuation">[</span>filename<span class="token punctuation">.</span>rfind<span class="token punctuation">(</span><span class="token string">"."</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-            <span class="token comment" spellcheck="true"># check to see if the file is an image and should be processed</span>
-            <span class="token keyword">if</span> validExts <span class="token keyword">is</span> None <span class="token operator">or</span> ext<span class="token punctuation">.</span>endswith<span class="token punctuation">(</span>validExts<span class="token punctuation">)</span><span class="token punctuation">:</span>
-                <span class="token comment" spellcheck="true"># construct the path to the image and yield it</span>
-                imagePath <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>rootDir<span class="token punctuation">,</span> filename<span class="token punctuation">)</span>
-                <span class="token keyword">yield</span> imagePath<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+def list_files(basePath, validExts=None, contains=None):
+    # loop over the directory structure
+    for (rootDir, dirNames, filenames) in os.walk(basePath):
+        # loop over the filenames in the current directory
+        for filename in filenames:
+            # if the contains string is not none and the filename does not contain
+            # the supplied string, then ignore the file
+            if contains is not None and filename.find(contains) == -1:
+                continue
+
+            # determine the file extension of the current file
+            ext = filename[filename.rfind(&quot;.&quot;):].lower()
+
+            # check to see if the file is an image and should be processed
+            if validExts is None or ext.endswith(validExts):
+                # construct the path to the image and yield it
+                imagePath = os.path.join(rootDir, filename)
+                yield imagePath</code></pre>
 <h3 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h3><p>部分代码参考自阿里云</p>
-</p></div><div class="share"><span>Share</span>&nbsp;<span class="soc"><a href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank" class="fa fa-bookmark"></a></span><span class="soc"><a href="javascript:void((function(s,d,e){try{}catch(e){}var f=' target="_blank" rel="noopener"http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));" class="fa fa-weibo"></a></span><span class="soc"><a href="http://twitter.com/home?status=https://2yo.cc/2020/02/19/利用CNN完成二次元图像和三次元图像的分类/%20Haato' target="_blank" rel="noopener"s blog%20利用CNN完成二次元图像和三次元图像的分类" class="fa fa-twitter"></a></span></div><div class="pagination"><p class="clearfix"><span class="pre pagbuttons"><a role="navigation" href="/2020/02/20/%E7%94%A8%E5%9B%BE%E5%BA%8A%E7%9C%8B%E8%A7%86%E9%A2%91%E6%98%AF%E4%BB%80%E4%B9%88%E4%BD%93%E9%AA%8C%E4%B9%8B%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" title="用图床看视频是什么体验之原理分析"><i class="fa fa-angle-double-left"></i>&nbsp;Previous post: 用图床看视频是什么体验之原理分析</a></span><span>&nbsp;</span><span class="next pagbuttons"><a role="navigation" href="/2020/02/04/Python%E4%BD%BF%E7%94%A8pymongo%E6%93%8D%E4%BD%9CMongoDB/" title="Python使用pymongo操作MongoDB">Next post: Python使用pymongo操作MongoDB&nbsp;<i class="fa fa-angle-double-right"></i></a></span></p></div><div id="lv-container" data-id="city" data-uid="MTAyMC80NjA5My8yMjYwNA=="><script type="text/javascript">(function (d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') {
-        return;
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls"
+                data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+            <ul id="audio-list" style="display:none">
+                
+                
+                <li title='0' data-url='/statics/chengdu.mp3'></li>
+                
+                    
+            </ul>
+            
+            
+            
+    <div id='gitalk-container' class="comment link"
+        data-ae='true'
+        data-ci='4c145d96189da07c194a'
+        data-cs='86bdcdb33e4fda9243fbca95573c688129648616'
+        data-r='pretty9.github.io'
+        data-o='2YO'
+        data-a='2YO'
+        data-d=''
+    >Comments</div>
+
+
+            
+            
+        </div>
+        <div class="sidebar">
+            <div class="box animated fadeInRight">
+                <div class="subbox">
+                    <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
+                    <p>2YO</p>
+                    <span>Think like an artist, develop like an artisan</span>
+                    <dl>
+                        <dd><a href="https://github.com/Pretty9" target="_blank"><span
+                                    class=" iconfont icon-github"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-twitter"></span></a></dd>
+                        <dd><a href="" target="_blank"><span
+                                    class=" iconfont icon-stack-overflow"></span></a></dd>
+                    </dl>
+                </div>
+                <ul>
+                    <li><a href="/">16 <p>Articles</p></a></li>
+                    <li><a href="/categories">0 <p>Categories</p></a></li>
+                    <li><a href="/tags">16 <p>Tags</p></a></li>
+                </ul>
+            </div>
+            
+            
+            
+            <div class="box sticky animated fadeInRight faster">
+                <div id="toc" class="subbox">
+                    <h4>Contents</h4>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#起因"><span class="toc-number">1.</span> <span class="toc-text">起因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#准备数据集"><span class="toc-number">2.</span> <span class="toc-text">准备数据集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#编写程序"><span class="toc-number">3.</span> <span class="toc-text">编写程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试"><span class="toc-number">4.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#补充代码"><span class="toc-number">5.</span> <span class="toc-text">补充代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考内容"><span class="toc-number">6.</span> <span class="toc-text">参考内容</span></a></li></ol>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+    </div>
+</div>
+    <div id="back-to-top" class="animated fadeIn faster">
+        <div class="flow"></div>
+        <span class="percentage animated fadeIn faster">0%</span>
+        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+    </div>
+</body>
+<footer>
+    <p class="copyright" id="copyright">
+        &copy; 2020
+        <span class="gradient-text">
+            2YO
+        </span>.
+        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+        Theme
+        <span class="gradient-text">
+            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
+        </span>
+        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
+    </p>
+</footer>
+
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      preferredFont: "TeX",
+      availableFonts: ["STIX", "TeX"],
+      linebreaks: {
+        automatic: true
+      },
+      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+      inlineMath: [
+        ["$", "$"],
+        ["\\(", "\\)"]
+      ],
+      processEscapes: true,
+      ignoreClass: "tex2jax_ignore|dno",
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      noUndefined: {
+        attributes: {
+          mathcolor: "red",
+          mathbackground: "#FFEEEE",
+          mathsize: "90%"
+        }
+      },
+      Macros: {
+        href: "{}"
+      }
+    },
+    messageStyle: "none"
+  });
+</script>
+<script>
+  function initialMathJax() {
+    MathJax.Hub.Queue(function () {
+      var all = MathJax.Hub.getAllJax(),
+        i;
+      // console.log(all);
+      for (i = 0; i < all.length; i += 1) {
+        console.log(all[i].SourceElement().parentNode)
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  }
+
+  function reprocessMathJax() {
+    if (typeof MathJax !== 'undefined') {
+      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
     }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-})(document, 'script');</script><noscript> Please activate JavaScript for write a comment in LiveRe</noscript></div></div></div></div><div class="visible-xs site-bottom-footer"><footer><p>&copy;&nbsp;2020&nbsp;<a target="_blank" href="https://2yo.cc" rel="noopener noreferrer">Haato</a></p><p>Theme&nbsp;<a target="_blank" href="https://github.com/SumiMakito/hexo-theme-typography" rel="noopener noreferrer">Typography</a>&nbsp;by&nbsp;<a target="_blank" href="https://www.keep.moe" rel="noopener noreferrer">Makito</a></p><p>Proudly published with&nbsp;<a target="_blank" href="https://hexo.io" rel="noopener noreferrer">Hexo</a></p></footer></div></div></div></div><script src="/js/jquery-3.1.0.min.js"></script><script src="/js/bootstrap.min.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/google-analytics.js"></script><script src="/js/typography.js"></script></body></html>
+  }
+</script>
+
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
+    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/obsidian.js"></script>
+<script src="/js/jquery.truncate.js"></script>
+<script src="/js/search.js"></script>
+<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+
+<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
+
+    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
+
+
+
+    <script src="/js/busuanzi.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            if ($('span[id^="busuanzi_"]').length) {
+                initialBusuanzi();
+            }
+        });
+    </script>
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
+<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
+<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-149874671-1');
+    </script>
+
+
+
+
+
+<script>
+    function initialTyped () {
+        var typedTextEl = $('.typed-text');
+        if (typedTextEl && typedTextEl.length > 0) {
+            var typed = new Typed('.typed-text', {
+                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                typeSpeed: 90,
+                loop: true,
+                loopCount: Infinity,
+                backSpeed: 20,
+            });
+        }
+    }
+
+    if ($('.article-header') && $('.article-header').length) {
+        $(document).ready(function () {
+            initialTyped();
+        });
+    }
+</script>
+
+
+
+
+</html>
