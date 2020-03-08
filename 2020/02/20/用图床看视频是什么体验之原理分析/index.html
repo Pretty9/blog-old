@@ -86,13 +86,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    5k
+                    15k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    5 mins.
+                    14 mins.
                 </span>
                 
                 
@@ -126,22 +126,22 @@
         <div class="content markdown animated fadeIn">
             <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>前几天群友在群里分享了一篇文章<a href="https://i-meto.com/hlsjs-upimg-wrapper/" target="_blank" rel="noopener">用图床看视频是什么体验</a>，今天腾出来时间研究原理并实现一下。</p>
 <h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>按照作者博客所说的，是直接将视频分段之后拼接在图片之后，播放时跳过前面图片部分即可。为什么不直接修改文件拓展名呢？作者提到图床站会检查文件头，如果不是图片的文件头人家是不收的，因此要在前面拼接一张小图来应付检查。<br>从作者的博客中拿出关键代码如下：</p>
-<pre><code class="html">&lt;video id=&quot;video&quot; data-url=&quot;https://img11.360buyimg.com/img/jfs/t1/89319/11/12602/4783/5e4947e9Ee1c0bc66/f212833e4c8c8194.jpg&quot; src=&quot;blob:https://i-meto.com/2edacb21-e054-41da-b699-e549416f93d3&quot;&gt;&lt;/video&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/plyr@latest/dist/plyr.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/hls.js@latest&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/hlsjs-upimg-wrapper@latest&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-    if (Hls.isSupported()) {
-        const video = document.getElementById(&quot;video&quot;)
-        const player = new Plyr(video)
-        const wrapper = new HlsjsUpimgWrapper(Hls)
-        const hls = wrapper.createPlayer({}, {
-            offset: 107
-        })
-        hls.loadSource(video.dataset.url)
-        hls.attachMedia(video)
-    }
-&lt;/script&gt;</code></pre>
+<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>video<span class="token punctuation">"</span></span> <span class="token attr-name">data-url</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://img11.360buyimg.com/img/jfs/t1/89319/11/12602/4783/5e4947e9Ee1c0bc66/f212833e4c8c8194.jpg<span class="token punctuation">"</span></span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>blob:https://i-meto.com/2edacb21-e054-41da-b699-e549416f93d3<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>video</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/plyr@latest/dist/plyr.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/hls.js@latest<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/hlsjs-upimg-wrapper@latest<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>Hls<span class="token punctuation">.</span><span class="token function">isSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> video <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"video"</span><span class="token punctuation">)</span>
+        <span class="token keyword">const</span> player <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Plyr</span><span class="token punctuation">(</span>video<span class="token punctuation">)</span>
+        <span class="token keyword">const</span> wrapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HlsjsUpimgWrapper</span><span class="token punctuation">(</span>Hls<span class="token punctuation">)</span>
+        <span class="token keyword">const</span> hls <span class="token operator">=</span> wrapper<span class="token punctuation">.</span><span class="token function">createPlayer</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            offset<span class="token punctuation">:</span> <span class="token number">107</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        hls<span class="token punctuation">.</span><span class="token function">loadSource</span><span class="token punctuation">(</span>video<span class="token punctuation">.</span>dataset<span class="token punctuation">.</span>url<span class="token punctuation">)</span>
+        hls<span class="token punctuation">.</span><span class="token function">attachMedia</span><span class="token punctuation">(</span>video<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>从代码中可以看出偏移量为107，即图片部分为107字节，采用HLS技术，那么第一个请求的就应该是M3U8文件，里面包含了后续各段视频的地址，把video标签中data-url指向的图片拿到看看。</p>
 <p><img src="./m1.jpg" alt="m1.jpg"></p>
 <p>JPEG图像有一个很明显的特征，就是以FF D8开始，以FF D9结束，那么FF D9之后的字节不出意外就是M3U8文件。这里可以看出M3U8文件用过BASE64编码了，把它拿出来解码看看。</p>
@@ -160,40 +160,40 @@ https://ask.qcloudimg.com/draft/1134330/u0wg2wg9j4.jpg
 #EXTINF:10.051711,
 https://ask.qcloudimg.com/draft/1134330/r0ds1qugew.jpg
 #EXT-X-ENDLIST</code></pre><p>这就是解码之后的M3U8文件，里面指向了各分段视频的地址（实际上是图片+视频的混合），随机从里面下载一张“图片”，去掉头，把ts文件提取出来。</p>
-<pre><code class="python">with open(&#39;../data/dc30b8f2388a876a.jpg&#39;, &#39;rb&#39;) as f:
-    data = f.read()
-jpg, ts = data[:107], data[107:]
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'../data/dc30b8f2388a876a.jpg'</span><span class="token punctuation">,</span> <span class="token string">'rb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    data <span class="token operator">=</span> f<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span>
+jpg<span class="token punctuation">,</span> ts <span class="token operator">=</span> data<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">107</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">[</span><span class="token number">107</span><span class="token punctuation">:</span><span class="token punctuation">]</span>
 
-&quot;&quot;&quot;
+<span class="token triple-quoted-string string">"""
 jpg 值为
-b&#39;\xff\xd8\xff\xdb\x00C\x00\x03\x02\x02\x02\x02\x02\x03\x02\x02\x02\x03\x03\x03\x03\x04\x06\x04\x04\x04\x04\x04\x08\x06\x06\x05\x06\t\x08\n\n\t\x08\t\t\n\x0c\x0f\x0c\n\x0b\x0e\x0b\t\t\r\x11\r\x0e\x0f\x10\x10\x11\x10\n\x0c\x12\x13\x12\x10\x13\x0f\x10\x10\x10\xff\xc9\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00\xff\xcc\x00\x06\x00\x10\x10\x05\xff\xda\x00\x08\x01\x01\x00\x00?\x00\xd2\xcf \xff\xd9&#39;
-&quot;&quot;&quot;
-with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
-    f.write(ts)</code></pre>
+b'\xff\xd8\xff\xdb\x00C\x00\x03\x02\x02\x02\x02\x02\x03\x02\x02\x02\x03\x03\x03\x03\x04\x06\x04\x04\x04\x04\x04\x08\x06\x06\x05\x06\t\x08\n\n\t\x08\t\t\n\x0c\x0f\x0c\n\x0b\x0e\x0b\t\t\r\x11\r\x0e\x0f\x10\x10\x11\x10\n\x0c\x12\x13\x12\x10\x13\x0f\x10\x10\x10\xff\xc9\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00\xff\xcc\x00\x06\x00\x10\x10\x05\xff\xda\x00\x08\x01\x01\x00\x00?\x00\xd2\xcf \xff\xd9'
+"""</span>
+<span class="token keyword">with</span> open<span class="token punctuation">(</span><span class="token string">'dc30b8f2388a876a.ts'</span><span class="token punctuation">,</span> <span class="token string">'wb'</span><span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+    f<span class="token punctuation">.</span>write<span class="token punctuation">(</span>ts<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>经过测试ts文件是可以正常播放的，至此分析过程结束。</p>
 <h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><p>首先用FFmpeg把MP4转换成HLS，命令为：<br><code>ffmpeg -i source.mp4 -codec:v libx264 -codec:a mp3 -map 0 -f ssegment -segment_format mpegts -segment_list playlist.m3u8 -segment_time 10 out%03d.ts</code></p>
 <p>之后将上面jpg的值和各ts段的值拼接。</p>
-<pre><code class="python">def process_segment(self):
-    head = read_bytes(&#39;./head.bin&#39;) # head即为上面的jpg值
-    self.done_segments = []
-    for segment in self.segments:   # segment即为各ts的byte数组
-        self.done_segments.append(head + segment) # 拼接</code></pre>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">process_segment</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    head <span class="token operator">=</span> read_bytes<span class="token punctuation">(</span><span class="token string">'./head.bin'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># head即为上面的jpg值</span>
+    self<span class="token punctuation">.</span>done_segments <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> segment <span class="token keyword">in</span> self<span class="token punctuation">.</span>segments<span class="token punctuation">:</span>   <span class="token comment" spellcheck="true"># segment即为各ts的byte数组</span>
+        self<span class="token punctuation">.</span>done_segments<span class="token punctuation">.</span>append<span class="token punctuation">(</span>head <span class="token operator">+</span> segment<span class="token punctuation">)</span> <span class="token comment" spellcheck="true"># 拼接</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>之后完成M3U8的构造。</p>
-<pre><code class="python">def process_net_m3u8(m3u8, net_path):
-    lines = m3u8.splitlines()
-    num = len(lines)
-    cur, cnt = 0, 0
-    while cur &lt; num:
-        if &#39;#EXTINF&#39; in lines[cur]:
-            cur += 1
-            lines[cur] = net_path[cnt]
-            cnt += 1
-        else:
-            cur += 1
-    m3u8_file = &#39;\r\n&#39;.join(lines)
-    head = read_bytes(&#39;./head.bin&#39;)
-    done = base64.b64encode(m3u8_file.encode(&#39;utf-8&#39;))
-    return head + done</code></pre>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">process_net_m3u8</span><span class="token punctuation">(</span>m3u8<span class="token punctuation">,</span> net_path<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    lines <span class="token operator">=</span> m3u8<span class="token punctuation">.</span>splitlines<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    num <span class="token operator">=</span> len<span class="token punctuation">(</span>lines<span class="token punctuation">)</span>
+    cur<span class="token punctuation">,</span> cnt <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>
+    <span class="token keyword">while</span> cur <span class="token operator">&lt;</span> num<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token string">'#EXTINF'</span> <span class="token keyword">in</span> lines<span class="token punctuation">[</span>cur<span class="token punctuation">]</span><span class="token punctuation">:</span>
+            cur <span class="token operator">+=</span> <span class="token number">1</span>
+            lines<span class="token punctuation">[</span>cur<span class="token punctuation">]</span> <span class="token operator">=</span> net_path<span class="token punctuation">[</span>cnt<span class="token punctuation">]</span>
+            cnt <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            cur <span class="token operator">+=</span> <span class="token number">1</span>
+    m3u8_file <span class="token operator">=</span> <span class="token string">'\r\n'</span><span class="token punctuation">.</span>join<span class="token punctuation">(</span>lines<span class="token punctuation">)</span>
+    head <span class="token operator">=</span> read_bytes<span class="token punctuation">(</span><span class="token string">'./head.bin'</span><span class="token punctuation">)</span>
+    done <span class="token operator">=</span> base64<span class="token punctuation">.</span>b64encode<span class="token punctuation">(</span>m3u8_file<span class="token punctuation">.</span>encode<span class="token punctuation">(</span><span class="token string">'utf-8'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> head <span class="token operator">+</span> done<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>主要的程序已经编写完毕，一开始将图片上传到SM.MS，发现下载实在是太慢了，5M要下载1min还多，而5M的视频才8秒左右，这是无法容忍的，干脆弄到GitHub上展示一下效果算了。</p>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@latest/dist/plyr.css">
 <video id="video" data-url="https://cdn.jsdelivr.net/gh/Pretty9/statics@v2.0/meto/m3u8.jpg" >
@@ -238,8 +238,8 @@ with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
         data-ci='4c145d96189da07c194a'
         data-cs='86bdcdb33e4fda9243fbca95573c688129648616'
         data-r='pretty9.github.io'
-        data-o='2YO'
-        data-a='2YO'
+        data-o='Pretty9'
+        data-a='Pretty9'
         data-d=''
     >Comments</div>
 
@@ -252,7 +252,7 @@ with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>Think like an artist, develop like an artisan</span>
+                    <span>Because I love it, I insist.</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -461,16 +461,6 @@ with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
 
 
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-149874671-1');
-    </script>
-
 
 
 
@@ -480,7 +470,7 @@ with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                strings: ["Because I love it, I insist.", "因为热爱，所以坚持"],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

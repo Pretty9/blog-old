@@ -85,13 +85,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    3.5k
+                    11k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    3 mins.
+                    10 mins.
                 </span>
                 
                 
@@ -158,40 +158,40 @@
 <p>函数创建好之后就会为我们分配好一个公网域名，我们访问一下试试看：</p>
 <p><img src="./scf4.png" alt="scf4"></p>
 <p>基本的流程完毕了，剩下的就是写代码了，P站的防盗链机制是检查Refer，那么只要伪造Header就可以了，我已经写好一个了，代码如下（不是专业搞前端的，JS写的很烂，大佬轻喷:</p>
-<pre><code class="javascript">const fetch = require(&#39;node-fetch&#39;);
-const app = require(&#39;express&#39;)();
-app.get(&#39;/&#39;, (req, res) =&gt; {
-    pic = req.query.url
-    if (pic === undefined || pic.length == 0) { // 必须要有图片url，否则我们返回400
-        res.status(400).json({
-            &#39;code&#39;: -1,
-            &#39;msg&#39;: &#39;URL is a necessary parameter.&#39;
-        });
-    } else {
-        fetch(pic, {
-            headers: {
-                &#39;Referer&#39;: &#39;https://pixiv.net&#39;,
-            }
-        }).then(function(response) {
-            if (!response.ok) {
-                res.set(&#39;Content-Type&#39;, &#39;application/json&#39;);
-                res.status(500).json({
-                    &#39;code&#39;: -1,
-                    &#39;status&#39;: &#39;error&#39;
-                });
-            } else {
-                res.set(&#39;Content-Type&#39;, &#39;image/jpeg&#39;);
-            }
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">const</span> fetch <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'node-fetch'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    pic <span class="token operator">=</span> req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>url
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pic <span class="token operator">===</span> undefined <span class="token operator">||</span> pic<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 必须要有图片url，否则我们返回400</span>
+        res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            <span class="token string">'code'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+            <span class="token string">'msg'</span><span class="token punctuation">:</span> <span class="token string">'URL is a necessary parameter.'</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">fetch</span><span class="token punctuation">(</span>pic<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                <span class="token string">'Referer'</span><span class="token punctuation">:</span> <span class="token string">'https://pixiv.net'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                res<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'application/json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                    <span class="token string">'code'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
+                    <span class="token string">'status'</span><span class="token punctuation">:</span> <span class="token string">'error'</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                res<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'image/jpeg'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
             returnresponse
-        }).then(response =&gt; response.buffer()).then(response =&gt; res.status(200).send(response)).then().
-        catch(e =&gt; console.log(&#39;Msg&#39; + e));
-    }
-});
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>response <span class="token operator">=</span><span class="token operator">></span> response<span class="token punctuation">.</span><span class="token function">buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>response <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
+        <span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Msg'</span> <span class="token operator">+</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-exports.main_handler = app
-//app.listen(8080)
-//app.listen(8080)
-</code></pre>
+exports<span class="token punctuation">.</span>main_handler <span class="token operator">=</span> app
+<span class="token comment" spellcheck="true">//app.listen(8080)</span>
+<span class="token comment" spellcheck="true">//app.listen(8080)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>SCF已经支持其他环境</p>
 <h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p>腾讯SCF官方手册</p>
 
@@ -216,8 +216,8 @@ exports.main_handler = app
         data-ci='4c145d96189da07c194a'
         data-cs='86bdcdb33e4fda9243fbca95573c688129648616'
         data-r='pretty9.github.io'
-        data-o='2YO'
-        data-a='2YO'
+        data-o='Pretty9'
+        data-a='Pretty9'
         data-d=''
     >Comments</div>
 
@@ -230,7 +230,7 @@ exports.main_handler = app
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>Think like an artist, develop like an artisan</span>
+                    <span>Because I love it, I insist.</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -439,16 +439,6 @@ exports.main_handler = app
 
 
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-149874671-1');
-    </script>
-
 
 
 
@@ -458,7 +448,7 @@ exports.main_handler = app
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                strings: ["Because I love it, I insist.", "因为热爱，所以坚持"],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

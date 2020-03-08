@@ -86,13 +86,13 @@ headers =,">
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    2.6k
+                    12k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    2 mins.
+                    11 mins.
                 </span>
                 
                 
@@ -127,58 +127,58 @@ headers =,">
     <div class='main'>
         <div class="content markdown animated fadeIn">
             <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近一个项目需要抓取Twitter的一些数据，但是申请Twitter开发者API被拒绝了，只能研究研究网页端的API了，经过几次尝试，发现最少需要以下几个参数才能访问API：</p>
-<pre><code class="python">headers = {
-    &#39;Referer&#39;: &#39;https://twitter.com/akaihaato&#39;,
-    &#39;Origin&#39;: &#39;https://twitter.com&#39;,
-    &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36&#39;,
-    &#39;x-guest-token&#39;: &#39;xxxxxxxxxxxxxxxxxxxxxx&#39;,
-    &#39;authorization&#39;: &#39;Bearer AAAAAAAAAAAAAAAAAAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&#39;   
-}</code></pre>
+<pre class="line-numbers language-python"><code class="language-python">headers <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">'Referer'</span><span class="token punctuation">:</span> <span class="token string">'https://twitter.com/akaihaato'</span><span class="token punctuation">,</span>
+    <span class="token string">'Origin'</span><span class="token punctuation">:</span> <span class="token string">'https://twitter.com'</span><span class="token punctuation">,</span>
+    <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> <span class="token string">'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span><span class="token punctuation">,</span>
+    <span class="token string">'x-guest-token'</span><span class="token punctuation">:</span> <span class="token string">'xxxxxxxxxxxxxxxxxxxxxx'</span><span class="token punctuation">,</span>
+    <span class="token string">'authorization'</span><span class="token punctuation">:</span> <span class="token string">'Bearer AAAAAAAAAAAAAAAAAAAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'</span>   
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这里的<code>authorization</code>和<code>x-guest-token</code>是由js生成的，获取起来很麻烦，如果去分析加密的js估计头发会掉光，所以曲线救国干脆跑个<code>Headless Chromium</code>，之后把两个参数拿出来就行了。</p>
 <h4 id="Puppeteer"><a href="#Puppeteer" class="headerlink" title="Puppeteer"></a>Puppeteer</h4><p>Puppeteer是谷歌官方出品的一个通过DevTools协议控制headless Chrome的Node库。可以通过Puppeteer的提供的api直接控制Chrome模拟大部分用户操作来进行UI Test或者作为爬虫访问页面来收集数据。</p>
 <p><img src="puppeteer.webp" alt="puppeteer.webp"></p>
 <h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><p>因为大部分的代码都是用Python写的，只用Nodejs运行Puppeteer，因此借助Express框架直接写个API供Python调用。</p>
-<pre><code class="javascript">const express = require(&#39;express&#39;);
-const puppeteer = require(&#39;puppeteer&#39;);
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">const</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> puppeteer <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'puppeteer'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-const app = express();
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-const twitter = async() =&gt; {
-  let st = process.uptime();
-  const browser = await puppeteer.launch({headless: true}); // 无头模式，经过测试可以极大的节省时间
-  const page = await browser.newPage();
-  await page.setUserAgent(&#39;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36&#39;);
-  await page.goto(&#39;https://twitter.com/akaihaato&#39;, {
-      timeout: 50000,
-  });
+<span class="token keyword">const</span> twitter <span class="token operator">=</span> <span class="token keyword">async</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> st <span class="token operator">=</span> process<span class="token punctuation">.</span><span class="token function">uptime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> browser <span class="token operator">=</span> <span class="token keyword">await</span> puppeteer<span class="token punctuation">.</span><span class="token function">launch</span><span class="token punctuation">(</span><span class="token punctuation">{</span>headless<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 无头模式，经过测试可以极大的节省时间</span>
+  <span class="token keyword">const</span> page <span class="token operator">=</span> <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">newPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">await</span> page<span class="token punctuation">.</span><span class="token function">setUserAgent</span><span class="token punctuation">(</span><span class="token string">'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">await</span> page<span class="token punctuation">.</span><span class="token function">goto</span><span class="token punctuation">(</span><span class="token string">'https://twitter.com/akaihaato'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      timeout<span class="token punctuation">:</span> <span class="token number">50000</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  let result = [{code: -1}, null]; // 如果请求失败，直接返回下标为0的错误码
+  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>code<span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 如果请求失败，直接返回下标为0的错误码</span>
 
-  await page.on(&#39;requestfinished&#39;, async (request) =&gt; { //请求完成事件 ，注意异步  
-    if(request.resourceType() == &quot;xhr&quot; &amp;&amp; 
-          request.url().indexOf(&quot;https://api.twitter.com/2/timeline/profile/998336069992001537.json&quot;) != -1) {
-      result.push(request.headers());
-    } 
-  }); 
+  <span class="token keyword">await</span> page<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'requestfinished'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>request<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">//请求完成事件 ，注意异步  </span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">resourceType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token string">"xhr"</span> <span class="token operator">&amp;&amp;</span> 
+          request<span class="token punctuation">.</span><span class="token function">url</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"https://api.twitter.com/2/timeline/profile/998336069992001537.json"</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">headers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> 
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
 
-  // 给足够的时间加载所有连接，视网络情况而定
-  await page.waitFor(20000);
+  <span class="token comment" spellcheck="true">// 给足够的时间加载所有连接，视网络情况而定</span>
+  <span class="token keyword">await</span> page<span class="token punctuation">.</span><span class="token function">waitFor</span><span class="token punctuation">(</span><span class="token number">20000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  await browser.close();
-  let ed = process.uptime();  
-  console.log(&#39;本次共耗时: &#39; + (ed - st).toFixed(2) + &#39;s&#39;);
+  <span class="token keyword">await</span> browser<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> ed <span class="token operator">=</span> process<span class="token punctuation">.</span><span class="token function">uptime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'本次共耗时: '</span> <span class="token operator">+</span> <span class="token punctuation">(</span>ed <span class="token operator">-</span> st<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toFixed</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'s'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-  return result.pop(); // 加载过程会多次请求API，但是开始几次请求并不会携带需要的信息，我们返回最后一次请求
-}
+  <span class="token keyword">return</span> result<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// 加载过程会多次请求API，但是开始几次请求并不会携带需要的信息，我们返回最后一次请求</span>
+<span class="token punctuation">}</span>
 
-app.get(&#39;/&#39;, (req, res) =&gt; {
-  twitter().then((result) =&gt; {
-    res.json(result);
-  });
-});
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token function">twitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+    res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-app.listen(8080);
-</code></pre>
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls"
@@ -201,8 +201,8 @@ app.listen(8080);
         data-ci='4c145d96189da07c194a'
         data-cs='86bdcdb33e4fda9243fbca95573c688129648616'
         data-r='pretty9.github.io'
-        data-o='2YO'
-        data-a='2YO'
+        data-o='Pretty9'
+        data-a='Pretty9'
         data-d=''
     >Comments</div>
 
@@ -215,7 +215,7 @@ app.listen(8080);
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>Think like an artist, develop like an artisan</span>
+                    <span>Because I love it, I insist.</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -417,16 +417,6 @@ app.listen(8080);
 
 
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-149874671-1');
-    </script>
-
 
 
 
@@ -436,7 +426,7 @@ app.listen(8080);
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                strings: ["Because I love it, I insist.", "因为热爱，所以坚持"],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

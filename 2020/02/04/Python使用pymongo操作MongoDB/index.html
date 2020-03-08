@@ -86,13 +86,13 @@ import pymong,">
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    3.5k
+                    11k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    3 mins.
+                    10 mins.
                 </span>
                 
                 
@@ -126,55 +126,55 @@ import pymong,">
 <div class="article">
     <div class='main'>
         <div class="content markdown animated fadeIn">
-            <h4 id="安装与更新pymongo"><a href="#安装与更新pymongo" class="headerlink" title="安装与更新pymongo"></a>安装与更新pymongo</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><pre><code>pip3 install pymongo</code></pre><h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><pre><code>pip3 install --upgrade pymongo</code></pre><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><pre><code class="python"># coding=utf-8
-import pymongo
+            <h4 id="安装与更新pymongo"><a href="#安装与更新pymongo" class="headerlink" title="安装与更新pymongo"></a>安装与更新pymongo</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><pre><code>pip3 install pymongo</code></pre><h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><pre><code>pip3 install --upgrade pymongo</code></pre><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># coding=utf-8</span>
+<span class="token keyword">import</span> pymongo
 
-mongo_client = pymongo.MongoClient(&quot;mongodb://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo_client[&quot;database_name&quot;]</code></pre>
+mongo_client <span class="token operator">=</span> pymongo<span class="token punctuation">.</span>MongoClient<span class="token punctuation">(</span><span class="token string">"mongodb://&lt;host>:&lt;port>/"</span><span class="token punctuation">)</span>
+db <span class="token operator">=</span> mongo_client<span class="token punctuation">[</span><span class="token string">"database_name"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>在MongoDB中，当数据库中存在内容时，数据库才会真正被创建</p>
 </blockquote>
-<h5 id="查看已存在的数据库"><a href="#查看已存在的数据库" class="headerlink" title="查看已存在的数据库"></a>查看已存在的数据库</h5><pre><code class="python">db_list = mongo_client.list_database_names()
-for db_name in db_list:
-    print(db_name)</code></pre>
-<h4 id="创建集合"><a href="#创建集合" class="headerlink" title="创建集合"></a>创建集合</h4><pre><code class="python"># coding=utf-8
-import pymongo
+<h5 id="查看已存在的数据库"><a href="#查看已存在的数据库" class="headerlink" title="查看已存在的数据库"></a>查看已存在的数据库</h5><pre class="line-numbers language-python"><code class="language-python">db_list <span class="token operator">=</span> mongo_client<span class="token punctuation">.</span>list_database_names<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> db_name <span class="token keyword">in</span> db_list<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>db_name<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h4 id="创建集合"><a href="#创建集合" class="headerlink" title="创建集合"></a>创建集合</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># coding=utf-8</span>
+<span class="token keyword">import</span> pymongo
 
-mongo_client = pymongo.MongoClient(&quot;mongo://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo_client[&quot;database_name&quot;]
-collection = db[&quot;collection_name&quot;]</code></pre>
+mongo_client <span class="token operator">=</span> pymongo<span class="token punctuation">.</span>MongoClient<span class="token punctuation">(</span><span class="token string">"mongo://&lt;host>:&lt;port>/"</span><span class="token punctuation">)</span>
+db <span class="token operator">=</span> mongo_client<span class="token punctuation">[</span><span class="token string">"database_name"</span><span class="token punctuation">]</span>
+collection <span class="token operator">=</span> db<span class="token punctuation">[</span><span class="token string">"collection_name"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <blockquote>
 <p>在MongoDB中，只有集合中存在内容时，集合才会真正被创建</p>
 </blockquote>
-<h5 id="查看已存在的集合"><a href="#查看已存在的集合" class="headerlink" title="查看已存在的集合"></a>查看已存在的集合</h5><pre><code class="python">collection_list = db.list_collection_names()
-for collection_name in collection_list:
-    print(collection)</code></pre>
+<h5 id="查看已存在的集合"><a href="#查看已存在的集合" class="headerlink" title="查看已存在的集合"></a>查看已存在的集合</h5><pre class="line-numbers language-python"><code class="language-python">collection_list <span class="token operator">=</span> db<span class="token punctuation">.</span>list_collection_names<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> collection_name <span class="token keyword">in</span> collection_list<span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>collection<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h4 id="插入文档"><a href="#插入文档" class="headerlink" title="插入文档"></a>插入文档</h4><h5 id="插入单个文档"><a href="#插入单个文档" class="headerlink" title="插入单个文档"></a>插入单个文档</h5><p>插入单个文档使用<code>insert_one()</code>方法，如：</p>
-<pre><code class="python">doc = {&quot;name&quot;: &quot;Jack Ma&quot;, &quot;age&quot;: 50}
-result = collection.insert_one(doc)
-print(result)</code></pre>
+<pre class="line-numbers language-python"><code class="language-python">doc <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Jack Ma"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">50</span><span class="token punctuation">}</span>
+result <span class="token operator">=</span> collection<span class="token punctuation">.</span>insert_one<span class="token punctuation">(</span>doc<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>输出结果为：</p>
 <pre><code>&lt;pymongo.results.InsertOneResult object at 0x1abcedfgh&gt;</code></pre><p><code>insert_one()</code>方法返回的是InsertOneResult对象，它包含插入文档的id值：</p>
-<pre><code class="python">print(result.inserted_id)
-# 输出为 293adbeehfa0fba39fc</code></pre>
+<pre class="line-numbers language-python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>inserted_id<span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true"># 输出为 293adbeehfa0fba39fc</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h5 id="插入多个文档"><a href="#插入多个文档" class="headerlink" title="插入多个文档"></a>插入多个文档</h5><p>插入多个文档使用<code>insert_many()</code>方法，如：</p>
-<pre><code class="python">docs = [
-    {&quot;name&quot;: &quot;Jack Ma&quot;, &quot;age&quot;: 50},
-    {&quot;name&quot;: &quot;Pony Ma&quot;, &quot;age&quot;: 45},
-    {&quot;name&quot;: &quot;Neo&quot;, &quot;age&quot;: 31}
-]
-result = collection.insert_many(docs)
-print(result.inserted_ids)</code></pre>
+<pre class="line-numbers language-python"><code class="language-python">docs <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Jack Ma"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">50</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Pony Ma"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">45</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Neo"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">31</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+result <span class="token operator">=</span> collection<span class="token punctuation">.</span>insert_many<span class="token punctuation">(</span>docs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>inserted_ids<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>输出结果为：</p>
 <pre><code>[ObjectId(&#39;5b236aa9c315aaaaaaa&#39;), ObjectId(&#39;5b236aa9c3153bbbbbbbbbb&#39;), ObjectId(&#39;5b236aa9c315ccccccccc&#39;), ObjectId(&#39;5b236aa9c31dddddddddddd&#39;), ObjectId(&#39;5b236aa9c3eeeeeeeeeeee&#39;)]</code></pre><p><code>insert_many</code>方法返回InsertManyResult对象，它包含所有插入文档的id值(即<code>insert_ids</code>)。</p>
 <h5 id="指定插入文档的id值"><a href="#指定插入文档的id值" class="headerlink" title="指定插入文档的id值"></a>指定插入文档的id值</h5><p>我们也可以自己指定插入文档的id值，其表现在<code>_id</code>属性中，id值默认是不可以重复的，如：</p>
-<pre><code class="python">docs = [
-    {&quot;_id&quot;: 1, &quot;name&quot;: &quot;Jack Ma&quot;, &quot;age&quot;: 50},
-    {&quot;_id&quot;: 2, &quot;name&quot;: &quot;Pony Ma&quot;, &quot;age&quot;: 45},
-    {&quot;_id&quot;: 3, &quot;name&quot;: &quot;Neo&quot;, &quot;age&quot;: 31}
-]
-result = collection.insert_many(docs)
-print(result.inserted_ids)</code></pre>
+<pre class="line-numbers language-python"><code class="language-python">docs <span class="token operator">=</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Jack Ma"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">50</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Pony Ma"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">45</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span><span class="token string">"_id"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">"Neo"</span><span class="token punctuation">,</span> <span class="token string">"age"</span><span class="token punctuation">:</span> <span class="token number">31</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+result <span class="token operator">=</span> collection<span class="token punctuation">.</span>insert_many<span class="token punctuation">(</span>docs<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>inserted_ids<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>输出结果为：</p>
 <pre><code>[1, 2, 3]</code></pre>
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
@@ -198,8 +198,8 @@ print(result.inserted_ids)</code></pre>
         data-ci='4c145d96189da07c194a'
         data-cs='86bdcdb33e4fda9243fbca95573c688129648616'
         data-r='pretty9.github.io'
-        data-o='2YO'
-        data-a='2YO'
+        data-o='Pretty9'
+        data-a='Pretty9'
         data-d=''
     >Comments</div>
 
@@ -212,7 +212,7 @@ print(result.inserted_ids)</code></pre>
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>Think like an artist, develop like an artisan</span>
+                    <span>Because I love it, I insist.</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -414,16 +414,6 @@ print(result.inserted_ids)</code></pre>
 
 
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-149874671-1');
-    </script>
-
 
 
 
@@ -433,7 +423,7 @@ print(result.inserted_ids)</code></pre>
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                strings: ["Because I love it, I insist.", "因为热爱，所以坚持"],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

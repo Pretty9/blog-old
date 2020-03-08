@@ -100,7 +100,7 @@
                                         <p>
                                             起因前几天群友在群里分享了一篇文章用图床看视频是什么体验，今天腾出来时间研究原理并实现一下。
 分析按照作者博客所说的，是直接将视频分段之后拼接在图片之后，播放时跳过前面图片部分即可。为什么不直接修改文件拓展名呢？作者提到图床站会检查文件头，如果不是图片的文件头人家是不收的，因此要在前面拼接一张小图来应付检查。从作者的博客中拿出关键代码如下：
-&lt;video id=&quot;video&...
+&lt;video id="video" data...
                                         </p>
                                     </div>
                                 </li>
@@ -132,8 +132,8 @@
                                             安装与更新pymongo安装pip3 install pymongo更新pip3 install --upgrade pymongo创建数据库# coding=utf-8
 import pymongo
 
-mongo_client = pymongo.MongoClient(&quot;mongodb://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo...
+mongo_client = pymongo.MongoClient("mongodb://&lt;host>:&lt;port>/")
+db = mongo_client["databas...
                                         </p>
                                     </div>
                                 </li>
@@ -164,8 +164,9 @@ db = mongo...
                                         <p>
                                             前言最近一个项目需要抓取Twitter的一些数据，但是申请Twitter开发者API被拒绝了，只能研究研究网页端的API了，经过几次尝试，发现最少需要以下几个参数才能访问API：
 headers = {
-    &#39;Referer&#39;: &#39;https://twitter.com/akaihaato&#39;,
-    &#39;Origin&#39;: &#39;http...
+    'Referer': 'https://twitter.com/akaihaato',
+    'Origin': 'https://twitter.com',
+    'User-...
                                         </p>
                                     </div>
                                 </li>
@@ -506,16 +507,6 @@ headers = {
 
 
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="//www.googletagmanager.com/gtag/js?id=UA-149874671-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-149874671-1');
-    </script>
-
 
 
 
@@ -525,7 +516,7 @@ headers = {
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["Think like an artist, develop like an artisan", "艺术家思维去思考问题，工匠创造精神去开发"],
+                strings: ["Because I love it, I insist.", "因为热爱，所以坚持"],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,
