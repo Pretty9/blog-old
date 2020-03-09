@@ -435,40 +435,7 @@ height:50vh;
 <p>函数创建好之后就会为我们分配好一个公网域名，我们访问一下试试看：</p>
 <p><img src="./scf4.png" alt="scf4"></p>
 <p>基本的流程完毕了，剩下的就是写代码了，P站的防盗链机制是检查Refer，那么只要伪造Header就可以了，我已经写好一个了，代码如下（不是专业搞前端的，JS写的很烂，大佬轻喷:</p>
-<pre><code class="javascript">const fetch = require(&#39;node-fetch&#39;);
-const app = require(&#39;express&#39;)();
-app.get(&#39;/&#39;, (req, res) =&gt; {
-    pic = req.query.url
-    if (pic === undefined || pic.length == 0) { // 必须要有图片url，否则我们返回400
-        res.status(400).json({
-            &#39;code&#39;: -1,
-            &#39;msg&#39;: &#39;URL is a necessary parameter.&#39;
-        });
-    } else {
-        fetch(pic, {
-            headers: {
-                &#39;Referer&#39;: &#39;https://pixiv.net&#39;,
-            }
-        }).then(function(response) {
-            if (!response.ok) {
-                res.set(&#39;Content-Type&#39;, &#39;application/json&#39;);
-                res.status(500).json({
-                    &#39;code&#39;: -1,
-                    &#39;status&#39;: &#39;error&#39;
-                });
-            } else {
-                res.set(&#39;Content-Type&#39;, &#39;image/jpeg&#39;);
-            }
-            returnresponse
-        }).then(response =&gt; response.buffer()).then(response =&gt; res.status(200).send(response)).then().
-        catch(e =&gt; console.log(&#39;Msg&#39; + e));
-    }
-});
-
-exports.main_handler = app
-//app.listen(8080)
-//app.listen(8080)
-</code></pre>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fetch = <span class="built_in">require</span>(<span class="string">'node-fetch'</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> app = <span class="built_in">require</span>(<span class="string">'express'</span>)();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">app.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    pic = req.query.url</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> (pic === <span class="literal">undefined</span> || pic.length == <span class="number">0</span>) &#123; <span class="comment">// 必须要有图片url，否则我们返回400</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        res.status(<span class="number">400</span>).json(&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            <span class="string">'code'</span>: <span class="number">-1</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">            <span class="string">'msg'</span>: <span class="string">'URL is a necessary parameter.'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        &#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">        fetch(pic, &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">            headers: &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">                <span class="string">'Referer'</span>: <span class="string">'https://pixiv.net'</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> (!response.ok) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">                res.set(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">                res.status(<span class="number">500</span>).json(&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">                    <span class="string">'code'</span>: <span class="number">-1</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">                    <span class="string">'status'</span>: <span class="string">'error'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">                &#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">            &#125; <span class="keyword">else</span> &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">                res.set(<span class="string">'Content-Type'</span>, <span class="string">'image/jpeg'</span>);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">            &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">            returnresponse</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">        &#125;).then(<span class="function"><span class="params">response</span> =&gt;</span> response.buffer()).then(<span class="function"><span class="params">response</span> =&gt;</span> res.status(<span class="number">200</span>).send(response)).then().</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">catch</span>(<span class="function"><span class="params">e</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Msg'</span> + e));</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">exports.main_handler = app</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line"><span class="comment">//app.listen(8080)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line"><span class="comment">//app.listen(8080)</span></span></pre></td></tr></table></figure>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>SCF已经支持其他环境</p>
 <h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p>腾讯SCF官方手册</p>
 
@@ -510,6 +477,23 @@ exports.main_handler = app
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1578727905000',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -626,6 +610,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -923,9 +909,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -951,7 +937,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

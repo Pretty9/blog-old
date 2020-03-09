@@ -352,15 +352,13 @@
                 <span>Python使用pymongo操作MongoDB</span>
         </a>
         <div class="abstract-content">
-            安装与更新pymongo安装pip3 install pymongo更新pip3 install --upgrade pymongo创建数据库# coding=utf-8
-import pymongo
-
-mongo_client = pymongo.MongoClient(&quot;mongodb://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo_client[&quot;database_name&quot;]
+            安装与更新pymongo安装1pip3 install pymongo
+更新1pip3 install --upgrade pymongo
+创建数据库1# coding=utf-82import pymongo34mongo_client = pymongo.MongoClient("mongodb://&lt;host&gt;:&lt;port&gt;/")5db = mongo_client["database_name"]
 
 在MongoDB中，当数据库中存在内容时，数据库才会真正被创建
 
-查看已存在的数据库db_list = mongo_client...
+查看已存在的数据库1db_list = mongo_client.list_database...
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -468,6 +466,8 @@ db = mongo_client[&quot;database_name&quot;]
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -765,9 +765,9 @@ db = mongo_client[&quot;database_name&quot;]
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -793,7 +793,7 @@ db = mongo_client[&quot;database_name&quot;]
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

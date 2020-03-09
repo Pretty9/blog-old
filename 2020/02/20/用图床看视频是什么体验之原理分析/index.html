@@ -398,74 +398,19 @@ height:50vh;
     <article class="article-entry">
         <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>前几天群友在群里分享了一篇文章<a href="https://i-meto.com/hlsjs-upimg-wrapper/" target="_blank" rel="noopener">用图床看视频是什么体验</a>，今天腾出来时间研究原理并实现一下。</p>
 <h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>按照作者博客所说的，是直接将视频分段之后拼接在图片之后，播放时跳过前面图片部分即可。为什么不直接修改文件拓展名呢？作者提到图床站会检查文件头，如果不是图片的文件头人家是不收的，因此要在前面拼接一张小图来应付检查。<br>从作者的博客中拿出关键代码如下：</p>
-<pre><code class="html">&lt;video id=&quot;video&quot; data-url=&quot;https://img11.360buyimg.com/img/jfs/t1/89319/11/12602/4783/5e4947e9Ee1c0bc66/f212833e4c8c8194.jpg&quot; src=&quot;blob:https://i-meto.com/2edacb21-e054-41da-b699-e549416f93d3&quot;&gt;&lt;/video&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/plyr@latest/dist/plyr.min.js&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/hls.js@latest&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;https://cdn.jsdelivr.net/npm/hlsjs-upimg-wrapper@latest&quot;&gt;&lt;/script&gt;
-&lt;script&gt;
-    if (Hls.isSupported()) {
-        const video = document.getElementById(&quot;video&quot;)
-        const player = new Plyr(video)
-        const wrapper = new HlsjsUpimgWrapper(Hls)
-        const hls = wrapper.createPlayer({}, {
-            offset: 107
-        })
-        hls.loadSource(video.dataset.url)
-        hls.attachMedia(video)
-    }
-&lt;/script&gt;</code></pre>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span> <span class="attr">id</span>=<span class="string">"video"</span> <span class="attr">data-url</span>=<span class="string">"https://img11.360buyimg.com/img/jfs/t1/89319/11/12602/4783/5e4947e9Ee1c0bc66/f212833e4c8c8194.jpg"</span> <span class="attr">src</span>=<span class="string">"blob:https://i-meto.com/2edacb21-e054-41da-b699-e549416f93d3"</span>&gt;</span><span class="tag">&lt;/<span class="name">video</span>&gt;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/plyr@latest/dist/plyr.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/hls.js@latest"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/hlsjs-upimg-wrapper@latest"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">    if (Hls.isSupported()) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="javascript">        <span class="keyword">const</span> video = <span class="built_in">document</span>.getElementById(<span class="string">"video"</span>)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="actionscript">        <span class="keyword">const</span> player = <span class="keyword">new</span> Plyr(video)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="actionscript">        <span class="keyword">const</span> wrapper = <span class="keyword">new</span> HlsjsUpimgWrapper(Hls)</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="actionscript">        <span class="keyword">const</span> hls = wrapper.createPlayer(&#123;&#125;, &#123;</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">            offset: 107</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">        &#125;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">        hls.loadSource(video.dataset.url)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">        hls.attachMedia(video)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></pre></td></tr></table></figure>
 <p>从代码中可以看出偏移量为107，即图片部分为107字节，采用HLS技术，那么第一个请求的就应该是M3U8文件，里面包含了后续各段视频的地址，把video标签中data-url指向的图片拿到看看。</p>
 <p><img src="./m1.jpg" alt="m1.jpg"></p>
 <p>JPEG图像有一个很明显的特征，就是以FF D8开始，以FF D9结束，那么FF D9之后的字节不出意外就是M3U8文件。这里可以看出M3U8文件用过BASE64编码了，把它拿出来解码看看。</p>
-<pre><code>#EXTM3U
-#EXT-X-VERSION:3
-#EXT-X-MEDIA-SEQUENCE:0
-#EXT-X-ALLOW-CACHE:YES
-#EXT-X-TARGETDURATION:11
-#EXTINF:10.719044,
-https://img11.360buyimg.com/img/jfs/t1/108612/15/6116/4263383/5e4947d2Ea258c94c/39f32d86dea1b392.jpg
-......省略若干行......
-#EXTINF:5.338667,
-https://ask.qcloudimg.com/draft/1134330/q492o838cn.jpg
-#EXTINF:5.130133,
-https://ask.qcloudimg.com/draft/1134330/u0wg2wg9j4.jpg
-#EXTINF:10.051711,
-https://ask.qcloudimg.com/draft/1134330/r0ds1qugew.jpg
-#EXT-X-ENDLIST</code></pre><p>这就是解码之后的M3U8文件，里面指向了各分段视频的地址（实际上是图片+视频的混合），随机从里面下载一张“图片”，去掉头，把ts文件提取出来。</p>
-<pre><code class="python">with open(&#39;../data/dc30b8f2388a876a.jpg&#39;, &#39;rb&#39;) as f:
-    data = f.read()
-jpg, ts = data[:107], data[107:]
-
-&quot;&quot;&quot;
-jpg 值为
-b&#39;\xff\xd8\xff\xdb\x00C\x00\x03\x02\x02\x02\x02\x02\x03\x02\x02\x02\x03\x03\x03\x03\x04\x06\x04\x04\x04\x04\x04\x08\x06\x06\x05\x06\t\x08\n\n\t\x08\t\t\n\x0c\x0f\x0c\n\x0b\x0e\x0b\t\t\r\x11\r\x0e\x0f\x10\x10\x11\x10\n\x0c\x12\x13\x12\x10\x13\x0f\x10\x10\x10\xff\xc9\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00\xff\xcc\x00\x06\x00\x10\x10\x05\xff\xda\x00\x08\x01\x01\x00\x00?\x00\xd2\xcf \xff\xd9&#39;
-&quot;&quot;&quot;
-with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
-    f.write(ts)</code></pre>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXTM3U</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXT-X-VERSION:3</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXT-X-MEDIA-SEQUENCE:0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXT-X-ALLOW-CACHE:YES</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXT-X-TARGETDURATION:11</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXTINF:10.719044,</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//img11.360buyimg.com/img/jfs/t1/108612/15/6116/4263383/5e4947d2Ea258c94c/39f32d86dea1b392.jpg</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">......省略若干行......</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXTINF:5.338667,</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//ask.qcloudimg.com/draft/1134330/q492o838cn.jpg</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXTINF:5.130133,</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//ask.qcloudimg.com/draft/1134330/u0wg2wg9j4.jpg</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXTINF:10.051711,</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">https:<span class="comment">//ask.qcloudimg.com/draft/1134330/r0ds1qugew.jpg</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#EXT-X-ENDLIST</span></span></pre></td></tr></table></figure>
+<p>这就是解码之后的M3U8文件，里面指向了各分段视频的地址（实际上是图片+视频的混合），随机从里面下载一张“图片”，去掉头，把ts文件提取出来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'../data/dc30b8f2388a876a.jpg'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    data = f.read()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">jpg, ts = data[:<span class="number">107</span>], data[<span class="number">107</span>:]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="string">jpg 值为</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="string">b'\xff\xd8\xff\xdb\x00C\x00\x03\x02\x02\x02\x02\x02\x03\x02\x02\x02\x03\x03\x03\x03\x04\x06\x04\x04\x04\x04\x04\x08\x06\x06\x05\x06\t\x08\n\n\t\x08\t\t\n\x0c\x0f\x0c\n\x0b\x0e\x0b\t\t\r\x11\r\x0e\x0f\x10\x10\x11\x10\n\x0c\x12\x13\x12\x10\x13\x0f\x10\x10\x10\xff\xc9\x00\x0b\x08\x00\x01\x00\x01\x01\x01\x11\x00\xff\xcc\x00\x06\x00\x10\x10\x05\xff\xda\x00\x08\x01\x01\x00\x00?\x00\xd2\xcf \xff\xd9'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'dc30b8f2388a876a.ts'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    f.write(ts)</span></pre></td></tr></table></figure>
 <p>经过测试ts文件是可以正常播放的，至此分析过程结束。</p>
 <h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><p>首先用FFmpeg把MP4转换成HLS，命令为：<br><code>ffmpeg -i source.mp4 -codec:v libx264 -codec:a mp3 -map 0 -f ssegment -segment_format mpegts -segment_list playlist.m3u8 -segment_time 10 out%03d.ts</code></p>
 <p>之后将上面jpg的值和各ts段的值拼接。</p>
-<pre><code class="python">def process_segment(self):
-    head = read_bytes(&#39;./head.bin&#39;) # head即为上面的jpg值
-    self.done_segments = []
-    for segment in self.segments:   # segment即为各ts的byte数组
-        self.done_segments.append(head + segment) # 拼接</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_segment</span><span class="params">(self)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    head = read_bytes(<span class="string">'./head.bin'</span>) <span class="comment"># head即为上面的jpg值</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    self.done_segments = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> segment <span class="keyword">in</span> self.segments:   <span class="comment"># segment即为各ts的byte数组</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">        self.done_segments.append(head + segment) <span class="comment"># 拼接</span></span></pre></td></tr></table></figure>
 <p>之后完成M3U8的构造。</p>
-<pre><code class="python">def process_net_m3u8(m3u8, net_path):
-    lines = m3u8.splitlines()
-    num = len(lines)
-    cur, cnt = 0, 0
-    while cur &lt; num:
-        if &#39;#EXTINF&#39; in lines[cur]:
-            cur += 1
-            lines[cur] = net_path[cnt]
-            cnt += 1
-        else:
-            cur += 1
-    m3u8_file = &#39;\r\n&#39;.join(lines)
-    head = read_bytes(&#39;./head.bin&#39;)
-    done = base64.b64encode(m3u8_file.encode(&#39;utf-8&#39;))
-    return head + done</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process_net_m3u8</span><span class="params">(m3u8, net_path)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    lines = m3u8.splitlines()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    num = len(lines)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    cur, cnt = <span class="number">0</span>, <span class="number">0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">while</span> cur &lt; num:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">if</span> <span class="string">'#EXTINF'</span> <span class="keyword">in</span> lines[cur]:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">            cur += <span class="number">1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">            lines[cur] = net_path[cnt]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">            cnt += <span class="number">1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">else</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">            cur += <span class="number">1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">    m3u8_file = <span class="string">'\r\n'</span>.join(lines)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    head = read_bytes(<span class="string">'./head.bin'</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    done = base64.b64encode(m3u8_file.encode(<span class="string">'utf-8'</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> head + done</span></pre></td></tr></table></figure>
 <p>主要的程序已经编写完毕，一开始将图片上传到SM.MS，发现下载实在是太慢了，5M要下载1min还多，而5M的视频才8秒左右，这是无法容忍的，干脆弄到GitHub上展示一下效果算了。</p>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@latest/dist/plyr.css">
 <video id="video" data-url="https://cdn.jsdelivr.net/gh/Pretty9/statics@v2.0/meto/m3u8.jpg" >
@@ -527,6 +472,23 @@ with open(&#39;dc30b8f2388a876a.ts&#39;, &#39;wb&#39;) as f:
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1582186301910',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -643,6 +605,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -940,9 +904,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -968,7 +932,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

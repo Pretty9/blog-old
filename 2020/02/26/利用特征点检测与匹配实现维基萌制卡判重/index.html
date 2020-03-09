@@ -410,32 +410,16 @@ height:50vh;
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>可以将已经制好的卡牌全部拉下来，特征点检测后将描述子保存起来，每次制卡前将原始图像与所有卡牌进行匹配，即可判断是否重复。</p>
 <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><h4 id="预处理与特征检测"><a href="#预处理与特征检测" class="headerlink" title="预处理与特征检测"></a>预处理与特征检测</h4><p>为了避免卡牌边框对检测带来的影响，首先需要裁减掉卡牌的边框，裁剪之后进行特征检测。</p>
 <p><img src="./1.jpg" alt="1.jpg"></p>
-<pre><code class="python">orb = cv2.ORB_create() # ORB算法
-card = cv2.imread(card_path)[80: 470, 85:370]
-card_gray = cv2.cvtColor(card, cv2.COLOR_BGR2GRAY)
-kp1, des1 = orb.detectAndCompute(card_gray, None)  # des是描述子</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">orb = cv2.ORB_create() <span class="comment"># ORB算法</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">card = cv2.imread(card_path)[<span class="number">80</span>: <span class="number">470</span>, <span class="number">85</span>:<span class="number">370</span>]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">card_gray = cv2.cvtColor(card, cv2.COLOR_BGR2GRAY)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">kp1, des1 = orb.detectAndCompute(card_gray, <span class="literal">None</span>)  <span class="comment"># des是描述子</span></span></pre></td></tr></table></figure>
 <p>由于原始图像比较大，需要原始图像缩放，之后进行特征提取。</p>
-<pre><code class="python">picture = cv2.imread(picture_path)
-picture = cv2.resize(picture, (picture.shape[1] // 2, picture.shape[0] // 2))
-picture_gray = cv2.cvtColor(picture, cv2.COLOR_BGR2GRAY)
-kp2, des2 = orb.detectAndCompute(picture_gray, None)</code></pre>
-<h4 id="绘制特征点"><a href="#绘制特征点" class="headerlink" title="绘制特征点"></a>绘制特征点</h4><pre><code class="python">image3 = cv2.drawKeypoints(card, kp1, card, color=(255, 0, 255))
-image4 = cv2.drawKeypoints(picture, kp2, picture, color=(255, 0, 255))</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">picture = cv2.imread(picture_path)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">picture = cv2.resize(picture, (picture.shape[<span class="number">1</span>] // <span class="number">2</span>, picture.shape[<span class="number">0</span>] // <span class="number">2</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">picture_gray = cv2.cvtColor(picture, cv2.COLOR_BGR2GRAY)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">kp2, des2 = orb.detectAndCompute(picture_gray, <span class="literal">None</span>)</span></pre></td></tr></table></figure>
+<h4 id="绘制特征点"><a href="#绘制特征点" class="headerlink" title="绘制特征点"></a>绘制特征点</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">image3 = cv2.drawKeypoints(card, kp1, card, color=(<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">image4 = cv2.drawKeypoints(picture, kp2, picture, color=(<span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>))</span></pre></td></tr></table></figure>
 <p><img src="./2.jpg" alt="2.jpg"></p>
-<h3 id="特征匹配并筛选优秀点"><a href="#特征匹配并筛选优秀点" class="headerlink" title="特征匹配并筛选优秀点"></a>特征匹配并筛选优秀点</h3><pre><code class="python"># BFMatcher解决匹配
-bf = cv2.BFMatcher()
-matches = bf.knnMatch(des1, des2, k=2)
-
-# Lowe&#39;s algorithm 获取优秀匹配点
-good = []
-for m, n in matches:
-    if m.distance &lt; 0.7 * n.distance:
-        good.append([m])
-print(&#39;优秀匹配点数目: %d&#39; % len(good))</code></pre>
+<h3 id="特征匹配并筛选优秀点"><a href="#特征匹配并筛选优秀点" class="headerlink" title="特征匹配并筛选优秀点"></a>特征匹配并筛选优秀点</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># BFMatcher解决匹配</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">bf = cv2.BFMatcher()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">matches = bf.knnMatch(des1, des2, k=<span class="number">2</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># Lowe's algorithm 获取优秀匹配点</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">good = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> m, n <span class="keyword">in</span> matches:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> m.distance &lt; <span class="number">0.7</span> * n.distance:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        good.append([m])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">print(<span class="string">'优秀匹配点数目: %d'</span> % len(good))</span></pre></td></tr></table></figure>
 <p>关于Ratio值，Lowe推荐ratio的阈值为0.8，但作者对大量任意存在尺度、旋转和亮度变化的两幅图片进行匹配，结果表明ratio取值在0. 4~0. 6 之间最佳，小于0. 4的很少有匹配点，大于0. 6的则存在大量错误匹配点，所以建议ratio的取值原则如下:<br>ratio=0. 4：对于准确度要求高的匹配；</p>
 <p>ratio=0. 6：对于匹配点数目要求比较多的匹配；</p>
 <p>ratio=0. 5：一般情况下。<br>不过经过我的测试，0.7的情况下，当优秀点超过十个时，判断为重复图像的效果比较好。</p>
-<pre><code class="python">image = cv2.drawMatchesKnn(card, kp1, picture, kp2, good, None, flags=2)</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">image = cv2.drawMatchesKnn(card, kp1, picture, kp2, good, <span class="literal">None</span>, flags=<span class="number">2</span>)</span></pre></td></tr></table></figure>
 <p><img src="./3.jpg" alt="3.jpg"></p>
 <p>优秀点的数量为:50。<br>多几幅图试试。</p>
 <p><img src="./4.jpg" alt="4.jpg"><br>优秀点数量为:24。</p>
@@ -482,6 +466,23 @@ print(&#39;优秀匹配点数目: %d&#39; % len(good))</code></pre>
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1582683458000',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -598,6 +599,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -895,9 +898,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -923,7 +926,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

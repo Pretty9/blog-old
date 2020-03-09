@@ -267,7 +267,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">305</span>Reading time: <span class="post-count reading-time">1 min</span></span>
+                        <span>Word count: <span class="post-count word-count">307</span>Reading time: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -397,23 +397,22 @@ height:50vh;
             <main class="main post-page">
     <article class="article-entry">
         <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>Centos7自带的Python版本是2.7，由于目前还有很多库依赖于Python2.x，所以并不建议完全卸载2.x版本，因此需要与3.x版本共存，3.x需要自行下载编译安装。</p>
-<h4 id="安装Python3-x"><a href="#安装Python3-x" class="headerlink" title="安装Python3.x"></a>安装Python3.x</h4><h5 id="安装第三方库"><a href="#安装第三方库" class="headerlink" title="安装第三方库"></a>安装第三方库</h5><pre><code>yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make
+<h4 id="安装Python3-x"><a href="#安装Python3-x" class="headerlink" title="安装Python3.x"></a>安装Python3.x</h4><h5 id="安装第三方库"><a href="#安装第三方库" class="headerlink" title="安装第三方库"></a>安装第三方库</h5><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install </span>zlib-devel <span class="keyword">bzip2-devel </span>openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">yum <span class="keyword">install </span>libffi-devel -y</span></pre></td></tr></table></figure>
 
-yum install libffi-devel -y</code></pre><h5 id="下载Python3-x"><a href="#下载Python3-x" class="headerlink" title="下载Python3.x"></a>下载Python3.x</h5><pre><code># 建立新目录
-sudo mkdir /usr/local/python3 
+<h5 id="下载Python3-x"><a href="#下载Python3-x" class="headerlink" title="下载Python3.x"></a>下载Python3.x</h5><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># 建立新目录</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">mkdir</span> /usr/local/<span class="keyword">python3</span> </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"># 这里以<span class="number">3.6</span>为例，更多版本参见：http<span class="variable">s:</span>//www.<span class="keyword">python</span>.org/ftp/<span class="keyword">python</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">wget --<span class="keyword">no</span>-check-certificate http<span class="variable">s:</span>//www.<span class="keyword">python</span>.org/ftp/<span class="keyword">python</span>/<span class="number">3.6</span>.<span class="number">2</span>/Python-<span class="number">3.6</span>.<span class="number">2</span>.tgz </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"># 解压安装包</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">tar xzvf Python-<span class="number">3.6</span>.<span class="number">2</span>.tgz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> Python-<span class="number">3.6</span>.<span class="number">2</span></span></pre></td></tr></table></figure>
 
-# 这里以3.6为例，更多版本参见：https://www.python.org/ftp/python
-wget --no-check-certificate https://www.python.org/ftp/python/3.6.2/Python-3.6.2.tgz 
+<h5 id="编译并安装"><a href="#编译并安装" class="headerlink" title="编译并安装"></a>编译并安装</h5><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo ./conigure --prefix=/usr/<span class="keyword">local</span>/python3</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">make</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">make</span> install</span></pre></td></tr></table></figure>
 
-# 解压安装包
-tar xzvf Python-3.6.2.tgz
+<h5 id="创建软链接"><a href="#创建软链接" class="headerlink" title="创建软链接"></a>创建软链接</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/python3/</span>bin<span class="regexp">/python3 /u</span>sr<span class="regexp">/bin/</span>python3</span></pre></td></tr></table></figure>
 
-cd Python-3.6.2</code></pre><h5 id="编译并安装"><a href="#编译并安装" class="headerlink" title="编译并安装"></a>编译并安装</h5><pre><code>sudo ./conigure --prefix=/usr/local/python3
-sudo make
-sudo make install</code></pre><h5 id="创建软链接"><a href="#创建软链接" class="headerlink" title="创建软链接"></a>创建软链接</h5><pre><code>sudo ln -s /usr/local/python3/bin/python3 /usr/bin/python3</code></pre><h5 id="验证Python版本"><a href="#验证Python版本" class="headerlink" title="验证Python版本"></a>验证Python版本</h5><pre><code>python3 -V</code></pre><h4 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h4><h5 id="下载并安装pip"><a href="#下载并安装pip" class="headerlink" title="下载并安装pip"></a>下载并安装pip</h5><pre><code>wget --no-check-certificate https://github.com/pypa/pip/archive/9.0.1.tar.gz
-tar -xzvf 9.0.1.tar.gz
-cd pip-9 .0.1
-python3 setup.py install</code></pre><h5 id="创建软链接-1"><a href="#创建软链接-1" class="headerlink" title="创建软链接"></a>创建软链接</h5><pre><code>sudo ln -s /usr/local/python3/bin/pip /usr/bin/pip3</code></pre><h5 id="验证pip版本"><a href="#验证pip版本" class="headerlink" title="验证pip版本"></a>验证pip版本</h5><pre><code>pip3 -V</code></pre><h4 id="一个注意点"><a href="#一个注意点" class="headerlink" title="一个注意点"></a>一个注意点</h4><p>当同时安装了Python2.x和Python3.x时，使用某些模块的命令需要指明Python版本，如使用Scrapy时：<code>scrapy [option]</code>需要替换为<code>python3 -m scrapy [option]</code>或者<code>python2 -m scrapy [option]</code></p>
+<h5 id="验证Python版本"><a href="#验证Python版本" class="headerlink" title="验证Python版本"></a>验证Python版本</h5><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">pytho<span class="symbol">n3</span> -V</span></pre></td></tr></table></figure>
+
+<h4 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h4><h5 id="下载并安装pip"><a href="#下载并安装pip" class="headerlink" title="下载并安装pip"></a>下载并安装pip</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https:<span class="comment">//github.com/pypa/pip/archive/9.0.1.tar.gz</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">tar -xzvf <span class="number">9.0</span><span class="number">.1</span>.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">cd pip<span class="number">-9</span> <span class="number">.0</span><span class="number">.1</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">python3 setup.py install</span></pre></td></tr></table></figure>
+<h5 id="创建软链接-1"><a href="#创建软链接-1" class="headerlink" title="创建软链接"></a>创建软链接</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/python3/</span>bin<span class="regexp">/pip /u</span>sr<span class="regexp">/bin/</span>pip3</span></pre></td></tr></table></figure>
+
+<h5 id="验证pip版本"><a href="#验证pip版本" class="headerlink" title="验证pip版本"></a>验证pip版本</h5><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="attribute">pip3</span> -V</span></pre></td></tr></table></figure>
+
+<h4 id="一个注意点"><a href="#一个注意点" class="headerlink" title="一个注意点"></a>一个注意点</h4><p>当同时安装了Python2.x和Python3.x时，使用某些模块的命令需要指明Python版本，如使用Scrapy时：<code>scrapy [option]</code>需要替换为<code>python3 -m scrapy [option]</code>或者<code>python2 -m scrapy [option]</code></p>
 
     </article>
     <!-- license  -->
@@ -453,6 +452,23 @@ python3 setup.py install</code></pre><h5 id="创建软链接-1"><a href="#创建
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1580548010000',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -569,6 +585,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -866,9 +884,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -894,7 +912,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

@@ -273,7 +273,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">408</span>Reading time: <span class="post-count reading-time">2 min</span></span>
+                        <span>Word count: <span class="post-count word-count">391</span>Reading time: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -406,38 +406,12 @@ height:50vh;
 <h4 id="白名单和黑名单"><a href="#白名单和黑名单" class="headerlink" title="白名单和黑名单"></a>白名单和黑名单</h4><p>在<code>/etc</code>文件夹下有<code>hosts.allow</code>和<code>hosts.deny</code>两个文件，前者是白名单，后者是黑名单，录入格式为<code>sshd:IP[/MASK]:allow</code>和<code>sshd:IP[/MASK]:deny</code> ，如果是所有IP可以用<code>sshd:ALL</code>代替。</p>
 <h4 id="编写脚本自动ban掉IP"><a href="#编写脚本自动ban掉IP" class="headerlink" title="编写脚本自动ban掉IP"></a>编写脚本自动ban掉IP</h4><p>下面编写一个脚本，超过两次登录错误自动加入黑名单。</p>
 <h5 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h5><p>编写脚本 <code>vim /usr/local/bin/secure_ssh.sh</code></p>
-<pre><code class="bash">#! /bin/bash
-cat /var/log/secure|awk &#39;/Failed/{print $(NF-3)}&#39;|sort|uniq -c|awk &#39;{print $2&quot;=&quot;$1;}&#39; &gt; /usr/local/bin/black.txt
-for i in `cat  /usr/local/bin/black.txt`
-do
-  IP=`echo $i |awk -F= &#39;{print $1}&#39;`
-  NUM=`echo $i|awk -F= &#39;{print $2}&#39;`
-   if [ $NUM -gt 2 ];then
-      grep $IP /etc/hosts.deny &gt; /dev/null
-    if [ $? -gt 0 ];then
-      echo &quot;sshd:$IP:deny&quot; &gt;&gt; /etc/hosts.deny
-    fi
-  fi
-done</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">cat /var/<span class="built_in">log</span>/secure|awk <span class="string">'/Failed/&#123;print $(NF-3)&#125;'</span>|sort|uniq -c|awk <span class="string">'&#123;print $2"="$1;&#125;'</span> &gt; /usr/<span class="built_in">local</span>/bin/black.txt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `cat  /usr/<span class="built_in">local</span>/bin/black.txt`</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">  IP=`<span class="built_in">echo</span> <span class="variable">$i</span> |awk -F= <span class="string">'&#123;print $1&#125;'</span>`</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">  NUM=`<span class="built_in">echo</span> <span class="variable">$i</span>|awk -F= <span class="string">'&#123;print $2&#125;'</span>`</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">   <span class="keyword">if</span> [ <span class="variable">$NUM</span> -gt 2 ];<span class="keyword">then</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">      grep <span class="variable">$IP</span> /etc/hosts.deny &gt; /dev/null</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> [ $? -gt 0 ];<span class="keyword">then</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">      <span class="built_in">echo</span> <span class="string">"sshd:<span class="variable">$IP</span>:deny"</span> &gt;&gt; /etc/hosts.deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">fi</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">  <span class="keyword">fi</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">done</span></span></pre></td></tr></table></figure>
 <h5 id="Step-2"><a href="#Step-2" class="headerlink" title="Step 2"></a>Step 2</h5><p>创建记录登录失败次数的文件 <code>touch /usr/local/bin/black.txt</code></p>
 <h5 id="Step-3"><a href="#Step-3" class="headerlink" title="Step 3"></a>Step 3</h5><p>设定定时任务 <code>crontab -e</code><br>  */5 * * * *  sh /usr/local/bin/secure_ssh.sh<br>查看定时任务 <code>crontab -l</code><br>查看登录日志 <code>vi /var/log/secure</code></p>
 <h5 id="Step-4"><a href="#Step-4" class="headerlink" title="Step 4"></a>Step 4</h5><p>查看效果</p>
-<pre><code># hosts.deny
-sshd:222.186.175.23:deny
-sshd:222.186.30.12:deny
-sshd:222.186.15.10:deny
-sshd:222.186.15.166:deny
-sshd:222.186.30.167:deny
-sshd:222.186.30.218:deny
-sshd:222.186.31.135:deny
-sshd:222.186.31.83:deny
-sshd:222.186.180.130:deny
-sshd:222.186.42.7:deny
-sshd:222.186.180.142:deny
-sshd:104.244.79.181:deny
-sshd:222.186.30.145:deny
-sshd:222.186.30.187:deny
-sshd:222.186.30.31:deny</code></pre><p>清一色的江苏IP？？？</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># hosts.deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.175</span><span class="number">.23</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.30</span><span class="number">.12</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.15</span><span class="number">.10</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.15</span><span class="number">.166</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.30</span><span class="number">.167</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.30</span><span class="number">.218</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.31</span><span class="number">.135</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.31</span><span class="number">.83</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.180</span><span class="number">.130</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.42</span><span class="number">.7</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.180</span><span class="number">.142</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">104.244</span><span class="number">.79</span><span class="number">.181</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.30</span><span class="number">.145</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.30</span><span class="number">.187</span>:deny</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">sshd:<span class="number">222.186</span><span class="number">.30</span><span class="number">.31</span>:deny</span></pre></td></tr></table></figure>
+<p>清一色的江苏IP？？？</p>
 
     </article>
     <!-- license  -->
@@ -477,6 +451,23 @@ sshd:222.186.30.31:deny</code></pre><p>清一色的江苏IP？？？</p>
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1580720639000',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -593,6 +584,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -890,9 +883,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -918,7 +911,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

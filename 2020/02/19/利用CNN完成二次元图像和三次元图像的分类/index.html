@@ -273,7 +273,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">2.1k</span>Reading time: <span class="post-count reading-time">9 min</span></span>
+                        <span>Word count: <span class="post-count word-count">2k</span>Reading time: <span class="post-count reading-time">9 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -405,127 +405,40 @@ height:50vh;
         <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>刚刚在Danbooru上抓了近百万张图，结果里面竟然混有不少的三次元图，如果人工一张一张的挑选就太麻烦了，就想写程序来解决。一开始想的是用Sequential跑个三层模型出来，又想到是不是有更简单的方法，就去网上查了查，但是没有找到相关的文章。之后去群里问了问，纸片协会的一喵大佬给出了两个方法，又甩出一个12页的全英文论文，无奈能力不足，搞了许久也没能搞懂，只能绕回到神经网络了。</p>
 <p>先是写了三层神经网络模型，发现效果不是特别的理想，又重新写了卷积神经网络，这就避免了将图像展开丢失了很多重要的信息这一弊端。</p>
 <h3 id="准备数据集"><a href="#准备数据集" class="headerlink" title="准备数据集"></a>准备数据集</h3><p>既然是二次元图像和三次元图像的分类，自然要准备二次元和三次元两类图像，各准备了1600张左右，这里有一个注意点，数据集尽量要覆盖全面，例如三次元数据集要包括人物、动物以及自然景物等，越全面分类越精确，将数据集放到acgn和real文件夹中。</p>
-<h3 id="编写程序"><a href="#编写程序" class="headerlink" title="编写程序"></a>编写程序</h3><h4 id="导入必要的包文件"><a href="#导入必要的包文件" class="headerlink" title="导入必要的包文件"></a>导入必要的包文件</h4><pre><code class="python">from model_name.simple_vggnet import SimpleVGGNet
-from sklearn.preprocessing import LabelBinarizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-from keras.optimizers import SGD
-from keras.preprocessing.image import ImageDataGenerator
-from my_utils import utils_paths
-import matplotlib.pyplot as plt
-import numpy as np
-import argparse
-import random
-import pickle
-import cv2
-import os</code></pre>
+<h3 id="编写程序"><a href="#编写程序" class="headerlink" title="编写程序"></a>编写程序</h3><h4 id="导入必要的包文件"><a href="#导入必要的包文件" class="headerlink" title="导入必要的包文件"></a>导入必要的包文件</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> model_name.simple_vggnet <span class="keyword">import</span> SimpleVGGNet</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> LabelBinarizer</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.optimizers <span class="keyword">import</span> SGD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.preprocessing.image <span class="keyword">import</span> ImageDataGenerator</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> my_utils <span class="keyword">import</span> utils_paths</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> argparse</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span></pre></td></tr></table></figure>
+
 <h4 id="编写参数解析"><a href="#编写参数解析" class="headerlink" title="编写参数解析"></a>编写参数解析</h4><p>其中dataset指明数据集的路径，model指明模型输出的文件名，label_bin指明标签文件名，plot为数据可视化的图片名。</p>
-<pre><code class="python"># 输入参数
-ap = argparse.ArgumentParser()
-ap.add_argument(&quot;-d&quot;, &quot;--dataset&quot;, required=True, help=&quot;path to input dataset of images&quot;)
-ap.add_argument(&quot;-m&quot;, &quot;--model&quot;, required=True, help=&quot;path to output trained model&quot;)
-ap.add_argument(&quot;-l&quot;, &quot;--label-bin&quot;, required=True, help=&quot;path to output label binarizer&quot;)
-ap.add_argument(&quot;-p&quot;, &quot;--plot&quot;, required=True, help=&quot;path to output accuracy/loss plot&quot;)
-args = vars(ap.parse_args())</code></pre>
-<h4 id="读取图像数据"><a href="#读取图像数据" class="headerlink" title="读取图像数据"></a>读取图像数据</h4><pre><code class="python"># 读取数据和标签
-print(&quot;[INFO] loading images...&quot;)
-data = []
-labels = []
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输入参数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">ap = argparse.ArgumentParser()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-d"</span>, <span class="string">"--dataset"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to input dataset of images"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-m"</span>, <span class="string">"--model"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to output trained model"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-l"</span>, <span class="string">"--label-bin"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to output label binarizer"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-p"</span>, <span class="string">"--plot"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to output accuracy/loss plot"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">args = vars(ap.parse_args())</span></pre></td></tr></table></figure>
 
-# 拿到路径
-imagePaths = sorted(list(utils_paths.list_images(args[&quot;dataset&quot;])))
-random.seed(42)
-random.shuffle(imagePaths)
+<h4 id="读取图像数据"><a href="#读取图像数据" class="headerlink" title="读取图像数据"></a>读取图像数据</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取数据和标签</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">print(<span class="string">"[INFO] loading images..."</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">data = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">labels = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拿到路径</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">imagePaths = sorted(list(utils_paths.list_images(args[<span class="string">"dataset"</span>])))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">random.seed(<span class="number">42</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">random.shuffle(imagePaths)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取数据</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> imagePath <span class="keyword">in</span> imagePaths:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    image = cv2.imread(imagePath)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">try</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        image = cv2.resize(image, (<span class="number">64</span>, <span class="number">64</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        data.append(image)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        label = imagePath.split(os.path.sep)[<span class="number">-2</span>]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        labels.append(label)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">except</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">pass</span></span></pre></td></tr></table></figure>
 
-# 读取数据
-for imagePath in imagePaths:
-    image = cv2.imread(imagePath)
-    try:
-        image = cv2.resize(image, (64, 64))
-        data.append(image)
-        label = imagePath.split(os.path.sep)[-2]
-        labels.append(label)
-    except:
-        pass</code></pre>
 <p>这里有三个注意点，分别是：</p>
 <ul>
 <li>要打乱数据集中图像的顺序，且训练过程中应保持数据集中图像顺序不变，这样可以避免偶然性和利于对比，<code>random.seed()</code>和<code>random.shuffle()</code>完成了这项工作。</li>
 <li>数据集过大，无法保证每张图都是有效的，因此数据集比1600 + 1600大出很多，在resize时捕获了异常，无效图片直接丢掉。</li>
 <li><code>label = imagePath.split(os.path.sep)[-2]</code>这是很巧妙的一行代码，因为我们将数据集分类丢到acgn和real文件夹，那么图像的路径为<code>xxx/acgn/xxx.jpg</code>或者 <code>xxx/real/xxx.jpg</code>，将路径按os.path.sep分割开来，自然倒数第二个元素就是图像的标签。</li>
 </ul>
-<h4 id="图像归一化处理"><a href="#图像归一化处理" class="headerlink" title="图像归一化处理"></a>图像归一化处理</h4><pre><code class="python"># 预处理
-data = np.array(data, dtype=&quot;float&quot;) / 255.0
-labels = np.array(labels)</code></pre>
+<h4 id="图像归一化处理"><a href="#图像归一化处理" class="headerlink" title="图像归一化处理"></a>图像归一化处理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 预处理</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">data = np.array(data, dtype=<span class="string">"float"</span>) / <span class="number">255.0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">labels = np.array(labels)</span></pre></td></tr></table></figure>
+
 <h4 id="数据集切分"><a href="#数据集切分" class="headerlink" title="数据集切分"></a>数据集切分</h4><p>将数据集分割成训练集和测试集</p>
-<pre><code class="python"># 数据集切分
-(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=0.25, random_state=42)
-</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据集切分</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">(trainX, testX, trainY, testY) = train_test_split(data, labels, test_size=<span class="number">0.25</span>, random_state=<span class="number">42</span>)</span></pre></td></tr></table></figure>
 <h4 id="标签转换"><a href="#标签转换" class="headerlink" title="标签转换"></a>标签转换</h4><p>将标签转换为one-hot形式</p>
-<pre><code class="python"># 标签转换
-lb = LabelBinarizer()
-trainY = lb.fit_transform(trainY)
-testY = lb.transform(testY)
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 标签转换</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">lb = LabelBinarizer()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">trainY = lb.fit_transform(trainY)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">testY = lb.transform(testY)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">tY = testY.tolist()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(tY)):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> tY[i][<span class="number">0</span>] == <span class="number">1</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        tY[i].insert(<span class="number">0</span>, <span class="number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">else</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">        tY[i].insert(<span class="number">0</span>, <span class="number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">testY = np.array(tY)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">aY = trainY.tolist()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(aY)):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">if</span> aY[i][<span class="number">0</span>] == <span class="number">1</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        aY[i].insert(<span class="number">0</span>, <span class="number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">else</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">        aY[i].insert(<span class="number">0</span>, <span class="number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">trainY = np.array(aY)</span></pre></td></tr></table></figure>
 
-tY = testY.tolist()
-for i in range(0, len(tY)):
-    if tY[i][0] == 1:
-        tY[i].insert(0, 0)
-    else:
-        tY[i].insert(0, 1)
-testY = np.array(tY)
+<h4 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据增强</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">aug = ImageDataGenerator(rotation_range=<span class="number">30</span>, width_shift_range=<span class="number">0.1</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">                         height_shift_range=<span class="number">0.1</span>, shear_range=<span class="number">0.2</span>, zoom_range=<span class="number">0.2</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">                         horizontal_flip=<span class="literal">True</span>, fill_mode=<span class="string">"nearest"</span>)</span></pre></td></tr></table></figure>
 
-aY = trainY.tolist()
-for i in range(0, len(aY)):
-    if aY[i][0] == 1:
-        aY[i].insert(0, 0)
-    else:
-        aY[i].insert(0, 1)
-trainY = np.array(aY)</code></pre>
-<h4 id="图像增强"><a href="#图像增强" class="headerlink" title="图像增强"></a>图像增强</h4><pre><code class="python"># 数据增强
-aug = ImageDataGenerator(rotation_range=30, width_shift_range=0.1,
-                         height_shift_range=0.1, shear_range=0.2, zoom_range=0.2,
-                         horizontal_flip=True, fill_mode=&quot;nearest&quot;)
-</code></pre>
-<h4 id="建立卷积神经网络"><a href="#建立卷积神经网络" class="headerlink" title="建立卷积神经网络"></a>建立卷积神经网络</h4><pre><code class="python"># 建立卷积神经网络
-model = SimpleVGGNet.build(width=64, height=64, depth=3, classes=len(lb.classes_))
-</code></pre>
-<h4 id="初始化参数"><a href="#初始化参数" class="headerlink" title="初始化参数"></a>初始化参数</h4><pre><code class="python"># 初始化参数
-INIT_LR = 0.01
-EPOCHS = 50
-BS = 32</code></pre>
-<h4 id="训练神经网络"><a href="#训练神经网络" class="headerlink" title="训练神经网络"></a>训练神经网络</h4><pre><code class="python"># 损失函数
-print(&quot;[INFO] 训练网络...&quot;)
-opt = SGD(lr=INIT_LR, decay=INIT_LR / EPOCHS)
-model.compile(loss=&quot;categorical_crossentropy&quot;, optimizer=opt, metrics=[&quot;accuracy&quot;])
+<h4 id="建立卷积神经网络"><a href="#建立卷积神经网络" class="headerlink" title="建立卷积神经网络"></a>建立卷积神经网络</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 建立卷积神经网络</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">model = SimpleVGGNet.build(width=<span class="number">64</span>, height=<span class="number">64</span>, depth=<span class="number">3</span>, classes=len(lb.classes_))</span></pre></td></tr></table></figure>
 
-# 训练网络
-H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),
-                        validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS, epochs=EPOCHS)
-</code></pre>
-<h4 id="测试模型"><a href="#测试模型" class="headerlink" title="测试模型"></a>测试模型</h4><pre><code class="python"># 测试
-print(&quot;[INFO] 测试网络...&quot;)
-predictions = model.predict(testX, batch_size=32)
-print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=lb.classes_))
-</code></pre>
-<h4 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h4><pre><code class="python"># 展示结果
-N = np.arange(0, EPOCHS)
-plt.style.use(&quot;ggplot&quot;)
-plt.figure()
-plt.plot(N, H.history[&quot;loss&quot;], label=&quot;train_loss&quot;)
-plt.plot(N, H.history[&quot;val_loss&quot;], label=&quot;val_loss&quot;)
-plt.plot(N, H.history[&quot;accuracy&quot;], label=&quot;train_acc&quot;)
-plt.plot(N, H.history[&quot;val_accuracy&quot;], label=&quot;val_acc&quot;)
-plt.title(&quot;Training Loss and Accuracy (SmallVGGNet)&quot;)
-plt.xlabel(&quot;Epoch #&quot;)
-plt.ylabel(&quot;Loss/Accuracy&quot;)
-plt.legend()
-plt.savefig(args[&quot;plot&quot;])</code></pre>
-<h4 id="保存图像和标签"><a href="#保存图像和标签" class="headerlink" title="保存图像和标签"></a>保存图像和标签</h4><pre><code class="python"># 保存模型
-print(&quot;[INFO] 保存模型...&quot;)
-model.save(args[&quot;model&quot;])
-f = open(args[&quot;label_bin&quot;], &quot;wb&quot;)
-f.write(pickle.dumps(lb))
-f.close()</code></pre>
+<h4 id="初始化参数"><a href="#初始化参数" class="headerlink" title="初始化参数"></a>初始化参数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化参数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">INIT_LR = <span class="number">0.01</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">EPOCHS = <span class="number">50</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">BS = <span class="number">32</span></span></pre></td></tr></table></figure>
+
+<h4 id="训练神经网络"><a href="#训练神经网络" class="headerlink" title="训练神经网络"></a>训练神经网络</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 损失函数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">print(<span class="string">"[INFO] 训练网络..."</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">opt = SGD(lr=INIT_LR, decay=INIT_LR / EPOCHS)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">model.compile(loss=<span class="string">"categorical_crossentropy"</span>, optimizer=opt, metrics=[<span class="string">"accuracy"</span>])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 训练网络</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">H = model.fit_generator(aug.flow(trainX, trainY, batch_size=BS),</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">                        validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS, epochs=EPOCHS)</span></pre></td></tr></table></figure>
+
+<h4 id="测试模型"><a href="#测试模型" class="headerlink" title="测试模型"></a>测试模型</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 测试</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">print(<span class="string">"[INFO] 测试网络..."</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">predictions = model.predict(testX, batch_size=<span class="number">32</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">print(classification_report(testY.argmax(axis=<span class="number">1</span>), predictions.argmax(axis=<span class="number">1</span>), target_names=lb.classes_))</span></pre></td></tr></table></figure>
+
+<h4 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 展示结果</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">N = np.arange(<span class="number">0</span>, EPOCHS)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">plt.style.use(<span class="string">"ggplot"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">plt.figure()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">plt.plot(N, H.history[<span class="string">"loss"</span>], label=<span class="string">"train_loss"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">plt.plot(N, H.history[<span class="string">"val_loss"</span>], label=<span class="string">"val_loss"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">plt.plot(N, H.history[<span class="string">"accuracy"</span>], label=<span class="string">"train_acc"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">plt.plot(N, H.history[<span class="string">"val_accuracy"</span>], label=<span class="string">"val_acc"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">plt.title(<span class="string">"Training Loss and Accuracy (SmallVGGNet)"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">plt.xlabel(<span class="string">"Epoch #"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">plt.ylabel(<span class="string">"Loss/Accuracy"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">plt.legend()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">plt.savefig(args[<span class="string">"plot"</span>])</span></pre></td></tr></table></figure>
+
+<h4 id="保存图像和标签"><a href="#保存图像和标签" class="headerlink" title="保存图像和标签"></a>保存图像和标签</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 保存模型</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">print(<span class="string">"[INFO] 保存模型..."</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">model.save(args[<span class="string">"model"</span>])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">f = open(args[<span class="string">"label_bin"</span>], <span class="string">"wb"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">f.write(pickle.dumps(lb))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">f.close()</span></pre></td></tr></table></figure>
+
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>模型训练完之后当然要测试了，找几张没有出现在数据集中的图片用训练好的模型测试一下，注意，一定要用没有出现在数据集中的图片。</p>
 <h4 id="二次元图像测试"><a href="#二次元图像测试" class="headerlink" title="二次元图像测试"></a>二次元图像测试</h4><p><img src="./acgn.jpg" alt="acgn.jpg"></p>
 <p>貌似效果还不错？甚至出现了可信度100%的情况，分对了5张，奇怪的是第三张被分为三次元且可信度为92.37%？让我们仔细观察一下为什么会出现这种情况。<br>我们可以明显看出第三幅图与其他五张的风格明显不同，说是风格不同，不如说是作画工具不同，第三幅图可能是用水彩或者彩铅绘制的，查一下来源果然如此，是一副水彩画。</p>
@@ -535,93 +448,9 @@ f.close()</code></pre>
 <p>同样被识别为三次元图像，但是可信度仅为64.93%，要解决这个问题其实也简单，准备一些水彩画丢进数据集就可以了，这里就是因为缺少水彩画的数据才导致了误判。</p>
 <h4 id="三次元图像测试"><a href="#三次元图像测试" class="headerlink" title="三次元图像测试"></a>三次元图像测试</h4><p><img src="./real.jpg" alt="real.jpg"></p>
 <p>效果还不错？</p>
-<h3 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h3><h4 id="测试用代码"><a href="#测试用代码" class="headerlink" title="测试用代码"></a>测试用代码</h4><pre><code class="python"># 导入所需工具包
-from keras.models import load_model
-import argparse
-import pickle
-import cv2
+<h3 id="补充代码"><a href="#补充代码" class="headerlink" title="补充代码"></a>补充代码</h3><h4 id="测试用代码"><a href="#测试用代码" class="headerlink" title="测试用代码"></a>测试用代码</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入所需工具包</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> keras.models <span class="keyword">import</span> load_model</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> argparse</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置输入参数</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">ap = argparse.ArgumentParser()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-i"</span>, <span class="string">"--image"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to input image we are going to classify"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-m"</span>, <span class="string">"--model"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to trained Keras model"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-l"</span>, <span class="string">"--label-bin"</span>, required=<span class="literal">True</span>, help=<span class="string">"path to label binarizer"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-w"</span>, <span class="string">"--width"</span>, type=int, default=<span class="number">64</span>, help=<span class="string">"target spatial dimension width"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-e"</span>, <span class="string">"--height"</span>, type=int, default=<span class="number">64</span>, help=<span class="string">"target spatial dimension height"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">ap.add_argument(<span class="string">"-f"</span>, <span class="string">"--flatten"</span>, type=int, default=<span class="number">0</span>, help=<span class="string">"whether or not we should flatten the image"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">args = vars(ap.parse_args())</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加载测试数据并进行相同预处理操作</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">image = cv2.imread(args[<span class="string">"image"</span>])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">output = image.copy()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">image = cv2.resize(image, (args[<span class="string">"width"</span>], args[<span class="string">"height"</span>]))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># scale the pixel values to [0, 1]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">image = image.astype(<span class="string">"float"</span>) / <span class="number">255.0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否要对图像就行拉平操作</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> args[<span class="string">"flatten"</span>] &gt; <span class="number">0</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">    image = image.flatten()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">    image = image.reshape((<span class="number">1</span>, image.shape[<span class="number">0</span>]))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># CNN的时候需要原始图像</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">    image = image.reshape((<span class="number">1</span>, image.shape[<span class="number">0</span>], image.shape[<span class="number">1</span>],</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">                           image.shape[<span class="number">2</span>]))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取模型和标签</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">print(<span class="string">"[INFO] loading network and label binarizer..."</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line">model = load_model(args[<span class="string">"model"</span>])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">lb = pickle.loads(open(args[<span class="string">"label_bin"</span>], <span class="string">"rb"</span>).read())</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 预测</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">preds = model.predict(image)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">print(preds)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 得到预测结果以及其对应的标签</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">i = preds.argmax(axis=<span class="number">1</span>)[<span class="number">0</span>]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">label = lb.classes_[i]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">51</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在图像中把结果画出来</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">52</span></pre></td><td class="code"><pre><span class="line">text = <span class="string">"&#123;&#125;: &#123;:.2f&#125;%"</span>.format(label, preds[<span class="number">0</span>][i] * <span class="number">100</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">53</span></pre></td><td class="code"><pre><span class="line">cv2.putText(output, text, (<span class="number">10</span>, <span class="number">30</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.7</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">54</span></pre></td><td class="code"><pre><span class="line">            (<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">55</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">56</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 绘图</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">57</span></pre></td><td class="code"><pre><span class="line">cv2.imshow(<span class="string">"Image"</span>, output)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">58</span></pre></td><td class="code"><pre><span class="line">cv2.waitKey(<span class="number">0</span>)</span></pre></td></tr></table></figure>
+<h4 id="utils-paths-py"><a href="#utils-paths-py" class="headerlink" title="utils_paths.py"></a>utils_paths.py</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">image_types = (<span class="string">".jpg"</span>, <span class="string">".jpeg"</span>, <span class="string">".png"</span>, <span class="string">".bmp"</span>, <span class="string">".tif"</span>, <span class="string">".tiff"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_images</span><span class="params">(basePath, contains=None)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    <span class="comment"># return the set of files that are valid</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">return</span> list_files(basePath, validExts=image_types, contains=contains)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_files</span><span class="params">(basePath, validExts=None, contains=None)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    <span class="comment"># loop over the directory structure</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="keyword">for</span> (rootDir, dirNames, filenames) <span class="keyword">in</span> os.walk(basePath):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        <span class="comment"># loop over the filenames in the current directory</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">            <span class="comment"># if the contains string is not none and the filename does not contain</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">            <span class="comment"># the supplied string, then ignore the file</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> contains <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> filename.find(contains) == <span class="number">-1</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">continue</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">            <span class="comment"># determine the file extension of the current file</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">            ext = filename[filename.rfind(<span class="string">"."</span>):].lower()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">            <span class="comment"># check to see if the file is an image and should be processed</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">if</span> validExts <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> ext.endswith(validExts):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">                <span class="comment"># construct the path to the image and yield it</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">                imagePath = os.path.join(rootDir, filename)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">                <span class="keyword">yield</span> imagePath</span></pre></td></tr></table></figure>
 
-# 设置输入参数
-ap = argparse.ArgumentParser()
-ap.add_argument(&quot;-i&quot;, &quot;--image&quot;, required=True, help=&quot;path to input image we are going to classify&quot;)
-ap.add_argument(&quot;-m&quot;, &quot;--model&quot;, required=True, help=&quot;path to trained Keras model&quot;)
-ap.add_argument(&quot;-l&quot;, &quot;--label-bin&quot;, required=True, help=&quot;path to label binarizer&quot;)
-ap.add_argument(&quot;-w&quot;, &quot;--width&quot;, type=int, default=64, help=&quot;target spatial dimension width&quot;)
-ap.add_argument(&quot;-e&quot;, &quot;--height&quot;, type=int, default=64, help=&quot;target spatial dimension height&quot;)
-ap.add_argument(&quot;-f&quot;, &quot;--flatten&quot;, type=int, default=0, help=&quot;whether or not we should flatten the image&quot;)
-args = vars(ap.parse_args())
-
-# 加载测试数据并进行相同预处理操作
-image = cv2.imread(args[&quot;image&quot;])
-output = image.copy()
-image = cv2.resize(image, (args[&quot;width&quot;], args[&quot;height&quot;]))
-
-# scale the pixel values to [0, 1]
-image = image.astype(&quot;float&quot;) / 255.0
-
-# 是否要对图像就行拉平操作
-if args[&quot;flatten&quot;] &gt; 0:
-    image = image.flatten()
-    image = image.reshape((1, image.shape[0]))
-
-# CNN的时候需要原始图像
-else:
-    image = image.reshape((1, image.shape[0], image.shape[1],
-                           image.shape[2]))
-
-# 读取模型和标签
-print(&quot;[INFO] loading network and label binarizer...&quot;)
-model = load_model(args[&quot;model&quot;])
-lb = pickle.loads(open(args[&quot;label_bin&quot;], &quot;rb&quot;).read())
-
-# 预测
-preds = model.predict(image)
-
-
-print(preds)
-
-
-# 得到预测结果以及其对应的标签
-i = preds.argmax(axis=1)[0]
-label = lb.classes_[i]
-
-# 在图像中把结果画出来
-text = &quot;{}: {:.2f}%&quot;.format(label, preds[0][i] * 100)
-cv2.putText(output, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
-            (0, 0, 255), 2)
-
-# 绘图
-cv2.imshow(&quot;Image&quot;, output)
-cv2.waitKey(0)</code></pre>
-<h4 id="utils-paths-py"><a href="#utils-paths-py" class="headerlink" title="utils_paths.py"></a>utils_paths.py</h4><pre><code class="python">import os
-
-
-image_types = (&quot;.jpg&quot;, &quot;.jpeg&quot;, &quot;.png&quot;, &quot;.bmp&quot;, &quot;.tif&quot;, &quot;.tiff&quot;)
-
-
-def list_images(basePath, contains=None):
-    # return the set of files that are valid
-    return list_files(basePath, validExts=image_types, contains=contains)
-
-
-def list_files(basePath, validExts=None, contains=None):
-    # loop over the directory structure
-    for (rootDir, dirNames, filenames) in os.walk(basePath):
-        # loop over the filenames in the current directory
-        for filename in filenames:
-            # if the contains string is not none and the filename does not contain
-            # the supplied string, then ignore the file
-            if contains is not None and filename.find(contains) == -1:
-                continue
-
-            # determine the file extension of the current file
-            ext = filename[filename.rfind(&quot;.&quot;):].lower()
-
-            # check to see if the file is an image and should be processed
-            if validExts is None or ext.endswith(validExts):
-                # construct the path to the image and yield it
-                imagePath = os.path.join(rootDir, filename)
-                yield imagePath</code></pre>
 <h3 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h3><p>部分代码参考自阿里云</p>
 
     </article>
@@ -662,6 +491,23 @@ def list_files(basePath, validExts=None, contains=None):
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1582107287000',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -778,6 +624,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -1075,9 +923,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -1103,7 +951,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>

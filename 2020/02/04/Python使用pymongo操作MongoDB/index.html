@@ -273,7 +273,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>Word count: <span class="post-count word-count">441</span>Reading time: <span class="post-count reading-time">2 min</span></span>
+                        <span>Word count: <span class="post-count word-count">400</span>Reading time: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -402,57 +402,37 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <h4 id="安装与更新pymongo"><a href="#安装与更新pymongo" class="headerlink" title="安装与更新pymongo"></a>安装与更新pymongo</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><pre><code>pip3 install pymongo</code></pre><h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><pre><code>pip3 install --upgrade pymongo</code></pre><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><pre><code class="python"># coding=utf-8
-import pymongo
-
-mongo_client = pymongo.MongoClient(&quot;mongodb://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo_client[&quot;database_name&quot;]</code></pre>
+        <h4 id="安装与更新pymongo"><a href="#安装与更新pymongo" class="headerlink" title="安装与更新pymongo"></a>安装与更新pymongo</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> pymongo</span></pre></td></tr></table></figure>
+<h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">pip3 <span class="keyword">install</span> <span class="comment">--upgrade pymongo</span></span></pre></td></tr></table></figure>
+<h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">mongo_client = pymongo.MongoClient(<span class="string">"mongodb://&lt;host&gt;:&lt;port&gt;/"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">db = mongo_client[<span class="string">"database_name"</span>]</span></pre></td></tr></table></figure>
 <blockquote>
 <p>在MongoDB中，当数据库中存在内容时，数据库才会真正被创建</p>
 </blockquote>
-<h5 id="查看已存在的数据库"><a href="#查看已存在的数据库" class="headerlink" title="查看已存在的数据库"></a>查看已存在的数据库</h5><pre><code class="python">db_list = mongo_client.list_database_names()
-for db_name in db_list:
-    print(db_name)</code></pre>
-<h4 id="创建集合"><a href="#创建集合" class="headerlink" title="创建集合"></a>创建集合</h4><pre><code class="python"># coding=utf-8
-import pymongo
+<h5 id="查看已存在的数据库"><a href="#查看已存在的数据库" class="headerlink" title="查看已存在的数据库"></a>查看已存在的数据库</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">db_list = mongo_client.list_database_names()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> db_name <span class="keyword">in</span> db_list:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    print(db_name)</span></pre></td></tr></table></figure>
 
-mongo_client = pymongo.MongoClient(&quot;mongo://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo_client[&quot;database_name&quot;]
-collection = db[&quot;collection_name&quot;]</code></pre>
+<h4 id="创建集合"><a href="#创建集合" class="headerlink" title="创建集合"></a>创建集合</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymongo</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">mongo_client = pymongo.MongoClient(<span class="string">"mongo://&lt;host&gt;:&lt;port&gt;/"</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">db = mongo_client[<span class="string">"database_name"</span>]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">collection = db[<span class="string">"collection_name"</span>]</span></pre></td></tr></table></figure>
 <blockquote>
 <p>在MongoDB中，只有集合中存在内容时，集合才会真正被创建</p>
 </blockquote>
-<h5 id="查看已存在的集合"><a href="#查看已存在的集合" class="headerlink" title="查看已存在的集合"></a>查看已存在的集合</h5><pre><code class="python">collection_list = db.list_collection_names()
-for collection_name in collection_list:
-    print(collection)</code></pre>
+<h5 id="查看已存在的集合"><a href="#查看已存在的集合" class="headerlink" title="查看已存在的集合"></a>查看已存在的集合</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">collection_list = db.list_collection_names()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> collection_name <span class="keyword">in</span> collection_list:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    print(collection)</span></pre></td></tr></table></figure>
+
 <h4 id="插入文档"><a href="#插入文档" class="headerlink" title="插入文档"></a>插入文档</h4><h5 id="插入单个文档"><a href="#插入单个文档" class="headerlink" title="插入单个文档"></a>插入单个文档</h5><p>插入单个文档使用<code>insert_one()</code>方法，如：</p>
-<pre><code class="python">doc = {&quot;name&quot;: &quot;Jack Ma&quot;, &quot;age&quot;: 50}
-result = collection.insert_one(doc)
-print(result)</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">doc = &#123;<span class="string">"name"</span>: <span class="string">"Jack Ma"</span>, <span class="string">"age"</span>: <span class="number">50</span>&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">result = collection.insert_one(doc)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">print(result)</span></pre></td></tr></table></figure>
 <p>输出结果为：</p>
-<pre><code>&lt;pymongo.results.InsertOneResult object at 0x1abcedfgh&gt;</code></pre><p><code>insert_one()</code>方法返回的是InsertOneResult对象，它包含插入文档的id值：</p>
-<pre><code class="python">print(result.inserted_id)
-# 输出为 293adbeehfa0fba39fc</code></pre>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;pymongo<span class="selector-class">.results</span><span class="selector-class">.InsertOneResult</span> <span class="selector-tag">object</span> at <span class="number">0</span>x1abcedfgh&gt;</span></pre></td></tr></table></figure>
+<p><code>insert_one()</code>方法返回的是InsertOneResult对象，它包含插入文档的id值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">print(result.inserted_id)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出为 293adbeehfa0fba39fc</span></span></pre></td></tr></table></figure>
 <h5 id="插入多个文档"><a href="#插入多个文档" class="headerlink" title="插入多个文档"></a>插入多个文档</h5><p>插入多个文档使用<code>insert_many()</code>方法，如：</p>
-<pre><code class="python">docs = [
-    {&quot;name&quot;: &quot;Jack Ma&quot;, &quot;age&quot;: 50},
-    {&quot;name&quot;: &quot;Pony Ma&quot;, &quot;age&quot;: 45},
-    {&quot;name&quot;: &quot;Neo&quot;, &quot;age&quot;: 31}
-]
-result = collection.insert_many(docs)
-print(result.inserted_ids)</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">docs = [</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    &#123;<span class="string">"name"</span>: <span class="string">"Jack Ma"</span>, <span class="string">"age"</span>: <span class="number">50</span>&#125;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    &#123;<span class="string">"name"</span>: <span class="string">"Pony Ma"</span>, <span class="string">"age"</span>: <span class="number">45</span>&#125;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    &#123;<span class="string">"name"</span>: <span class="string">"Neo"</span>, <span class="string">"age"</span>: <span class="number">31</span>&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">result = collection.insert_many(docs)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">print(result.inserted_ids)</span></pre></td></tr></table></figure>
 <p>输出结果为：</p>
-<pre><code>[ObjectId(&#39;5b236aa9c315aaaaaaa&#39;), ObjectId(&#39;5b236aa9c3153bbbbbbbbbb&#39;), ObjectId(&#39;5b236aa9c315ccccccccc&#39;), ObjectId(&#39;5b236aa9c31dddddddddddd&#39;), ObjectId(&#39;5b236aa9c3eeeeeeeeeeee&#39;)]</code></pre><p><code>insert_many</code>方法返回InsertManyResult对象，它包含所有插入文档的id值(即<code>insert_ids</code>)。</p>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[<span class="name">ObjectId</span>(<span class="symbol">'5b236aa9c315aaaaaaa</span>'), ObjectId(<span class="symbol">'5b236aa9c3153bbbbbbbbbb</span>'), ObjectId(<span class="symbol">'5b236aa9c315ccccccccc</span>'), ObjectId(<span class="symbol">'5b236aa9c31dddddddddddd</span>'), ObjectId(<span class="symbol">'5b236aa9c3eeeeeeeeeeee</span>')]</span></pre></td></tr></table></figure>
+<p><code>insert_many</code>方法返回InsertManyResult对象，它包含所有插入文档的id值(即<code>insert_ids</code>)。</p>
 <h5 id="指定插入文档的id值"><a href="#指定插入文档的id值" class="headerlink" title="指定插入文档的id值"></a>指定插入文档的id值</h5><p>我们也可以自己指定插入文档的id值，其表现在<code>_id</code>属性中，id值默认是不可以重复的，如：</p>
-<pre><code class="python">docs = [
-    {&quot;_id&quot;: 1, &quot;name&quot;: &quot;Jack Ma&quot;, &quot;age&quot;: 50},
-    {&quot;_id&quot;: 2, &quot;name&quot;: &quot;Pony Ma&quot;, &quot;age&quot;: 45},
-    {&quot;_id&quot;: 3, &quot;name&quot;: &quot;Neo&quot;, &quot;age&quot;: 31}
-]
-result = collection.insert_many(docs)
-print(result.inserted_ids)</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">docs = [</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    &#123;<span class="string">"_id"</span>: <span class="number">1</span>, <span class="string">"name"</span>: <span class="string">"Jack Ma"</span>, <span class="string">"age"</span>: <span class="number">50</span>&#125;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    &#123;<span class="string">"_id"</span>: <span class="number">2</span>, <span class="string">"name"</span>: <span class="string">"Pony Ma"</span>, <span class="string">"age"</span>: <span class="number">45</span>&#125;,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    &#123;<span class="string">"_id"</span>: <span class="number">3</span>, <span class="string">"name"</span>: <span class="string">"Neo"</span>, <span class="string">"age"</span>: <span class="number">31</span>&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">result = collection.insert_many(docs)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">print(result.inserted_ids)</span></pre></td></tr></table></figure>
 <p>输出结果为：</p>
-<pre><code>[1, 2, 3]</code></pre>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span></pre></td></tr></table></figure>
+
+
     </article>
     <!-- license  -->
     
@@ -491,6 +471,23 @@ print(result.inserted_ids)</code></pre>
     
     <!-- gitalk评论 -->
 
+    <div id="comment-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1.6.0/dist/gitalk.min.js"></script>
+    <script>
+        var gitalk = new Gitalk({
+            clientID: '4c145d96189da07c194a',
+            clientSecret: '86bdcdb33e4fda9243fbca95573c688129648616',
+            id: '1580818633000',
+            repo: 'pretty9.github.io',
+            owner: 'Pretty9',
+            admin: ["Pretty9"],
+            createIssueManually: true,
+            distractionFreeMode: false
+        })
+        gitalk.render('comment-container')
+    </script>
+    
     <!-- utteranc评论 -->
 
     <!-- partial('_partial/comment/changyan') -->
@@ -607,6 +604,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -904,9 +903,9 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
     
-        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
-    
         <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
     
         <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
     
@@ -932,7 +931,7 @@ top:50vh;
     
         <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
     
-        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
