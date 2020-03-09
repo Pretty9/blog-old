@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en,default" class="loading">
+<html lang="en,zh-cn,default" class="loading">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
-    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="keywords" content="2YO&#39;s BLOG,"> 
     <meta name="description" content="前言当我们在爬取某些网站的数据时，过快的访问频率往往会触发反爬取机制，导致ip被禁止访问，使用IP代理是一个比较好的解决方案，所谓的IP代理其实就是提供若干个HTTP/HTTPS/SOCKS/L2T,"> 
     <meta name="author" content="2YO"> 
     <link rel="alternative" href="atom.xml" title="2YO&#39;s BLOG" type="application/atom+xml"> 
@@ -22,8 +22,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
     <link rel="stylesheet" href="/css/obsidian.css">
     <link rel="stylesheet" href="/css/ball-atom.min.css">
-<link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <body class="loading">
@@ -85,13 +84,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    2.6k
+                    1.3k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    2 mins.
+                    1 mins.
                 </span>
                 
                 
@@ -134,18 +133,18 @@
 <p><img src="4.png" alt="4.png"></p>
 <p><img src="5.png" alt="5.png"></p>
 <p>Python可通过如下代码检验代理的有效性及查看当前的IP。</p>
-<pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># coding=utf-8</span>
-<span class="token keyword">import</span> requests
+<pre><code class="python"># coding=utf-8
+import requests
 
-proxies <span class="token operator">=</span> <span class="token punctuation">{</span>
-    <span class="token string">'http'</span><span class="token punctuation">:</span> <span class="token string">'http://username:password@183.147.252.120:57049'</span><span class="token punctuation">,</span> 
-    <span class="token string">'https'</span><span class="token punctuation">:</span> <span class="token string">'https://username:password@183.147.252.120:57049'</span>
-<span class="token punctuation">}</span>
+proxies = {
+    &#39;http&#39;: &#39;http://username:password@183.147.252.120:57049&#39;, 
+    &#39;https&#39;: &#39;https://username:password@183.147.252.120:57049&#39;
+}
 
-res <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'http://jsonip.com'</span><span class="token punctuation">,</span> proxies<span class="token operator">=</span>proxies<span class="token punctuation">)</span>
-ip <span class="token operator">=</span> res<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">'ip'</span><span class="token punctuation">]</span>
+res = requests.get(&#39;http://jsonip.com&#39;, proxies=proxies)
+ip = res.json()[&#39;ip&#39;]
 
-<span class="token keyword">print</span><span class="token punctuation">(</span>ip<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+print(ip)</code></pre>
 <p>其中的username和password就是上文提到的AuthKey和AuthPwd。</p>
 <h5 id="有关可用性"><a href="#有关可用性" class="headerlink" title="有关可用性"></a>有关可用性</h5><p>具体没有测试是否能跑满标明的10MB/S，但是速度与不使用代理没有太大差异，且可用性应该高于98%。 </p>
 
@@ -184,7 +183,7 @@ ip <span class="token operator">=</span> res<span class="token punctuation">.</s
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>I love it, so I insist.</span>
+                    <span>因为热爱，所以坚持</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -395,7 +394,7 @@ ip <span class="token operator">=</span> res<span class="token punctuation">.</s
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["I love it, so I insist.", "因为热爱，所以坚持"],
+                strings: ["因为热爱，所以坚持", ""],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

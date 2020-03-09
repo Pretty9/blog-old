@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en,default" class="loading">
+<html lang="en,zh-cn,default" class="loading">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
-    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="keywords" content="2YO&#39;s BLOG,"> 
     <meta name="description" content="问题阐述在Web应用开发中，我们经常会遇到跨域，Refer防盗链以及HTTPS不能降级访问HTTP资源问题，一般的浏览器禁止了跨域请求且Ajax等方式不允许修改某些Header（如Refer和Ori,"> 
     <meta name="author" content="2YO"> 
     <link rel="alternative" href="atom.xml" title="2YO&#39;s BLOG" type="application/atom+xml"> 
@@ -22,8 +22,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
     <link rel="stylesheet" href="/css/obsidian.css">
     <link rel="stylesheet" href="/css/ball-atom.min.css">
-<link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <body class="loading">
@@ -85,13 +84,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    11k
+                    3.5k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    10 mins.
+                    3 mins.
                 </span>
                 
                 
@@ -158,40 +157,40 @@
 <p>函数创建好之后就会为我们分配好一个公网域名，我们访问一下试试看：</p>
 <p><img src="./scf4.png" alt="scf4"></p>
 <p>基本的流程完毕了，剩下的就是写代码了，P站的防盗链机制是检查Refer，那么只要伪造Header就可以了，我已经写好一个了，代码如下（不是专业搞前端的，JS写的很烂，大佬轻喷:</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">const</span> fetch <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'node-fetch'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    pic <span class="token operator">=</span> req<span class="token punctuation">.</span>query<span class="token punctuation">.</span>url
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>pic <span class="token operator">===</span> undefined <span class="token operator">||</span> pic<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment" spellcheck="true">// 必须要有图片url，否则我们返回400</span>
-        res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">400</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-            <span class="token string">'code'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
-            <span class="token string">'msg'</span><span class="token punctuation">:</span> <span class="token string">'URL is a necessary parameter.'</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-        <span class="token function">fetch</span><span class="token punctuation">(</span>pic<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-            headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-                <span class="token string">'Referer'</span><span class="token punctuation">:</span> <span class="token string">'https://pixiv.net'</span><span class="token punctuation">,</span>
-            <span class="token punctuation">}</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>response<span class="token punctuation">.</span>ok<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                res<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'application/json'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-                    <span class="token string">'code'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span>
-                    <span class="token string">'status'</span><span class="token punctuation">:</span> <span class="token string">'error'</span>
-                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
-                res<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'Content-Type'</span><span class="token punctuation">,</span> <span class="token string">'image/jpeg'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
+<pre><code class="javascript">const fetch = require(&#39;node-fetch&#39;);
+const app = require(&#39;express&#39;)();
+app.get(&#39;/&#39;, (req, res) =&gt; {
+    pic = req.query.url
+    if (pic === undefined || pic.length == 0) { // 必须要有图片url，否则我们返回400
+        res.status(400).json({
+            &#39;code&#39;: -1,
+            &#39;msg&#39;: &#39;URL is a necessary parameter.&#39;
+        });
+    } else {
+        fetch(pic, {
+            headers: {
+                &#39;Referer&#39;: &#39;https://pixiv.net&#39;,
+            }
+        }).then(function(response) {
+            if (!response.ok) {
+                res.set(&#39;Content-Type&#39;, &#39;application/json&#39;);
+                res.status(500).json({
+                    &#39;code&#39;: -1,
+                    &#39;status&#39;: &#39;error&#39;
+                });
+            } else {
+                res.set(&#39;Content-Type&#39;, &#39;image/jpeg&#39;);
+            }
             returnresponse
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>response <span class="token operator">=</span><span class="token operator">></span> response<span class="token punctuation">.</span><span class="token function">buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>response <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>
-        <span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Msg'</span> <span class="token operator">+</span> e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        }).then(response =&gt; response.buffer()).then(response =&gt; res.status(200).send(response)).then().
+        catch(e =&gt; console.log(&#39;Msg&#39; + e));
+    }
+});
 
-exports<span class="token punctuation">.</span>main_handler <span class="token operator">=</span> app
-<span class="token comment" spellcheck="true">//app.listen(8080)</span>
-<span class="token comment" spellcheck="true">//app.listen(8080)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+exports.main_handler = app
+//app.listen(8080)
+//app.listen(8080)
+</code></pre>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>SCF已经支持其他环境</p>
 <h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><p>腾讯SCF官方手册</p>
 
@@ -230,7 +229,7 @@ exports<span class="token punctuation">.</span>main_handler <span class="token o
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>I love it, so I insist.</span>
+                    <span>因为热爱，所以坚持</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -448,7 +447,7 @@ exports<span class="token punctuation">.</span>main_handler <span class="token o
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["I love it, so I insist.", "因为热爱，所以坚持"],
+                strings: ["因为热爱，所以坚持", ""],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

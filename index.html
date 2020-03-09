@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en,default" class="loading">
+<html lang="en,zh-cn,default" class="loading">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
-    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="keywords" content="2YO&#39;s BLOG,"> 
     
     <meta name="author" content="2YO"> 
     <link rel="alternative" href="atom.xml" title="2YO&#39;s BLOG" type="application/atom+xml"> 
@@ -22,8 +22,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
     <link rel="stylesheet" href="/css/obsidian.css">
     <link rel="stylesheet" href="/css/ball-atom.min.css">
-<link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <body class="loading">
@@ -133,13 +132,13 @@
             
             <span>
                 <b class="iconfont icon-text2"></b> <i>Words count</i>
-                9.9k
+                2.9k
             </span>
             
             
             <span>
                 <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                9 mins.
+                3 mins.
             </span>
             
             
@@ -192,13 +191,13 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        9.5k
+                        3k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        9 mins.
+                        3 mins.
                     </span>
                 
                 
@@ -236,13 +235,13 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        15k
+                        5k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        14 mins.
+                        5 mins.
                     </span>
                 
                 
@@ -253,7 +252,7 @@
             
                 <h3 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h3><p>前几天群友在群里分享了一篇文章<a href="https://i-meto.com/hlsjs-upimg-wrapper/" target="_blank" rel="noopener">用图床看视频是什么体验</a>，今天腾出来时间研究原理并实现一下。</p>
 <h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>按照作者博客所说的，是直接将视频分段之后拼接在图片之后，播放时跳过前面图片部分即可。为什么不直接修改文件拓展名呢？作者提到图床站会检查文件头，如果不是图片的文件头人家是不收的，因此要在前面拼接一张小图来应付检查。<br>从作者的博客中拿出关键代码如下：</p>
-<pre class="line-numbers language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>video</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>video<span class="token punctuation">"</span></span> <span class="token attr-name">data-url</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://img11.360buyimg.com/img/jfs/t1/89319/11...</span></span></code></pre>
+<pre><code class="html">&lt;video id=&quot;video&quot; data-url=&quot;https://img11.360buyimg.com/img/...</code></pre>
             
             <span class="read-more"><a href="/2020/02/20/%E7%94%A8%E5%9B%BE%E5%BA%8A%E7%9C%8B%E8%A7%86%E9%A2%91%E6%98%AF%E4%BB%80%E4%B9%88%E4%BD%93%E9%AA%8C%E4%B9%8B%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
@@ -280,13 +279,13 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        48k
+                        11k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        44 mins.
+                        10 mins.
                     </span>
                 
                 
@@ -325,13 +324,13 @@
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        11k
+                        3.5k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        10 mins.
+                        3 mins.
                     </span>
                 
                 
@@ -342,15 +341,13 @@
         
         <div class="md-content animated fadeIn">
             
-                <h4 id="安装与更新pymongo"><a href="#安装与更新pymongo" class="headerlink" title="安装与更新pymongo"></a>安装与更新pymongo</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><pre><code>pip3 install pymongo</code></pre><h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><pre><code>pip3 install --upgrade pymongo</code></pre><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><pre class="line-numbers language-python"><code class="language-python"><span class="token comment" spellcheck="true"># coding=utf-8</span>
-<span class="token keyword">import</span> pymongo
+                <h4 id="安装与更新pymongo"><a href="#安装与更新pymongo" class="headerlink" title="安装与更新pymongo"></a>安装与更新pymongo</h4><h5 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h5><pre><code>pip3 install pymongo</code></pre><h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><pre><code>pip3 install --upgrade pymongo</code></pre><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><pre><code class="python"># coding=utf-8
+import pymongo
 
-mongo_client <span class="token operator">=</span> pymongo<span class="token punctuation">.</span>MongoClient<span class="token punctuation">(</span><span class="token string">"mongodb://&lt;host>:&lt;port>/"</span><span class="token punctuation">)</span>
-db <span class="token operator">=</span> mongo_client<span class="token punctuation">[</span><span class="token string">"database_name"</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+mongo_client = pymongo.MongoClient(&quot;mongodb://&lt;host&gt;:&lt;port&gt;/&quot;)
+db = mongo_client[&quot;database_name&quot;]</code></pre>
 <blockquote>
-<p>在MongoDB中，当数据库中存在内容时，数据库才会真正被创建</p>
-</blockquote>
-<h5 id="查看已存在的数据库"><a href="#查看已存在的数据库" class="headerlink" title="查看已存在的数据库"></a>查看已存在的数据库</h5><pre class="line-numbers language-python"><code class="language-python">db_list...</code></pre>
+<p>在MongoDB中，当数据库中存在内...</p></blockquote>
             
             <span class="read-more"><a href="/2020/02/04/Python%E4%BD%BF%E7%94%A8pymongo%E6%93%8D%E4%BD%9CMongoDB/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
@@ -377,13 +374,13 @@ db <span class="token operator">=</span> mongo_client<span class="token punctuat
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        4.7k
+                        2.2k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        4 mins.
+                        2 mins.
                     </span>
                 
                 
@@ -423,13 +420,13 @@ db <span class="token operator">=</span> mongo_client<span class="token punctuat
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        12k
+                        2.6k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        11 mins.
+                        2 mins.
                     </span>
                 
                 
@@ -441,10 +438,10 @@ db <span class="token operator">=</span> mongo_client<span class="token punctuat
         <div class="md-content animated fadeIn">
             
                 <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>最近一个项目需要抓取Twitter的一些数据，但是申请Twitter开发者API被拒绝了，只能研究研究网页端的API了，经过几次尝试，发现最少需要以下几个参数才能访问API：</p>
-<pre class="line-numbers language-python"><code class="language-python">headers <span class="token operator">=</span> <span class="token punctuation">{</span>
-    <span class="token string">'Referer'</span><span class="token punctuation">:</span> <span class="token string">'https://twitter.com/akaihaato'</span><span class="token punctuation">,</span>
-    <span class="token string">'Origin'</span><span class="token punctuation">:</span> <span class="token string">'https://twitter.com'</span><span class="token punctuation">,</span>
-    <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> <span class="token string">'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537...</span></code></pre>
+<pre><code class="python">headers = {
+    &#39;Referer&#39;: &#39;https://twitter.com/akaihaato&#39;,
+    &#39;Origin&#39;: &#39;https://twitter.com&#39;,
+    &#39;User-Agent&#39;: &#39;Mozilla/5.0 ...</code></pre>
             
             <span class="read-more"><a href="/2020/02/03/%E4%BD%BF%E7%94%A8Puppeteer%E8%8E%B7%E5%8F%96Twitter-API-authorization%E5%92%8Cx-guest-token/" title="Read article" class="posttitle">Read article</a> <b class="iconfont icon-arrow-right- gradient-text"></b></span>
         </div>
@@ -471,13 +468,13 @@ db <span class="token operator">=</span> mongo_client<span class="token punctuat
                 
                     <span>
                         <b class="iconfont icon-text2"></b> <i>Words count</i>
-                        2.6k
+                        1.3k
                     </span>
                 
                 
                     <span>
                         <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                        2 mins.
+                        1 mins.
                     </span>
                 
                 
@@ -780,7 +777,7 @@ yum install libffi-devel -y</code></pre><h5 id="下载Python3-x"><a href="#下�
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["I love it, so I insist.", "因为热爱，所以坚持"],
+                strings: ["因为热爱，所以坚持", ""],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,

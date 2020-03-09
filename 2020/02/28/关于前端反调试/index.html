@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en,default" class="loading">
+<html lang="en,zh-cn,default" class="loading">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
-    <meta name="keywords" content="TriDiamond Obsidian,"> 
+    <meta name="keywords" content="2YO&#39;s BLOG,"> 
     <meta name="description" content="前言写爬虫最重要的一步就是分析前后端交互的逻辑，免不了使用DevTools进行调试，一些不想别人看见自己代码的人就在这里做起了文章，不过根据我的经验越是盗版起家的网站越是反调试，反倒是大公司连加密都,"> 
     <meta name="author" content="2YO"> 
     <link rel="alternative" href="atom.xml" title="2YO&#39;s BLOG" type="application/atom+xml"> 
@@ -22,8 +22,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
     <link rel="stylesheet" href="/css/obsidian.css">
     <link rel="stylesheet" href="/css/ball-atom.min.css">
-<link rel="stylesheet" href="/css/prism.css" type="text/css">
-<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+</head>
 
 
 <body class="loading">
@@ -85,13 +84,13 @@
                 
                 <span>
                     <b class="iconfont icon-text2"></b> <i>Words count</i>
-                    9.9k
+                    2.9k
                 </span>
                 
                 
                 <span>
                     <b class="iconfont icon-timer__s"></b> <i>Reading time</i>
-                    9 mins.
+                    3 mins.
                 </span>
                 
                 
@@ -126,36 +125,36 @@
     <div class='main'>
         <div class="content markdown animated fadeIn">
             <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>写爬虫最重要的一步就是分析前后端交互的逻辑，免不了使用DevTools进行调试，一些不想别人看见自己代码的人就在这里做起了文章，不过根据我的经验越是盗版起家的网站越是反调试，反倒是大公司连加密都不加密随便你看。这篇文章会不断的更新一些反调试的分析过程，当然我并非是抱有恶意去分析这些代码的，单单是为了研究和学习。</p>
-<h3 id="第一节"><a href="#第一节" class="headerlink" title="第一节"></a>第一节</h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">check</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> check <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> tmp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">function</span> <span class="token function">doCheck</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token string">""</span> <span class="token operator">+</span> a <span class="token operator">/</span> a<span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">"length"</span><span class="token punctuation">]</span> <span class="token operator">!==</span> <span class="token number">1</span> <span class="token operator">||</span> a <span class="token operator">%</span> <span class="token number">20</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">[</span><span class="token string">"constructor"</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token string">"debugger"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span> <span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">[</span><span class="token string">"constructor"</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token string">"debugger"</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">}</span>
-        tmp<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token function">doCheck</span><span class="token punctuation">(</span><span class="token operator">++</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-        <span class="token function">doCheck</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token comment" spellcheck="true">//console.log(err);</span>
-    <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
-        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>tmp<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h3 id="第一节"><a href="#第一节" class="headerlink" title="第一节"></a>第一节</h3><pre><code class="javascript">setInterval(function() {
+    check();
+},
+1000);
+var check = function() {
+    let tmp = 0;
+    function doCheck(a) {
+        if ((&quot;&quot; + a / a)[&quot;length&quot;] !== 1 || a % 20 === 0) { (function() {} [&quot;constructor&quot;](&quot;debugger&quot;)())
+        } else { (function() {} [&quot;constructor&quot;](&quot;debugger&quot;)())
+        }
+        tmp++;
+        doCheck(++a);
+    }
+    try {
+        doCheck(0)
+    } catch(err) {
+        //console.log(err);
+    } finally {
+        console.log(tmp);
+    }
+};
 
-<span class="token function">check</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+check();</code></pre>
 <p>这段代码本质上就是打开控制台后通过不断的打断点来干扰调试，不过不能通过Deactivate breakpoints跳过所有断点，这是个递归函数很快就会耗光内存和CPU。这段代码有个很大的bug，又或者是作者留的“后门”，就是把check函数暴露了出来。打开控制台后输入<code>check = function(){};</code>，关闭控制台再打开，解决问题。</p>
-<h3 id="第二节"><a href="#第二节" class="headerlink" title="第二节"></a>第二节</h3><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">let</span> el <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span><span class="token string">'id'</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token keyword">get</span><span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span> window<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href<span class="token operator">=</span><span class="token string">"%2F"</span> <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>el<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="第二节"><a href="#第二节" class="headerlink" title="第二节"></a>第二节</h3><pre><code class="javascript">let el = new Image();
+Object.defineProperty(el,&#39;id&#39;,{get: function(){ window.location.href=&quot;%2F&quot; }});
+console.log(el);</code></pre>
 <p>这段代码会在打开控制台后跳到主页，是直接嵌在html文档中的，由于Chrome拓展和油猴脚本(Tampermonkey)的局限性脚本注入没能尝试成功。其实有个更简单的方法，Object.defineProperty()是ES6标准，直接换个不支持ES6的浏览器就OK了。</p>
 <h3 id="第三节"><a href="#第三节" class="headerlink" title="第三节"></a>第三节</h3><p>这个有些麻烦，同样是打开Chrome控制台后跳到主页，view source之后发现js代码加了密，不可能一个一个去分析，遂即尝试搜索关键字，跳转的语句一般用<code>window.location.href=</code>，那么就搜索<code>window</code>、<code>location</code>和<code>href</code>三个关键字，当搜索<code>href</code>时发现了这段代码：</p>
-<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token punctuation">(</span><span class="token string">'(0(){1.addListener(0(2,detail){if(2){3 4=self;3 5=4.location;5.href=decodeURIComponent(\'%2f\')}else{}});1.lanuch()})();'</span><span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token string">'function|devtoolsDetector|isOpen|const|_s|_l'</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'|'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre><code class="javascript">(&#39;(0(){1.addListener(0(2,detail){if(2){3 4=self;3 5=4.location;5.href=decodeURIComponent(\&#39;%2f\&#39;)}else{}});1.lanuch()})();&#39;,[],6,&#39;function|devtoolsDetector|isOpen|const|_s|_l&#39;.split(&#39;|&#39;),0,{})</code></pre>
 <p>把整个js文件提取出来测试一下，正是这个文件，注释掉这段代码后不再跳回主页。那么首先尝试的是直接禁止浏览器请求这个js文件，发现网页运行不正常，说明这个js文件里有核心代码或者被插了眼。之后采用Nginx反代并替换这段代码解决了问题，当然也可以使用Fiddler等工具，使用Nginx还要改一下Host，防止前端检查Referer。</p>
 <p>其实我一开始不是搜索字符串的，因为反调试一般都是用的奇淫巧技，并不一定所有的浏览器都支持，换了个浏览器之后打开控制台直接蹦出来一个断点，估计是作者为了适不同浏览器的备选方案，也正是因为这个断点省了不少力气，通过这个断点单步调试直接定位到关键代码。</p>
 <pre><code>server {
@@ -212,7 +211,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
                 <div class="subbox">
                     <img src="https://res.cloudinary.com/tridiamond/image/upload/v1573019751/TriDiamond_logo_ui_xeublz.jpg" height=300 width=300></img>
                     <p>2YO</p>
-                    <span>I love it, so I insist.</span>
+                    <span>因为热爱，所以坚持</span>
                     <dl>
                         <dd><a href="https://github.com/Pretty9" target="_blank"><span
                                     class=" iconfont icon-github"></span></a></dd>
@@ -430,7 +429,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
         var typedTextEl = $('.typed-text');
         if (typedTextEl && typedTextEl.length > 0) {
             var typed = new Typed('.typed-text', {
-                strings: ["I love it, so I insist.", "因为热爱，所以坚持"],
+                strings: ["因为热爱，所以坚持", ""],
                 typeSpeed: 90,
                 loop: true,
                 loopCount: Infinity,
