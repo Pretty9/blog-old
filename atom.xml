@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-02-28T11:42:22.565Z</updated>
+  <updated>2020-03-09T10:20:27.465Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一个下载Live2d模型的小工具</title>
+    <link href="https://2yo.cc/2020/03/09/%E4%B8%80%E4%B8%AA%E4%B8%8B%E8%BD%BDLive2d%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B0%8F%E5%B7%A5%E5%85%B7/"/>
+    <id>https://2yo.cc/2020/03/09/%E4%B8%80%E4%B8%AA%E4%B8%8B%E8%BD%BDLive2d%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%B0%8F%E5%B7%A5%E5%85%B7/</id>
+    <published>2020-03-09T09:55:03.000Z</published>
+    <updated>2020-03-09T10:20:27.465Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;今天在逛网站的时候发现了自己喜欢的Live2d模型，就想保存下来留作收藏，之后发现一个一个贴图、一个一个动作保存起来太麻烦了，就想写个小工具方便之后的下载，因为是用JS写的基于浏览器的应用，碰到跨域就很鸡肋了，先Mark一下，之后可能重写个不是基于浏览器版本的，代码已经上传
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="tools" scheme="https://2yo.cc/tags/tools/"/>
+    
+      <category term="live2d" scheme="https://2yo.cc/tags/live2d/"/>
+    
+  </entry>
   
   <entry>
     <title>关于前端反调试</title>
