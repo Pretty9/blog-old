@@ -1,536 +1,1027 @@
-
 <!DOCTYPE html>
-<html lang="en,zh-cn,default" class="loading">
+<html lang="en,zh-cn,default">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Archive: 2020/1</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" content="notranslate" />
-    <meta name="keywords" content="2YO&#39;s BLOG,"> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" >
+    <meta name="author" content="2YO">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="2YO">
     
-    <meta name="author" content="2YO"> 
-    <link rel="alternative" href="atom.xml" title="2YO&#39;s BLOG" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    <link href="https://fonts.loli.net/css?family=Roboto+Mono|Rubik&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_1429596_nzgqgvnmkjb.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/animate.css/3.7.2/animate.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/codemirror.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.48.4/theme/dracula.css">
-    <link rel="stylesheet" href="/css/obsidian.css">
-    <link rel="stylesheet" href="/css/ball-atom.min.css">
+    <meta name="keywords" content="hexo,2YO,技术,生活">
+    
+    <meta name="description" content="">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>2YO&#39;s BLOG</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href= "/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="stylesheet" href= "/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href= "/assets/favicon.jpg" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script" />
+    <link rel="preload" href="/scripts/main.js" as="script" />
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<link rel="alternate" href="/atom.xml" title="2YO's BLOG" type="application/atom+xml">
 </head>
 
+    
+    
+<header class="header">
 
-<body class="loading">
-    <div class="loader">
-        <div class="la-ball-atom la-2x">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <a class="home-link" href=/>2YO's BLOG</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+">
+    
+    <!-- 主页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main index-page">
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/" >
+            
+                <span>Kali踩坑记：中文乱码</span>
+        </a>
+        <div class="abstract-content">
+            起因前几天用VirtualBox装Kali就一直装不上，今天闲下来按照某度上的各种方式试了一遍还是没解决问题，之后换了VMware就顺利装上了，不过中文都变成了小方块，按照网上的说法是下载了精简版Kali导致的中文字库缺失，随即进行了如下的尝试解决了这个问题。
+解决步骤Step 1首先要确保locales已经安装，使用apt-get install locales命令；之后可以使用locale -a命令查看当前系统支持的字符集。
+Step 2在命令行中输入dpkg-reconfigure locales进入图形化界面之后选中en_US.UTF-8和zh_CN.UTF-8，确定后，将en_...
         </div>
-    </div>
-    <span id="config-title" style="display:none">2YO&#39;s BLOG</span>
-    <div id="loader"></div>
-    <div id="single" class="page">
-    <div id="top">
-        <a class="iconfont icon-left image-icon" href="javascript:history.back()" target="_blank" rel="noopener"></a>
-    </div>
-    <div class="dark-obsidian section">
-        <div class="article animated fadeIn">
-            <div class="main">
-                <div class="content animated fadeIn">
-                    <div class="set">
-                        <h1 style="text-align: center">Archived</h1>
-                        <p style="text-align: center">「 16 」</p>
-                        <ul class="timeline timeline-centered">
-                            
-                            
-                                
-                                <li class="timeline-item period">
-                                    <div class="timeline-info"></div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <h2 class="timeline-title">February 2020</h2>
-                                    </div>
-                                </li>
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 28, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/28/%E5%85%B3%E4%BA%8E%E5%89%8D%E7%AB%AF%E5%8F%8D%E8%B0%83%E8%AF%95/">关于前端反调试</a>
-                                        <p>
-                                            前言写爬虫最重要的一步就是分析前后端交互的逻辑，免不了使用DevTools进行调试，一些不想别人看见自己代码的人就在这里做起了文章，不过根据我的经验越是盗版起家的网站越是反调试，反倒是大公司连加密都不加密随便你看。这篇文章会不断的更新一些反调试的分析过程，当然我并非是抱有恶意去分析这些代码的，单单是为了研究和学习。
-第一节setInterval(function() {
-    check(...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 26, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/26/%E5%88%A9%E7%94%A8%E7%89%B9%E5%BE%81%E7%82%B9%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0%E7%BB%B4%E5%9F%BA%E8%90%8C%E5%88%B6%E5%8D%A1%E5%88%A4%E9%87%8D/">利用特征点检测与匹配实现维基萌制卡判重</a>
-                                        <p>
-                                            起因随着广树大佬的维基萌抽卡系统卡牌数量的不断增加，给制卡过程中判断卡牌是否重复带来了困难，于是想写一个程序辅助判断卡牌是否重复。本质上的任务就是判断两张图像是否是同一张，要能适应图像的缩放、裁剪和旋转。使用哈希(aHash、pHash和dHash)办法？经过测试，哈希方法并不能很好的适应图像的缩放、裁剪和旋转，模板匹配又不能很好地适应缩放和旋转，遂即采用特征点检测和匹配算法，当然也可以试试...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 20, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/20/%E7%94%A8%E5%9B%BE%E5%BA%8A%E7%9C%8B%E8%A7%86%E9%A2%91%E6%98%AF%E4%BB%80%E4%B9%88%E4%BD%93%E9%AA%8C%E4%B9%8B%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/">用图床看视频是什么体验之原理分析</a>
-                                        <p>
-                                            起因前几天群友在群里分享了一篇文章用图床看视频是什么体验，今天腾出来时间研究原理并实现一下。
-分析按照作者博客所说的，是直接将视频分段之后拼接在图片之后，播放时跳过前面图片部分即可。为什么不直接修改文件拓展名呢？作者提到图床站会检查文件头，如果不是图片的文件头人家是不收的，因此要在前面拼接一张小图来应付检查。从作者的博客中拿出关键代码如下：
-&lt;video id=&quot;video&...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 19, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/19/%E5%88%A9%E7%94%A8CNN%E5%AE%8C%E6%88%90%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BE%E5%83%8F%E5%92%8C%E4%B8%89%E6%AC%A1%E5%85%83%E5%9B%BE%E5%83%8F%E7%9A%84%E5%88%86%E7%B1%BB/">利用CNN完成二次元图像和三次元图像的分类</a>
-                                        <p>
-                                            起因刚刚在Danbooru上抓了近百万张图，结果里面竟然混有不少的三次元图，如果人工一张一张的挑选就太麻烦了，就想写程序来解决。一开始想的是用Sequential跑个三层模型出来，又想到是不是有更简单的方法，就去网上查了查，但是没有找到相关的文章。之后去群里问了问，纸片协会的一喵大佬给出了两个方法，又甩出一个12页的全英文论文，无奈能力不足，搞了许久也没能搞懂，只能绕回到神经网络了。
-先是写...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 04, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/04/Python%E4%BD%BF%E7%94%A8pymongo%E6%93%8D%E4%BD%9CMongoDB/">Python使用pymongo操作MongoDB</a>
-                                        <p>
-                                            安装与更新pymongo安装pip3 install pymongo更新pip3 install --upgrade pymongo创建数据库# coding=utf-8
-import pymongo
-
-mongo_client = pymongo.MongoClient(&quot;mongodb://&lt;host&gt;:&lt;port&gt;/&quot;)
-db = mongo...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/03/Linux-SSH-ban%E6%8E%89IP/">Linux SSH ban掉IP</a>
-                                        <p>
-                                            起因刚刚在罗马尼亚置办了一台机子，今天发现上千条failed login attempts，一看这哪行，先改了口令，之后研究怎么加个黑名单，尝试到一定次数直接ban掉IP。
-白名单和黑名单在/etc文件夹下有hosts.allow和hosts.deny两个文件，前者是白名单，后者是黑名单，录入格式为sshd:IP[/MASK]:allow和sshd:IP[/MASK]:deny ，如果是所有...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 03, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/03/%E4%BD%BF%E7%94%A8Puppeteer%E8%8E%B7%E5%8F%96Twitter-API-authorization%E5%92%8Cx-guest-token/">使用Puppeteer获取Twitter API authorization和x-guest-token</a>
-                                        <p>
-                                            前言最近一个项目需要抓取Twitter的一些数据，但是申请Twitter开发者API被拒绝了，只能研究研究网页端的API了，经过几次尝试，发现最少需要以下几个参数才能访问API：
-headers = {
-    &#39;Referer&#39;: &#39;https://twitter.com/akaihaato&#39;,
-    &#39;Origin&#39;: &#39;http...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 01, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/01/%E9%9D%92%E6%9E%9CIP%E4%BB%A3%E7%90%86%E4%BD%BF%E7%94%A8/">青果IP代理使用</a>
-                                        <p>
-                                            前言当我们在爬取某些网站的数据时，过快的访问频率往往会触发反爬取机制，导致ip被禁止访问，使用IP代理是一个比较好的解决方案，所谓的IP代理其实就是提供若干个HTTP/HTTPS/SOCKS/L2TP等代理。今天刚好需要IP代理就去找了一下，发现青果提供了8小时的试用并且后续价格也比较划算，就先开始了试用。
-开始试用
-首先选择试用套餐，可以看到支持的协议有HTTP、SOCKS5。通道数指的是...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">February 01, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/02/01/Centos7%E5%AE%89%E8%A3%85python3-x%E4%B8%8Epip/">Centos7安装Python3.x与pip</a>
-                                        <p>
-                                            前言Centos7自带的Python版本是2.7，由于目前还有很多库依赖于Python2.x，所以并不建议完全卸载2.x版本，因此需要与3.x版本共存，3.x需要自行下载编译安装。
-安装Python3.x安装第三方库yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-deve...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item period">
-                                    <div class="timeline-info"></div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <h2 class="timeline-title">January 2020</h2>
-                                    </div>
-                                </li>
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 22, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/">Kali踩坑记：中文乱码</a>
-                                        <p>
-                                            起因前几天用VirtualBox装Kali就一直装不上，今天闲下来按照某度上的各种方式试了一遍还是没解决问题，之后换了VMware就顺利装上了，不过中文都变成了小方块，按照网上的说法是下载了精简版Kali导致的中文字库缺失，随即进行了如下的尝试解决了这个问题。
-解决步骤Step 1首先要确保locales已经安装，使用apt-get install locales命令；之后可以使用local...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 20, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/20/cloudflare%E4%B8%AD%E4%BD%BF%E7%94%A8301%E9%87%8D%E5%AE%9A%E5%90%91/">Cloudflare中使用301重定向</a>
-                                        <p>
-                                            301与302的区别301是HTTP协议状态码之一，它表示的含义是永久性的转移（Permanently Moved），而302代表的是暂时性的转移（Temporarily Moved），当用户或搜索引擎访问服务端且返回这两个状态码时，在Header中的Location字段将包含将要跳转到的网址，区别是301表示旧地址的资源已经永久的被移除了，搜索引擎在抓取新内容时也会将旧网址替换为新网址，而...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 20, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/20/%E4%BF%AE%E6%94%B9Hosts%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9FGithub%E8%AE%BF%E9%97%AE/">修改Hosts文件加速Github访问</a>
-                                        <p>
-                                            前几天访问Github还好好的，昨天夜里就怎么也上不去了，早上爬起来Ping了几个ip丢到hosts就好了。
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/22</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Kali">Kali</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/20/cloudflare%E4%B8%AD%E4%BD%BF%E7%94%A8301%E9%87%8D%E5%AE%9A%E5%90%91/" >
+            
+                <span>Cloudflare中使用301重定向</span>
+        </a>
+        <div class="abstract-content">
+            301与302的区别301是HTTP协议状态码之一，它表示的含义是永久性的转移（Permanently Moved），而302代表的是暂时性的转移（Temporarily Moved），当用户或搜索引擎访问服务端且返回这两个状态码时，在Header中的Location字段将包含将要跳转到的网址，区别是301表示旧地址的资源已经永久的被移除了，搜索引擎在抓取新内容时也会将旧网址替换为新网址，而302表示旧资源只是暂时性的不能访问，搜索引擎不会修改旧网址。这样对搜索引擎比较友好，且对权重的影响很小。
+适用情况
+更换了新的域名，将旧域名重定向到新域名
+网址的规范化，例如将a.com、a.a.c...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Cloudflare">Cloudflare</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/20/%E4%BF%AE%E6%94%B9Hosts%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9FGithub%E8%AE%BF%E9%97%AE/" >
+            
+                <span>修改Hosts文件加速Github访问</span>
+        </a>
+        <div class="abstract-content">
+            前几天访问Github还好好的，昨天夜里就怎么也上不去了，早上爬起来Ping了几个ip丢到hosts就好了。
 如果使用Windows系统，hosts文件一般在C:\Windows\System32\drivers\etc路径下，打开之后追加如下内容即可，这些ip的访问速度可能根据你的网络运营商决定，并且可能会发生变化。
-另外 githubusercontent.com 不出意外应该早就被屏蔽...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 19, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/">下载喜欢的UP主的所有视频</a>
-                                        <p>
-                                            对于喜欢的UP主，是不是有种想要把他（她）所有的投稿下载并珍藏起来的冲动呢，不过要怎么做？用APP逐个投稿缓存在转移到PC上？或者使用诸如you-get之类的第三方工具？这些都太麻烦了，需要一个一个的点进去或者输入av号，因此就写了个下载UP主所有投稿的工具，没有太多技术含量，都是一些机械工作，下面只强调几个注意点，代码开源到Github。
-
-新版播放器采用DASH，并将音频和视频分为两个流...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 11, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/11/%E5%88%A9%E7%94%A8SCF%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E3%80%81%E9%98%B2%E7%9B%97%E9%93%BE%E5%8F%8AHTTPS%E4%B8%8D%E8%83%BD%E9%99%8D%E7%BA%A7%E8%AF%B7%E6%B1%82HTTP%E8%B5%84%E6%BA%90%E9%97%AE%E9%A2%98/">利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题</a>
-                                        <p>
-                                            问题阐述在Web应用开发中，我们经常会遇到跨域，Refer防盗链以及HTTPS不能降级访问HTTP资源问题，一般的浏览器禁止了跨域请求且Ajax等方式不允许修改某些Header（如Refer和Orign），针对这三种情况我们一般只能通过代理访问来解决，即在自己的服务器上写一个代理小程序，再通过自己的域名访问这个小程序来解决。但是我们本就瘦小的带宽还要分出来一部分做代理着实让人不爽，这里分享一...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">January 11, 2020</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/">一次自动提交脚本的经历</a>
-                                        <p>
-                                            起因事情的起因是这样的，最近需要在某系统上注册一个账号，结果怎么都收不到邮件，试了有十几次，然后我去打听了一下，所有人都是这样，少则十几次才能收到，多则几十次，便萌生了写脚本自动提交的想法。
-分析逻辑第一步当然要分析逻辑，这也是最重要的一步，好在这个系统比较简单，没一会儿就分析好了。先看一下表单：两个输入框分别输入邮件和验证码，我们在看下源码：这个form没有action属性，是通过chec...
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                                
-                                <li class="timeline-item period">
-                                    <div class="timeline-info"></div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <h2 class="timeline-title">December 2019</h2>
-                                    </div>
-                                </li>
-                                
-                                <li class="timeline-item">
-                                    <div class="timeline-info">
-                                        <span class="gradient-text">December 17, 2019</span>
-                                    </div>
-                                    <div class="timeline-marker"></div>
-                                    <div class="timeline-content">
-                                        <a class="timeline-title" target="_self" href="/2019/12/17/%E5%85%B3%E4%BA%8E%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/">博客迁移到hexo啦</a>
-                                        <p>
-                                            由于.cc域名暂时不能备案又不舍得丢，只好将博客迁移到Gitpage，最近会将一些有价值的文章从原博客上迁移过来，WordPress有些过于方便导致最近的文章有些水，这次就打算好好写一些长文了。并且打算用空出的服务器开发出一些小工具来供朋友们使用，毕竟一直白嫖API也怪不好意思的，哈哈哈。
-
-                                        </p>
-                                    </div>
-                                </li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </div>
+另外 githubusercontent.com 不出意外应该早就被屏蔽。
+# Github
+192.30.253.112 github.com
+151.101.76.133 avatars1.githubusercontent.com
+151.101.76.133 av...
         </div>
-    </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/20</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Github">Github</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "Hosts">Hosts</a>
+    
 </div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/" >
+            
+                <span>下载喜欢的UP主的所有视频</span>
+        </a>
+        <div class="abstract-content">
+            对于喜欢的UP主，是不是有种想要把他（她）所有的投稿下载并珍藏起来的冲动呢，不过要怎么做？用APP逐个投稿缓存在转移到PC上？或者使用诸如you-get之类的第三方工具？这些都太麻烦了，需要一个一个的点进去或者输入av号，因此就写了个下载UP主所有投稿的工具，没有太多技术含量，都是一些机械工作，下面只强调几个注意点，代码开源到Github。
 
-    <div id="back-to-top" class="animated fadeIn faster">
-        <div class="flow"></div>
-        <span class="percentage animated fadeIn faster">0%</span>
-        <span class="iconfont icon-top02 animated fadeIn faster"></span>
+新版播放器采用DASH，并将音频和视频分为两个流，猜测是压缩图像时保留原质量音频？
+切换到旧版Flash即可找到flv接口，不过貌似有加密接口可以直接下载1080p。
+视频服务器貌似有限速？带宽不能跑满，遂采用多线程分段下载。
+
+使用方法1.将bi...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/19</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "tools">tools</a>
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "bilibili">bilibili</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/11/%E5%88%A9%E7%94%A8SCF%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E3%80%81%E9%98%B2%E7%9B%97%E9%93%BE%E5%8F%8AHTTPS%E4%B8%8D%E8%83%BD%E9%99%8D%E7%BA%A7%E8%AF%B7%E6%B1%82HTTP%E8%B5%84%E6%BA%90%E9%97%AE%E9%A2%98/" >
+            
+                <span>利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题</span>
+        </a>
+        <div class="abstract-content">
+            问题阐述在Web应用开发中，我们经常会遇到跨域，Refer防盗链以及HTTPS不能降级访问HTTP资源问题，一般的浏览器禁止了跨域请求且Ajax等方式不允许修改某些Header（如Refer和Orign），针对这三种情况我们一般只能通过代理访问来解决，即在自己的服务器上写一个代理小程序，再通过自己的域名访问这个小程序来解决。但是我们本就瘦小的带宽还要分出来一部分做代理着实让人不爽，这里分享一种方法，就是通过SCF来解决。
+何为SCF？SCF（Serverless Cloud Function），即无服务器云函数，是由腾讯在无服务器架构上的一种实现（阿里和华为也有，但名称不同，如称函数工作...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/11</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "SCF">SCF</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    
+    
+    
+    
+    
+    <article class="index-post">
+        <a class="abstract-title" href = "/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/" >
+            
+                <span>一次自动提交脚本的经历</span>
+        </a>
+        <div class="abstract-content">
+            起因事情的起因是这样的，最近需要在某系统上注册一个账号，结果怎么都收不到邮件，试了有十几次，然后我去打听了一下，所有人都是这样，少则十几次才能收到，多则几十次，便萌生了写脚本自动提交的想法。
+分析逻辑第一步当然要分析逻辑，这也是最重要的一步，好在这个系统比较简单，没一会儿就分析好了。先看一下表单：两个输入框分别输入邮件和验证码，我们在看下源码：这个form没有action属性，是通过checkForm方法提交的，我们再来看下checkForm方法：还有一些代码被我删减掉了，只留下最主要的代码，首先将表单数据post到后台，如果后台的返回body为空串，则跳转到第二个网址，否则提示错误信息...
+        </div>
+        <div class="abstract-post-meta">
+            <!-- date  -->
+            <div class="abstract-date">
+                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2020/01/11</span>
+            </div>
+            <!-- tags  -->
+            
+            <div class= abstract-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" target="_blank" rel="noopener" data-tags = "tools">tools</a>
+    
+</div>
+            
+        </div>
+    </article>
+    
+    <!-- paginator  -->
+    
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:g2mi@qq.com" target="_blank" rel="noopener" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/Pretty9" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
     </div>
-</body>
-<footer>
-    <p class="copyright" id="copyright">
-        &copy; 2020
-        <span class="gradient-text">
-            2YO
-        </span>.
-        Powered by <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
-        Theme
-        <span class="gradient-text">
-            <a href="https://github.com/TriDiamond/hexo-theme-obsidian" title="Obsidian" target="_blank" rel="noopener">Obsidian</a>
-        </span>
-        <small><a href="https://github.com/TriDiamond/hexo-theme-obsidian/blob/master/CHANGELOG.md" title="v1.4.3" target="_blank" rel="noopener">v1.4.3</a></small>
-    </p>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
 </footer>
-
-<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-<script>
-  MathJax.Hub.Config({
-    "HTML-CSS": {
-      preferredFont: "TeX",
-      availableFonts: ["STIX", "TeX"],
-      linebreaks: {
-        automatic: true
-      },
-      EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
-    },
-    tex2jax: {
-      inlineMath: [
-        ["$", "$"],
-        ["\\(", "\\)"]
-      ],
-      processEscapes: true,
-      ignoreClass: "tex2jax_ignore|dno",
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      noUndefined: {
-        attributes: {
-          mathcolor: "red",
-          mathbackground: "#FFEEEE",
-          mathsize: "90%"
-        }
-      },
-      Macros: {
-        href: "{}"
-      }
-    },
-    messageStyle: "none"
-  });
-</script>
-<script>
-  function initialMathJax() {
-    MathJax.Hub.Queue(function () {
-      var all = MathJax.Hub.getAllJax(),
-        i;
-      // console.log(all);
-      for (i = 0; i < all.length; i += 1) {
-        console.log(all[i].SourceElement().parentNode)
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-    });
-  }
-
-  function reprocessMathJax() {
-    if (typeof MathJax !== 'undefined') {
-      MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-    }
-  }
-</script>
-
-
-
-    <link rel="stylesheet" href="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css">
-    <script src="//cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/obsidian.js"></script>
-<script src="/js/jquery.truncate.js"></script>
-<script src="/js/search.js"></script>
-<script src="//cdn.bootcss.com/typed.js/2.0.10/typed.min.js"></script>
-<script src="//cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-
-<script src="https://cdn.bootcss.com/codemirror/5.48.4/codemirror.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/css/css.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/xml/xml.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/htmlmixed/htmlmixed.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/clike/clike.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/php/php.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/shell/shell.min.js"></script>
-
-    <script src="//cdn.bootcss.com/codemirror/5.48.4/mode/python/python.min.js"></script>
-
-
-
-    <script src="/js/busuanzi.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            if ($('span[id^="busuanzi_"]').length) {
-                initialBusuanzi();
-            }
-        });
-    </script>
-
-
-<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.css">
-<link rel="stylesheet" href="//cdn.bootcss.com/photoswipe/4.1.3/default-skin/default-skin.min.css">
-<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe.min.js"></script>
-<script src="//cdn.bootcss.com/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-            <div class="pswp__top-bar">
-                <!--  Controls are self-explanatory. Order can be changed. -->
-                <div class="pswp__counter"></div>
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-        </div>
     </div>
+    <!-- toc -->
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 16
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2020 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/28</span><a class="archive-post-title" href= "/2020/02/28/%E5%85%B3%E4%BA%8E%E5%89%8D%E7%AB%AF%E5%8F%8D%E8%B0%83%E8%AF%95/" >关于前端反调试</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/26</span><a class="archive-post-title" href= "/2020/02/26/%E5%88%A9%E7%94%A8%E7%89%B9%E5%BE%81%E7%82%B9%E6%A3%80%E6%B5%8B%E4%B8%8E%E5%8C%B9%E9%85%8D%E5%AE%9E%E7%8E%B0%E7%BB%B4%E5%9F%BA%E8%90%8C%E5%88%B6%E5%8D%A1%E5%88%A4%E9%87%8D/" >利用特征点检测与匹配实现维基萌制卡判重</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/19</span><a class="archive-post-title" href= "/2020/02/19/%E5%88%A9%E7%94%A8CNN%E5%AE%8C%E6%88%90%E4%BA%8C%E6%AC%A1%E5%85%83%E5%9B%BE%E5%83%8F%E5%92%8C%E4%B8%89%E6%AC%A1%E5%85%83%E5%9B%BE%E5%83%8F%E7%9A%84%E5%88%86%E7%B1%BB/" >利用CNN完成二次元图像和三次元图像的分类</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/04</span><a class="archive-post-title" href= "/2020/02/04/Python%E4%BD%BF%E7%94%A8pymongo%E6%93%8D%E4%BD%9CMongoDB/" >Python使用pymongo操作MongoDB</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/03</span><a class="archive-post-title" href= "/2020/02/03/Linux-SSH-ban%E6%8E%89IP/" >Linux SSH ban掉IP</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/03</span><a class="archive-post-title" href= "/2020/02/03/%E4%BD%BF%E7%94%A8Puppeteer%E8%8E%B7%E5%8F%96Twitter-API-authorization%E5%92%8Cx-guest-token/" >使用Puppeteer获取Twitter API authorization和x-guest-token</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/01</span><a class="archive-post-title" href= "/2020/02/01/Centos7%E5%AE%89%E8%A3%85python3-x%E4%B8%8Epip/" >Centos7安装Python3.x与pip</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">02/01</span><a class="archive-post-title" href= "/2020/02/01/%E9%9D%92%E6%9E%9CIP%E4%BB%A3%E7%90%86%E4%BD%BF%E7%94%A8/" >青果IP代理使用</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/22</span><a class="archive-post-title" href= "/2020/01/22/Kail%E8%B8%A9%E5%9D%91%E8%AE%B0%EF%BC%9A%E4%B8%AD%E6%96%87%E4%B9%B1%E7%A0%81/" >Kali踩坑记：中文乱码</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span><a class="archive-post-title" href= "/2020/01/20/cloudflare%E4%B8%AD%E4%BD%BF%E7%94%A8301%E9%87%8D%E5%AE%9A%E5%90%91/" >Cloudflare中使用301重定向</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/20</span><a class="archive-post-title" href= "/2020/01/20/%E4%BF%AE%E6%94%B9Hosts%E6%96%87%E4%BB%B6%E5%8A%A0%E9%80%9FGithub%E8%AE%BF%E9%97%AE/" >修改Hosts文件加速Github访问</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/19</span><a class="archive-post-title" href= "/2020/01/19/%E4%B8%8B%E8%BD%BD%E5%96%9C%E6%AC%A2%E7%9A%84UP%E4%B8%BB%E7%9A%84%E6%89%80%E6%9C%89%E8%A7%86%E9%A2%91/" >下载喜欢的UP主的所有视频</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/11</span><a class="archive-post-title" href= "/2020/01/11/%E5%88%A9%E7%94%A8SCF%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E3%80%81%E9%98%B2%E7%9B%97%E9%93%BE%E5%8F%8AHTTPS%E4%B8%8D%E8%83%BD%E9%99%8D%E7%BA%A7%E8%AF%B7%E6%B1%82HTTP%E8%B5%84%E6%BA%90%E9%97%AE%E9%A2%98/" >利用SCF解决跨域、防盗链及HTTPS不能降级请求HTTP资源问题</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">01/11</span><a class="archive-post-title" href= "/2020/01/11/%E4%B8%80%E6%AC%A1%E8%87%AA%E5%8A%A8%E6%8F%90%E4%BA%A4%E8%84%9A%E6%9C%AC%E7%9A%84%E7%BB%8F%E5%8E%86/" >一次自动提交脚本的经历</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">12/17</span><a class="archive-post-title" href= "/2019/12/17/%E5%85%B3%E4%BA%8E%E5%8D%9A%E5%AE%A2%E8%BF%81%E7%A7%BB/" >博客迁移到hexo啦</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> Invalid date </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">Invalid date</span><a class="archive-post-title" href= "/2020/02/20/%E7%94%A8%E5%9B%BE%E5%BA%8A%E7%9C%8B%E8%A7%86%E9%A2%91%E6%98%AF%E4%BB%80%E4%B9%88%E4%BD%93%E9%AA%8C%E4%B9%8B%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" >用图床看视频是什么体验之原理分析</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="Kali"><span class="iconfont-archer">&#xe606;</span>Kali</span>
+    
+        <span class="sidebar-tag-name" data-tags="Linux"><span class="iconfont-archer">&#xe606;</span>Linux</span>
+    
+        <span class="sidebar-tag-name" data-tags="Cloudflare"><span class="iconfont-archer">&#xe606;</span>Cloudflare</span>
+    
+        <span class="sidebar-tag-name" data-tags="tools"><span class="iconfont-archer">&#xe606;</span>tools</span>
+    
+        <span class="sidebar-tag-name" data-tags="bilibili"><span class="iconfont-archer">&#xe606;</span>bilibili</span>
+    
+        <span class="sidebar-tag-name" data-tags="Puppeteer"><span class="iconfont-archer">&#xe606;</span>Puppeteer</span>
+    
+        <span class="sidebar-tag-name" data-tags="Github"><span class="iconfont-archer">&#xe606;</span>Github</span>
+    
+        <span class="sidebar-tag-name" data-tags="Hosts"><span class="iconfont-archer">&#xe606;</span>Hosts</span>
+    
+        <span class="sidebar-tag-name" data-tags="Web"><span class="iconfont-archer">&#xe606;</span>Web</span>
+    
+        <span class="sidebar-tag-name" data-tags="Other"><span class="iconfont-archer">&#xe606;</span>Other</span>
+    
+        <span class="sidebar-tag-name" data-tags="Machine Learning"><span class="iconfont-archer">&#xe606;</span>Machine Learning</span>
+    
+        <span class="sidebar-tag-name" data-tags="SCF"><span class="iconfont-archer">&#xe606;</span>SCF</span>
+    
+        <span class="sidebar-tag-name" data-tags="OpenCV"><span class="iconfont-archer">&#xe606;</span>OpenCV</span>
+    
+        <span class="sidebar-tag-name" data-tags="Computer Vision"><span class="iconfont-archer">&#xe606;</span>Computer Vision</span>
+    
+        <span class="sidebar-tag-name" data-tags="ORB"><span class="iconfont-archer">&#xe606;</span>ORB</span>
+    
+        <span class="sidebar-tag-name" data-tags="MongoDB"><span class="iconfont-archer">&#xe606;</span>MongoDB</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
 </div>
-
-
-
-
-
-
-
-<script>
-    function initialTyped () {
-        var typedTextEl = $('.typed-text');
-        if (typedTextEl && typedTextEl.length > 0) {
-            var typed = new Typed('.typed-text', {
-                strings: ["因为热爱，所以坚持", ""],
-                typeSpeed: 90,
-                loop: true,
-                loopCount: Infinity,
-                backSpeed: 20,
-            });
-        }
-    }
-
-    if ($('.article-header') && $('.article-header').length) {
-        $(document).ready(function () {
-            initialTyped();
-        });
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "2YO"
     }
 </script>
-
-
-
-
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+     
+    </body>
 </html>
+
+
