@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://2yo.cc/"/>
-  <updated>2020-03-20T06:09:45.645Z</updated>
+  <updated>2020-03-25T02:47:02.091Z</updated>
   <id>https://2yo.cc/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>昨天B站把AV换成了BV</title>
+    <link href="https://2yo.cc/2020/03/24/%E6%98%A8%E5%A4%A9B%E7%AB%99%E6%8A%8AAV%E6%8D%A2%E6%88%90%E4%BA%86BV/"/>
+    <id>https://2yo.cc/2020/03/24/%E6%98%A8%E5%A4%A9B%E7%AB%99%E6%8A%8AAV%E6%8D%A2%E6%88%90%E4%BA%86BV/</id>
+    <published>2020-03-24T12:02:14.000Z</published>
+    <updated>2020-03-25T02:47:02.091Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h3 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h3&gt;&lt;p&gt;昨天用you-get下视频的时候失败了，才发现B站把AV号换成了BV号，查看源码之后找到了AV号，稍晚些看到有人已经分析出&lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>动手实现弹幕蒙版</title>
